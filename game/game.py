@@ -31,6 +31,8 @@ class Game:
             "player-m-5",
             "player-c-1",
             "player-c-2",
+            "player-c-m-1",
+            "player-c-m-2",
         ),
         "blocks/": (
             "sky",

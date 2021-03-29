@@ -57,12 +57,23 @@ class Player(Actor):
     )
     CROUCH_IDLE_ANIM_DELAY = 16
     
+    CROUCH_MOVING_ANIM_IMG_SEQ = (
+        "player-c-m-1",
+        "player-c-m-1",
+        "player-c-1",
+        "player-c-m-2",
+        "player-c-m-2",
+        "player-c-2",
+    )
+    CROUCH_MOVING_ANIM_DELAY = 3
+    
     def __init__(self, *args):
         super().__init__(*args, self.HITBOX)
         
         self.IDLE_ANIMATION = Animation(self, self.game, self.IDLE_ANIM_IMG_SEQ, self.IDLE_ANIM_DELAY)
         self.MOVING_ANIMATION = Animation(self, self.game, self.MOVING_ANIM_IMG_SEQ, self.MOVING_ANIM_DELAY)
         self.CROUCH_IDLE_ANIMATION = Animation(self, self.game, self.CROUCH_IDLE_ANIM_IMG_SEQ, self.CROUCH_IDLE_ANIM_DELAY)
+        self.CROUCH_MOVING_ANIMATION = Animation(self, self.game, self.CROUCH_MOVING_ANIM_IMG_SEQ, self.CROUCH_MOVING_ANIM_DELAY)
         
         self.animation = self.IDLE_ANIMATION
         self.image = self.animation.get_image()
@@ -70,6 +81,7 @@ class Player(Actor):
         
         self.direction = self.game.DIR_LEFT
         
+        self.moving = False
         self.running = False
         self.crouching = False
         self.jumping = False
@@ -77,25 +89,25 @@ class Player(Actor):
     def update(self):
         pressed = pygame.key.get_pressed()
         
-        moving = False
+        self.moving = False
         # Horizontal acceleration
         if pressed[self.game.MOVE_RIGHT_KEY]:
             if not self.crouching:
                 self.vel.x += self.ACCEL
             elif self.vel.x < self.CROUCH_SPEED:
                 self.vel.x = self.CROUCH_SPEED
-            moving = True
+            self.moving = True
         if pressed[self.game.MOVE_LEFT_KEY]:
             if not self.crouching:
                 self.vel.x -= self.ACCEL
             elif self.vel.x > -self.CROUCH_SPEED:
                 self.vel.x = -self.CROUCH_SPEED
-            moving = True
+            self.moving = True
         
         # TODO: Player's vel.x is nonzero when moving to the right into
         # a block, causing it to show the moving animation
         
-        if not self.crouching or (moving and abs(self.vel.x) > self.CROUCH_SPEED) or (not moving and self.vel.x != 0):
+        if not self.crouching or (self.moving and abs(self.vel.x) > self.CROUCH_SPEED) or (not self.moving and self.vel.x != 0):
             # Friction
             if self.vel.x > 0:
                 self.vel.x -= self.FRICTION
@@ -142,8 +154,10 @@ class Player(Actor):
             else:
                 self.animation = self.IDLE_ANIMATION
         else:
-            # TODO: Crouch-walking animation
-            self.animation = self.CROUCH_IDLE_ANIMATION
+            if self.moving:
+                self.animation = self.CROUCH_MOVING_ANIMATION
+            else:
+                self.animation = self.CROUCH_IDLE_ANIMATION
         # TODO: Make jump image/animation
         
         # Always set the player image because the animation may change at any time
