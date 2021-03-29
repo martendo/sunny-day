@@ -101,7 +101,10 @@ class Player(Actor):
             if not self.crouching:
                 self.vel.x -= self.ACCEL
             elif self.vel.x > -self.CROUCH_SPEED:
-                self.vel.x = -self.CROUCH_SPEED
+                if self.vel.x == self.CROUCH_SPEED:
+                    self.vel.x = 0
+                else:
+                    self.vel.x = -self.CROUCH_SPEED
             self.moving = True
         
         # TODO: Player's vel.x is nonzero when moving to the right into
@@ -154,7 +157,7 @@ class Player(Actor):
             else:
                 self.animation = self.IDLE_ANIMATION
         else:
-            if self.moving:
+            if self.moving and self.vel.x != 0:
                 self.animation = self.CROUCH_MOVING_ANIMATION
             else:
                 self.animation = self.CROUCH_IDLE_ANIMATION
