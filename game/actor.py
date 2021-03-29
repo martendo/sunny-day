@@ -29,9 +29,9 @@ class Actor(pygame.sprite.Sprite):
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk != None:
             if self.vel.x > 0:
-                self.pos.x = blk.rect.left // self.game.PX_SIZE - self.px_hitbox.right
+                self.pos.x = (blk.rect.left - self.hitbox.right) // self.game.PX_SIZE
             elif self.vel.x < 0:
-                self.pos.x = blk.rect.right // self.game.PX_SIZE - self.px_hitbox.left
+                self.pos.x = (blk.rect.right - self.hitbox.left) // self.game.PX_SIZE
             
             self.rect.x = int(self.pos.x) * self.game.PX_SIZE
             self.vel.x = 0
@@ -42,15 +42,14 @@ class Actor(pygame.sprite.Sprite):
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk != None:
             if self.vel.y > 0:
-                self.pos.y = blk.rect.top // self.game.PX_SIZE - self.px_hitbox.bottom
+                self.pos.y = (blk.rect.top - self.hitbox.bottom) // self.game.PX_SIZE
             elif self.vel.y < 0:
-                self.pos.y = blk.rect.bottom // self.game.PX_SIZE - self.px_hitbox.top
+                self.pos.y = (blk.rect.bottom - self.hitbox.top) // self.game.PX_SIZE
             
             self.rect.y = int(self.pos.y) * self.game.PX_SIZE
             self.vel.y = 0
     
     def set_hitbox(self, hitbox):
-        self.px_hitbox = pygame.Rect(hitbox)
         self.hitbox = pygame.Rect(*map(lambda x: x * self.game.PX_SIZE, hitbox))
     
     def hitboxblockcollide(self, actor, blk):
