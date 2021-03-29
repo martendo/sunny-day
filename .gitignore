@@ -1,0 +1,6 @@
+# Compiled files
+__pycache__/
+
+# Game Boy graphics files
+*.gbr
+*.gbm
