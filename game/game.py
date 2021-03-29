@@ -102,11 +102,11 @@ class Game:
             
             if self.playing:
                 if event.type == pygame.KEYDOWN:
-                    # Move a pixel right away so a quick press will nudge the player
-                    if event.key == self.MOVE_RIGHT_KEY:
+                    # Move a pixel right away if stopped so a quick press will nudge the player
+                    if event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
                         self.player.pos.x += 1
                         self.player.direction = self.DIR_RIGHT
-                    elif event.key == self.MOVE_LEFT_KEY:
+                    elif event.key == self.MOVE_LEFT_KEY and self.player.vel.x == 0:
                         self.player.pos.x -= 1
                         self.player.direction = self.DIR_LEFT
                     
