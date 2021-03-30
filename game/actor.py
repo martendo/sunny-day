@@ -27,7 +27,7 @@ class Actor(pygame.sprite.Sprite):
         
         # X-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
-        if blk != None:
+        if blk is not None:
             if self.vel.x > 0:
                 self.pos.x = (blk.rect.left - self.hitbox.right) // self.game.PX_SIZE
             elif self.vel.x < 0:
@@ -40,7 +40,7 @@ class Actor(pygame.sprite.Sprite):
         
         # Y-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
-        if blk != None:
+        if blk is not None:
             if self.vel.y > 0:
                 self.pos.y = (blk.rect.top - self.hitbox.bottom) // self.game.PX_SIZE
             elif self.vel.y < 0:
