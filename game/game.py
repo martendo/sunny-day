@@ -23,7 +23,7 @@ class Game:
     WIDTH = 32 * TILE_SIZE
     HEIGHT = 20 * TILE_SIZE
     
-    IMAGE_FILES = {
+    SPRITE_IMAGE_FILES = {
         "player/": (
             "player-1",
             "player-2",
@@ -65,12 +65,12 @@ class Game:
         self.running = False
         self.state = GameState.NOT_RUNNING
         
-        # Load and scale images
-        self.IMAGES = {}
-        for directory, images in self.IMAGE_FILES.items():
+        # Load and scale sprite images
+        self.SPRITE_IMAGES = {}
+        for directory, images in self.SPRITE_IMAGE_FILES.items():
             for name in images:
                 image = pygame.image.load(f"img/{directory}{name}.png")
-                self.IMAGES[name] = pygame.transform.scale(image, (image.get_width() * self.PX_SIZE, image.get_height() * self.PX_SIZE))
+                self.SPRITE_IMAGES[name] = pygame.transform.scale(image, (image.get_width() * self.PX_SIZE, image.get_height() * self.PX_SIZE))
         
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)

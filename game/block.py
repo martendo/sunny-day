@@ -20,7 +20,7 @@ class Sky(Block):
     def __init__(self, *args):
         super().__init__(*args)
         
-        self.image = self.game.IMAGES[self.IMAGE]
+        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
 
 class Flower(Block):
     ANIM_IMG_SEQ = (
@@ -46,7 +46,7 @@ class Grass(Block):
     def __init__(self, *args):
         super().__init__(*args)
         
-        self.image = self.game.IMAGES[self.IMAGE]
+        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
 
 class Brick(Block):
     IMAGE = "brick"
@@ -54,7 +54,7 @@ class Brick(Block):
     def __init__(self, *args):
         super().__init__(*args)
         
-        self.image = self.game.IMAGES[self.IMAGE]
+        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
 
 TYPES = (
     # Non-solid

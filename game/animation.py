@@ -8,7 +8,7 @@ class Animation:
         
         self.seq = []
         for image in (self.img_seq or self.sprite.ANIM_IMG_SEQ):
-            self.seq.append(self.game.IMAGES[image])
+            self.seq.append(self.game.SPRITE_IMAGES[image])
         self.frame = 0
     
     def get_image(self, frame=None):
