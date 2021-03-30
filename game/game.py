@@ -1,7 +1,13 @@
 import pygame
+from enum import Enum, auto
 from game.map import Map
 from game import block
 from game.player import Player
+
+class GameState(Enum):
+    NOT_RUNNING = auto()
+    IN_LEVEL = auto()
+    GAME_OVER = auto()
 
 class Game:
     NAME = "Sunny Day!"
@@ -59,7 +65,7 @@ class Game:
         pygame.init()
         
         self.running = False
-        self.playing = False
+        self.state = GameState.NOT_RUNNING
         
         # Load and scale images
         self.IMAGES = {}
@@ -85,7 +91,7 @@ class Game:
     
     def run(self):
         self.running = True
-        self.playing = True
+        self.state = GameState.IN_LEVEL
         
         while self.running:
             self.handle_events()
@@ -100,7 +106,7 @@ class Game:
                 self.running = False
                 return
             
-            if self.playing:
+            if self.state is GameState.IN_LEVEL:
                 if event.type == pygame.KEYDOWN:
                     # Move a pixel right away if stopped so a quick press will nudge the player
                     if event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
@@ -130,7 +136,7 @@ class Game:
                         self.player.uncrouch()
     
     def update(self):
-        if self.playing:
+        if self.state is GameState.IN_LEVEL:
             # Apply gravity to all actors
             for actor in self.actors:
                 actor.vel.y += self.GRAVITY
@@ -139,7 +145,7 @@ class Game:
             self.player.update()
     
     def draw(self):
-        if self.playing:
+        if self.state is GameState.IN_LEVEL:
             self.screen.fill(self.PLACEHOLDER_COLOUR)
             self.map.draw()
             self.player.draw()
@@ -147,7 +153,7 @@ class Game:
         pygame.display.update()
     
     def game_over(self):
-        self.playing = False
+        self.state = GameState.GAME_OVER
         # TODO: Do something here
         self.screen.fill((255, 100, 100))
     
