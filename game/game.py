@@ -84,10 +84,9 @@ class Game:
         
         self.player = Player(self, (7 * self.TILE_PX, 5 * self.TILE_PX))
         
+        self.map = Map(self)
         # TODO: Make level selectable (level select screen)
-        self.map = Map(0, self)
-        # TODO: Make maps scrollable
-        self.scroll = pygame.Vector2(0, 0)
+        self.map.load(0)
     
     def run(self):
         self.running = True
@@ -153,9 +152,8 @@ class Game:
         pygame.display.update()
     
     def game_over(self):
-        self.state = GameState.GAME_OVER
+        self.map.reset()
         # TODO: Do something here
-        self.screen.fill((255, 100, 100))
     
     # Determine if an actor can jump (is standing on solid ground)
     def can_jump(self, actor):

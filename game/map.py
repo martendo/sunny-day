@@ -18,9 +18,14 @@ class Map:
     
     ENEMY_ENTRY_SIZE = 1 + (2 * 2)
     
-    def __init__(self, num, game):
+    def __init__(self, game):
         self.game = game
         
+        self.current = None
+        # TODO: Make maps scrollable
+        self.scroll = pygame.Vector2(0, 0)
+    
+    def load(self, num):
         # Map data
         with open(f"maps/{num}.smd", "rb") as file:
             self.map_data = file.read()
@@ -32,10 +37,7 @@ class Map:
         self.tilemap = self.map_data[self.MAP_DATA_POS : self.MAP_DATA_END]
         
         self.blocks = pygame.sprite.Group()
-        
-        for y in range(self.height):
-            for x in range(self.width):
-                self.blocks.add(block.TYPES[self.get_tile(x, y)](self.game, x, y))
+        self.create_blocks()
         
         # Enemy data
         with open(f"maps/{num}.sed", "rb") as file:
@@ -47,7 +49,14 @@ class Map:
         self.enemy_data = enemy_data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
         
         self.enemies = pygame.sprite.Group()
-        
+        self.create_enemies()
+    
+    def create_blocks(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                self.blocks.add(block.TYPES[self.get_tile(x, y)](self.game, x, y))
+    
+    def create_enemies(self):
         for i in range(self.num_enemies):
             cur_enemy = self.get_enemy(i)
             self.enemies.add(enemy.TYPES[cur_enemy["type"]](
@@ -82,3 +91,10 @@ class Map:
     def draw(self):
         self.blocks.draw(self.game.screen)
         self.enemies.draw(self.game.screen)
+    
+    def reset(self):
+        self.blocks.empty()
+        self.enemies.empty()
+        self.create_blocks()
+        self.create_enemies()
+        self.game.player.reset()

@@ -195,3 +195,7 @@ class Player(Actor):
     def uncrouch(self):
         self.crouching = False
         self.set_hitbox(self.HITBOX)
+    
+    def reset(self):
+        self.pos.update(0, 0)
+        self.vel.update(0, 0)
