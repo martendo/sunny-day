@@ -1,5 +1,6 @@
 import pygame
 from game.animation import Animation
+from game import colour
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -8,7 +9,7 @@ class Block(pygame.sprite.Sprite):
         self.game = game
         
         self.image = pygame.Surface((self.game.TILE_SIZE, self.game.TILE_SIZE))
-        self.image.fill(self.game.PLACEHOLDER_COLOUR)
+        self.image.fill(colour.PLACEHOLDER_COLOUR)
         self.rect = self.image.get_rect()
         self.rect.x = x * self.game.TILE_SIZE
         self.rect.y = y * self.game.TILE_SIZE

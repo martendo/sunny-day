@@ -3,6 +3,7 @@ from enum import Enum, auto
 from game.map import Map
 from game import block
 from game.player import Player
+from game import colour
 
 class GameState(Enum):
     NOT_RUNNING = auto()
@@ -21,9 +22,6 @@ class Game:
     
     WIDTH = 32 * TILE_SIZE
     HEIGHT = 20 * TILE_SIZE
-    
-    # This colour should not be seen
-    PLACEHOLDER_COLOUR = (255, 0, 255)
     
     IMAGE_FILES = {
         "player/": (
@@ -147,12 +145,12 @@ class Game:
     
     def draw(self):
         if self.state is GameState.IN_LEVEL:
-            self.screen.fill(self.PLACEHOLDER_COLOUR)
+            self.screen.fill(colour.PLACEHOLDER_COLOUR)
             self.map.draw()
             self.player.draw()
         elif self.state is GameState.GAME_OVER:
-            self.screen.fill((0, 0, 0))
-            text, rect = self.render_text("GAME OVER!", (255, 255, 255), (0, 0, 0))
+            self.screen.fill(colour.BLACK)
+            text, rect = self.render_text("GAME OVER!", colour.WHITE, colour.BLACK)
             rect.center = (self.WIDTH / 2, self.HEIGHT / 2)
             self.screen.blit(text, rect)
             # TODO: Do something here
