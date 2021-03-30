@@ -146,7 +146,7 @@ class Game:
     
     def draw(self):
         if self.state is GameState.IN_LEVEL:
-            self.screen.fill(colour.PLACEHOLDER_COLOUR)
+            self.screen.fill(colour.PLACEHOLDER)
             self.map.draw()
             self.player.draw()
         elif self.state is GameState.GAME_OVER:
