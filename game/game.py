@@ -3,6 +3,7 @@ from enum import Enum, auto
 from game.map import Map
 from game import block
 from game.player import Player
+from game.button import Button
 from game import colour
 
 class GameState(Enum):
@@ -79,6 +80,7 @@ class Game:
         self.frame = 0
         
         self.FONT = pygame.font.Font(None, 100)
+        self.buttons = set()
         
         self.actors = pygame.sprite.Group()
         
@@ -106,7 +108,13 @@ class Game:
                 self.state = GameState.NOT_RUNNING
                 return
             
-            if self.state is GameState.IN_LEVEL:
+            if self.state is not GameState.IN_LEVEL:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for button in self.buttons:
+                        if button.is_hovered(event.pos):
+                            button.click()
+            
+            else:
                 if event.type == pygame.KEYDOWN:
                     # Move a pixel right away if stopped so a quick press will nudge the player
                     if event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
