@@ -162,7 +162,7 @@ class Game:
         self.state = GameState.GAME_OVER
     
     def render_text(self, text, color, background=None):
-        surface = self.FONT.render(text, True, color, background)
+        surface = self.FONT.render(text, False, color, background)
         return surface, surface.get_rect()
     
     # Determine if an actor can jump (is standing on solid ground)
