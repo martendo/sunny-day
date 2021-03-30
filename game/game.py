@@ -103,6 +103,7 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                self.state = GameState.NOT_RUNNING
                 return
             
             if self.state is GameState.IN_LEVEL:
