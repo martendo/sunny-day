@@ -1,15 +1,10 @@
 import pygame
-from enum import Enum, auto
+from game.game_state import GameState
 from game.map import Map
 from game import block
 from game.player import Player
 from game.button import Button
 from game import colour
-
-class GameState(Enum):
-    NOT_RUNNING = auto()
-    IN_LEVEL = auto()
-    GAME_OVER = auto()
 
 class Game:
     NAME = "Sunny Day!"
