@@ -85,6 +85,8 @@ class Player(Actor):
         self.running = False
         self.crouching = False
         self.jumping = False
+        
+        self.lives = 5
     
     def update(self):
         pressed = pygame.key.get_pressed()
@@ -140,7 +142,7 @@ class Player(Actor):
         super().update()
         
         if self.pos.y // self.game.TILE_PX > self.game.map.height:
-            self.game.game_over()
+            self.die()
         
         # Save direction so if vel.x == 0 the direction does not change
         if self.vel.x > 0:
@@ -195,6 +197,13 @@ class Player(Actor):
     def uncrouch(self):
         self.crouching = False
         self.set_hitbox(self.HITBOX)
+    
+    def die(self):
+        self.lives -= 1
+        if self.lives < 1:
+            self.game.game_over()
+        else:
+            self.game.map.reset()
     
     def reset(self):
         self.pos.update(0, 0)

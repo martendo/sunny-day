@@ -80,6 +80,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.frame = 0
         
+        self.FONT = pygame.font.Font(None, 100)
+        
         self.actors = pygame.sprite.Group()
         
         self.player = Player(self, (7 * self.TILE_PX, 5 * self.TILE_PX))
@@ -148,12 +150,21 @@ class Game:
             self.screen.fill(self.PLACEHOLDER_COLOUR)
             self.map.draw()
             self.player.draw()
+        elif self.state is GameState.GAME_OVER:
+            self.screen.fill((0, 0, 0))
+            text, rect = self.render_text("GAME OVER!", (255, 255, 255), (0, 0, 0))
+            rect.center = (self.WIDTH / 2, self.HEIGHT / 2)
+            self.screen.blit(text, rect)
+            # TODO: Do something here
         
         pygame.display.update()
     
     def game_over(self):
-        self.map.reset()
-        # TODO: Do something here
+        self.state = GameState.GAME_OVER
+    
+    def render_text(self, text, color, background=None):
+        surface = self.FONT.render(text, True, color, background)
+        return surface, surface.get_rect()
     
     # Determine if an actor can jump (is standing on solid ground)
     def can_jump(self, actor):
