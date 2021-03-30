@@ -3,7 +3,7 @@ from game.game_state import GameState
 from game.map import Map
 from game import block
 from game.player import Player
-from game.button import Button
+from game.title_screen import TitleScreen
 from game import colour
 
 class Game:
@@ -43,6 +43,12 @@ class Game:
             "brick",
         ),
     }
+    IMAGE_FILES = {
+        "title/": (
+            "title",
+            "title-sun",
+        ),
+    }
     
     GRAVITY = 0.5
     
@@ -68,17 +74,27 @@ class Game:
                 image = pygame.image.load(f"img/{directory}{name}.png")
                 self.SPRITE_IMAGES[name] = pygame.transform.scale(image, (image.get_width() * self.PX_SIZE, image.get_height() * self.PX_SIZE))
         
+        # Load other images
+        self.IMAGES = {}
+        for directory, images in self.IMAGE_FILES.items():
+            for name in images:
+                image = pygame.image.load(f"img/{directory}{name}.png")
+                self.IMAGES[name] = image
+        
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.clock = pygame.time.Clock()
         self.frame = 0
         
+        # TODO: Choose/Make a more fitting font
         self.FONT = pygame.font.Font(None, 100)
+        
         self.buttons = set()
         
-        self.actors = pygame.sprite.Group()
+        self.TITLE_SCREEN = TitleScreen(self)
         
+        self.actors = pygame.sprite.Group()
         self.player = Player(self, (7 * self.TILE_PX, 5 * self.TILE_PX))
         
         self.map = Map(self)
@@ -87,7 +103,7 @@ class Game:
     
     def run(self):
         self.running = True
-        self.state = GameState.IN_LEVEL
+        self.TITLE_SCREEN.init()
         
         while self.running:
             self.handle_events()
@@ -139,7 +155,10 @@ class Game:
                         self.player.uncrouch()
     
     def update(self):
-        if self.state is GameState.IN_LEVEL:
+        if self.state is GameState.TITLE_SCREEN:
+            self.TITLE_SCREEN.update()
+        
+        elif self.state is GameState.IN_LEVEL:
             # Apply gravity to all actors
             for actor in self.actors:
                 actor.vel.y += self.GRAVITY
@@ -148,10 +167,14 @@ class Game:
             self.player.update()
     
     def draw(self):
-        if self.state is GameState.IN_LEVEL:
+        if self.state is GameState.TITLE_SCREEN:
+            self.TITLE_SCREEN.draw()
+        
+        elif self.state is GameState.IN_LEVEL:
             self.screen.fill(colour.PLACEHOLDER)
             self.map.draw()
             self.player.draw()
+        
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
             text, rect = self.render_text("GAME OVER!", colour.WHITE, colour.BLACK)
