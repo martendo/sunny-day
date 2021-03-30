@@ -17,8 +17,7 @@ class Actor(pygame.sprite.Sprite):
     def update(self):
         # Update position
         
-        self.pos.x += self.vel.x
-        self.pos.y += self.vel.y
+        self.pos += self.vel
         
         self.rect.x = int(self.pos.x) * self.game.PX_SIZE
         
