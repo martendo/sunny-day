@@ -1,6 +1,7 @@
 import pygame
 from game.actor import Actor
 from game.animation import Animation
+from game import block
 
 class Player(Actor):
     ACCEL = 0.5
@@ -109,6 +110,9 @@ class Player(Actor):
                     self.vel.x = -self.CROUCH_SPEED
             self.moving = True
         
+        if self.crouching and not pressed[self.game.CROUCH_KEY]:
+            self.uncrouch()
+        
         # TODO: Player's vel.x is nonzero when moving to the right into
         # a block, causing it to show the moving animation
         
@@ -195,8 +199,18 @@ class Player(Actor):
         self.crouching = True
         self.set_hitbox(self.CROUCH_HITBOX)
     def uncrouch(self):
+        if not self.can_uncrouch():
+            return
         self.crouching = False
         self.set_hitbox(self.HITBOX)
+    
+    def can_uncrouch(self):
+        LEFT_TILE = (self.rect.x + self.hitbox.left) // self.game.TILE_SIZE
+        RIGHT_TILE = (self.rect.x + self.hitbox.right - 1) // self.game.TILE_SIZE
+        ABOVE_TILE = (self.rect.y + self.hitbox.top - self.game.PX_SIZE * 4) // self.game.TILE_SIZE
+        # Blocks above the player are not solid
+        return (not self.game.map.is_solid_tile(LEFT_TILE, ABOVE_TILE)
+                and not self.game.map.is_solid_tile(RIGHT_TILE, ABOVE_TILE))
     
     def die(self):
         self.lives -= 1

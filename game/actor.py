@@ -21,9 +21,6 @@ class Actor(pygame.sprite.Sprite):
         
         self.rect.x = int(self.pos.x) * self.game.PX_SIZE
         
-        # TODO: Fix collision so that actors are pushed to the side
-        # of the block they were on and not based on their velocity
-        
         # X-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk is not None:
