@@ -168,7 +168,9 @@ class Player(Actor):
         if not self.crouching:
             if self.vel.x != 0:
                 # Set animation delay based on velocity (1-3 frames delay)
-                self.MOVING_ANIMATION.delay = int((self.MAX_RUN_VELX - abs(self.vel.x)) / 2 + 1)
+                delay = int((self.MAX_RUN_VELX - abs(self.vel.x)) / 2 + 1)
+                if self.MOVING_ANIMATION.delay > delay:
+                    self.MOVING_ANIMATION.set_frame_length(delay)
                 self.animation = self.MOVING_ANIMATION
             else:
                 self.animation = self.IDLE_ANIMATION

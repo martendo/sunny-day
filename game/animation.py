@@ -10,21 +10,25 @@ class Animation:
             self.seq.append(self.game.SPRITE_IMAGES[image])
         self.lengths = self.settings["lengths"]
         self.frame = 0
-        self.delay = self._get_delay()
+        self._update_frame_length()
     
     def get_image(self, frame=None):
         return self.seq[frame or self.frame]
     
-    def _get_delay(self):
-        return self.lengths if isinstance(self.lengths, int) else self.lengths[self.frame]
+    def set_frame_length(self, length):
+        self.delay = length
+        self.countdown = self.delay
+    
+    def _update_frame_length(self):
+        self.set_frame_length(self.lengths if isinstance(self.lengths, int) else self.lengths[self.frame])
     
     def update(self, always_set=False):
-        if self.game.frame % self.delay == 0:
+        self.countdown -= 1
+        if self.countdown == 0:
             self.frame = (self.frame + 1) % len(self.seq)
-            self.delay = self._get_delay()
+            self._update_frame_length()
             self.sprite.image = self.get_image()
             return True
-        
         if always_set:
             self.sprite.image = self.get_image()
         return False
