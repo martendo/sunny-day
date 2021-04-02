@@ -191,11 +191,11 @@ class Game:
         surface = self.FONT.render(text, False, color, background)
         return surface, surface.get_rect()
     
-    # Determine if an actor can jump (is standing on solid ground)
-    def can_jump(self, actor):
+    # Determine if an actor is standing on solid ground
+    def on_ground(self, actor):
         LEFT_TILE = (actor.rect.x + actor.hitbox.left) // self.TILE_SIZE
         RIGHT_TILE = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
-        UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + self.PX_SIZE * 4) // self.TILE_SIZE
-        # No solid tile under the actor, don't allow jump
+        UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + 4) // self.TILE_SIZE
+        # No solid tile under the actor
         return (self.map.is_solid_tile(LEFT_TILE, UNDER_TILE)
                 or self.map.is_solid_tile(RIGHT_TILE, UNDER_TILE))

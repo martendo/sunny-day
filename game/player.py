@@ -100,19 +100,27 @@ class Player(Actor):
         self.lives = 5
     
     def update(self):
+        on_ground = self.game.on_ground(self)
+        
         pressed = pygame.key.get_pressed()
         
         self.moving = False
         # Horizontal acceleration
         if pressed[self.game.MOVE_RIGHT_KEY]:
             if not self.crouching:
-                self.vel.x += self.ACCEL
+                if on_ground:
+                    self.vel.x += self.ACCEL
+                else:
+                    self.vel.x += self.ACCEL / 2
             elif self.vel.x < self.CROUCH_SPEED:
                 self.vel.x = self.CROUCH_SPEED
             self.moving = True
         if pressed[self.game.MOVE_LEFT_KEY]:
             if not self.crouching:
-                self.vel.x -= self.ACCEL
+                if on_ground:
+                    self.vel.x -= self.ACCEL
+                else:
+                    self.vel.x -= self.ACCEL / 2
             elif self.vel.x > -self.CROUCH_SPEED:
                 if self.vel.x == self.CROUCH_SPEED:
                     self.vel.x = 0
@@ -126,15 +134,25 @@ class Player(Actor):
         # TODO: Player's vel.x is nonzero when moving to the right into
         # a block, causing it to show the moving animation
         
-        if not self.crouching or (self.moving and abs(self.vel.x) > self.CROUCH_SPEED) or (not self.moving and self.vel.x != 0):
+        if (not self.crouching
+                or (self.crouching and self.moving and abs(self.vel.x) > self.CROUCH_SPEED)
+                or (self.crouching and not self.moving)):
             # Friction
             if self.vel.x > 0:
-                self.vel.x -= self.FRICTION
+                if on_ground:
+                    self.vel.x -= self.FRICTION
+                else:
+                    self.vel.x -= self.FRICTION / 2
+                
                 # Friction should not make you start moving the other way
                 if self.vel.x < 0:
                     self.vel.x = 0
             elif self.vel.x < 0:
-                self.vel.x += self.FRICTION
+                if on_ground:
+                    self.vel.x += self.FRICTION
+                else:
+                    self.vel.x += self.FRICTION / 2
+                
                 if self.vel.x > 0:
                     self.vel.x = 0
         
@@ -197,7 +215,7 @@ class Player(Actor):
         self.running = False
     
     def jump(self):
-        if not self.game.can_jump(self):
+        if not self.game.on_ground(self):
             return
         self.jumping = True
         if not self.crouching:
