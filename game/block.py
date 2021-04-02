@@ -23,18 +23,20 @@ class Sky(Block):
         self.image = self.game.SPRITE_IMAGES[self.IMAGE]
 
 class Flower(Block):
-    ANIM_IMG_SEQ = (
-        "flower-1",
-        "flower-2",
-        "flower-3",
-        "flower-2",
-    )
-    ANIM_DELAY = 16
+    ANIMATION_SETTINGS = {
+        "img": (
+            "flower-1",
+            "flower-2",
+            "flower-3",
+            "flower-2",
+        ),
+        "lengths": 16,
+    }
     
     def __init__(self, *args):
         super().__init__(*args)
         
-        self.animation = Animation(self, self.game)
+        self.animation = Animation(self, self.game, self.ANIMATION_SETTINGS)
         self.image = self.animation.get_image()
     
     def update(self):

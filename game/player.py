@@ -29,52 +29,62 @@ class Player(Actor):
         8, 8,
     )
     
-    IDLE_ANIM_IMG_SEQ = (
-        "player-1",
-        "player-1",
-        "player-1",
-        "player-1",
-        "player-2",
-        "player-3",
-        "player-3",
-        "player-3",
-        "player-3",
-        "player-2",
-    )
-    IDLE_ANIM_DELAY = 3
+    IDLE_ANIMATION_SETTINGS = {
+        "img": (
+            "player-1",
+            "player-2",
+            "player-3",
+            "player-2",
+        ),
+        "lengths": (
+            12,
+            3,
+            12,
+            3,
+        ),
+    }
     
-    MOVING_ANIM_IMG_SEQ = (
-        "player-m-1",
-        "player-m-2",
-        "player-m-3",
-        "player-m-4",
-        "player-m-5",
-    )
-    MOVING_ANIM_DELAY = 2
+    MOVING_ANIMATION_SETTINGS = {
+        "img": (
+            "player-m-1",
+            "player-m-2",
+            "player-m-3",
+            "player-m-4",
+            "player-m-5",
+        ),
+        "lengths": 2,
+    }
     
-    CROUCH_IDLE_ANIM_IMG_SEQ = (
-        "player-c-1",
-        "player-c-2",
-    )
-    CROUCH_IDLE_ANIM_DELAY = 16
+    CROUCH_IDLE_ANIMATION_SETTINGS = {
+        "img": (
+            "player-c-1",
+            "player-c-2",
+        ),
+        "lengths": 16,
+    }
     
-    CROUCH_MOVING_ANIM_IMG_SEQ = (
-        "player-c-m-1",
-        "player-c-m-1",
-        "player-c-1",
-        "player-c-m-2",
-        "player-c-m-2",
-        "player-c-2",
-    )
-    CROUCH_MOVING_ANIM_DELAY = 3
+    CROUCH_MOVING_ANIMATION_SETTINGS = {
+        "img": (
+            "player-c-m-1",
+            "player-c-1",
+            "player-c-m-2",
+            "player-c-2",
+        ),
+        "lengths": (
+            6,
+            3,
+            6,
+            3,
+        ),
+    }
     
     def __init__(self, *args):
         super().__init__(*args, self.HITBOX)
         
-        self.IDLE_ANIMATION = Animation(self, self.game, self.IDLE_ANIM_IMG_SEQ, self.IDLE_ANIM_DELAY)
-        self.MOVING_ANIMATION = Animation(self, self.game, self.MOVING_ANIM_IMG_SEQ, self.MOVING_ANIM_DELAY)
-        self.CROUCH_IDLE_ANIMATION = Animation(self, self.game, self.CROUCH_IDLE_ANIM_IMG_SEQ, self.CROUCH_IDLE_ANIM_DELAY)
-        self.CROUCH_MOVING_ANIMATION = Animation(self, self.game, self.CROUCH_MOVING_ANIM_IMG_SEQ, self.CROUCH_MOVING_ANIM_DELAY)
+        self.IDLE_ANIMATION = Animation(self, self.game, self.IDLE_ANIMATION_SETTINGS)
+        self.MOVING_ANIMATION = Animation(self, self.game, self.MOVING_ANIMATION_SETTINGS)
+        self.CROUCH_IDLE_ANIMATION = Animation(self, self.game, self.CROUCH_IDLE_ANIMATION_SETTINGS)
+        self.CROUCH_MOVING_ANIMATION = Animation(self, self.game, self.CROUCH_MOVING_ANIMATION_SETTINGS)
         
         self.animation = self.IDLE_ANIMATION
         self.image = self.animation.get_image()
