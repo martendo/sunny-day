@@ -10,7 +10,7 @@ class Actor(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.vel = pygame.Vector2(0, 0)
         
-        self.set_hitbox(hitbox)
+        self.hitbox = hitbox
         
         self.game.actors.add(self)
     
@@ -19,34 +19,31 @@ class Actor(pygame.sprite.Sprite):
         
         self.pos += self.vel
         
-        self.rect.x = int(self.pos.x) * self.game.PX_SIZE
+        self.rect.x = int(self.pos.x)
         
         # X-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk is not None:
             if self.vel.x > 0:
-                self.pos.x = (blk.rect.left - self.hitbox.right) // self.game.PX_SIZE
+                self.pos.x = blk.rect.left - self.hitbox.right
             elif self.vel.x < 0:
-                self.pos.x = (blk.rect.right - self.hitbox.left) // self.game.PX_SIZE
+                self.pos.x = blk.rect.right - self.hitbox.left
             
-            self.rect.x = int(self.pos.x) * self.game.PX_SIZE
+            self.rect.x = int(self.pos.x)
             self.vel.x = 0
         
-        self.rect.y = int(self.pos.y) * self.game.PX_SIZE
+        self.rect.y = int(self.pos.y)
         
         # Y-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk is not None:
             if self.vel.y > 0:
-                self.pos.y = (blk.rect.top - self.hitbox.bottom) // self.game.PX_SIZE
+                self.pos.y = blk.rect.top - self.hitbox.bottom
             elif self.vel.y < 0:
-                self.pos.y = (blk.rect.bottom - self.hitbox.top) // self.game.PX_SIZE
+                self.pos.y = blk.rect.bottom - self.hitbox.top
             
-            self.rect.y = int(self.pos.y) * self.game.PX_SIZE
+            self.rect.y = int(self.pos.y)
             self.vel.y = 0
-    
-    def set_hitbox(self, hitbox):
-        self.hitbox = pygame.Rect(*map(lambda x: x * self.game.PX_SIZE, hitbox))
     
     def hitboxblockcollide(self, actor, blk):
         if type(blk) not in block.TYPES[block.SOLIDS_START:]:

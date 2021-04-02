@@ -13,11 +13,12 @@ class Game:
     FPS = 30
     
     PX_SIZE = 5
-    TILE_PX = 8
-    TILE_SIZE = TILE_PX * PX_SIZE
+    TILE_SIZE = 8
     
-    WIDTH = 32 * TILE_SIZE
-    HEIGHT = 20 * TILE_SIZE
+    WIDTH_PX = 32 * TILE_SIZE
+    HEIGHT_PX = 20 * TILE_SIZE
+    WIDTH = WIDTH_PX * PX_SIZE
+    HEIGHT = HEIGHT_PX * PX_SIZE
     
     SPRITE_IMAGE_FILES = {
         "player/": (
@@ -67,23 +68,20 @@ class Game:
         self.running = False
         self.state = GameState.NOT_RUNNING
         
-        # Load and scale sprite images
+        # Load images
         self.SPRITE_IMAGES = {}
         for directory, images in self.SPRITE_IMAGE_FILES.items():
             for name in images:
-                image = pygame.image.load(f"img/{directory}{name}.png")
-                self.SPRITE_IMAGES[name] = pygame.transform.scale(image, (image.get_width() * self.PX_SIZE, image.get_height() * self.PX_SIZE))
-        
-        # Load other images
+                self.SPRITE_IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
         self.IMAGES = {}
         for directory, images in self.IMAGE_FILES.items():
             for name in images:
-                image = pygame.image.load(f"img/{directory}{name}.png")
-                self.IMAGES[name] = image
+                self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
         
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.pixel_screen = pygame.Surface((self.WIDTH_PX, self.HEIGHT_PX))
         self.clock = pygame.time.Clock()
         self.frame = 0
         
@@ -95,7 +93,7 @@ class Game:
         self.TITLE_SCREEN = TitleScreen(self)
         
         self.actors = pygame.sprite.Group()
-        self.player = Player(self, (7 * self.TILE_PX, 5 * self.TILE_PX))
+        self.player = Player(self, (7 * self.TILE_SIZE, 5 * self.TILE_SIZE))
         
         self.map = Map(self)
         # TODO: Make level selectable (level select screen)
@@ -174,6 +172,8 @@ class Game:
             self.screen.fill(colour.PLACEHOLDER)
             self.map.draw()
             self.player.draw()
+            scaled_screen = pygame.transform.scale(self.pixel_screen, (self.screen.get_size()))
+            self.screen.blit(scaled_screen, self.screen.get_rect())
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)

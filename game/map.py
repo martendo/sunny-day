@@ -61,7 +61,7 @@ class Map:
             cur_enemy = self.get_enemy(i)
             self.enemies.add(enemy.TYPES[cur_enemy["type"]](
                 self.game,
-                pygame.Vector2(*map(lambda x: x * self.game.TILE_PX, cur_enemy["pos"]))
+                pygame.Vector2(*map(lambda x: x * self.game.TILE_SIZE, cur_enemy["pos"]))
             ))
     
     def get_tile(self, x, y):
@@ -89,8 +89,8 @@ class Map:
         self.enemies.update()
     
     def draw(self):
-        self.blocks.draw(self.game.screen)
-        self.enemies.draw(self.game.screen)
+        self.blocks.draw(self.game.pixel_screen)
+        self.enemies.draw(self.game.pixel_screen)
     
     def reset(self):
         self.blocks.empty()

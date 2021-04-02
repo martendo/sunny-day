@@ -19,12 +19,12 @@ class Player(Actor):
     CROUCH_JUMP_VEL = -3.1
     
     # Normal hitbox
-    HITBOX = (
+    HITBOX = pygame.Rect(
         4, 1,
         8, 15,
     )
     # Smaller crouching hitbox
-    CROUCH_HITBOX = (
+    CROUCH_HITBOX = pygame.Rect(
         4, 8,
         8, 8,
     )
@@ -173,7 +173,7 @@ class Player(Actor):
         
         super().update()
         
-        if self.pos.y // self.game.TILE_PX > self.game.map.height:
+        if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
             self.die()
         
         # Save direction so if vel.x == 0 the direction does not change
@@ -207,7 +207,7 @@ class Player(Actor):
             self.image = pygame.transform.flip(self.image, True, False)
     
     def draw(self):
-        self.game.screen.blit(self.image, self.rect)
+        self.game.pixel_screen.blit(self.image, self.rect)
     
     def start_running(self):
         self.running = True
@@ -227,17 +227,17 @@ class Player(Actor):
     
     def crouch(self):
         self.crouching = True
-        self.set_hitbox(self.CROUCH_HITBOX)
+        self.hitbox = self.CROUCH_HITBOX
     def uncrouch(self):
         if not self.can_uncrouch():
             return
         self.crouching = False
-        self.set_hitbox(self.HITBOX)
+        self.hitbox = self.HITBOX
     
     def can_uncrouch(self):
         LEFT_TILE = (self.rect.x + self.hitbox.left) // self.game.TILE_SIZE
         RIGHT_TILE = (self.rect.x + self.hitbox.right - 1) // self.game.TILE_SIZE
-        ABOVE_TILE = (self.rect.y + self.hitbox.top - self.game.PX_SIZE * 4) // self.game.TILE_SIZE
+        ABOVE_TILE = (self.rect.y + self.hitbox.top - 4) // self.game.TILE_SIZE
         # Blocks above the player are not solid
         return (not self.game.map.is_solid_tile(LEFT_TILE, ABOVE_TILE)
                 and not self.game.map.is_solid_tile(RIGHT_TILE, ABOVE_TILE))

@@ -5,7 +5,7 @@ from game import colour
 # TODO: Make enemies!!!
 
 class Enemy(Actor):
-    HITBOX = (
+    HITBOX = pygame.Rect(
         0, 0,
         8, 8,
     )
