@@ -98,7 +98,6 @@ class Player(Actor):
         self.image = self.animation.get_image()
         self.rect = self.image.get_rect()
         
-        self.direction = self.game.DIR_LEFT
         self.moving = False
         self.running = False
         self.crouching = False
@@ -183,7 +182,7 @@ class Player(Actor):
         if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
             self.die()
         
-        # Save direction so if vel.x == 0 the direction does not change
+        # Direction does not change if vel.x == 0
         if self.vel.x > 0:
             self.direction = self.game.DIR_RIGHT
         elif self.vel.x < 0:
@@ -211,10 +210,6 @@ class Player(Actor):
         
         # Always set the player image because the animation may change at any time
         self.animation.update(always_set=True)
-        
-        if self.direction == self.game.DIR_RIGHT:
-            # Images are left-facing
-            self.image = pygame.transform.flip(self.image, True, False)
     
     def draw(self):
         self.game.pixel_screen.blit(self.image, self.rect)
