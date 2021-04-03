@@ -3,6 +3,7 @@ from game.game_state import GameState
 from game.map import Map
 from game import block
 from game.player import Player
+from game.camera import CameraAwareGroup
 from game.title_screen import TitleScreen
 from game import colour
 
@@ -92,12 +93,11 @@ class Game:
         
         self.TITLE_SCREEN = TitleScreen(self)
         
-        self.actors = pygame.sprite.Group()
-        self.player = Player(self, (7 * self.TILE_SIZE, 5 * self.TILE_SIZE))
-        
         self.map = Map(self)
+        self.actors = CameraAwareGroup(self.map)
         # TODO: Make level selectable (level select screen)
         self.map.load(0)
+        self.player = Player(self, (7 * self.TILE_SIZE, 5 * self.TILE_SIZE))
     
     def run(self):
         self.running = True
@@ -170,8 +170,8 @@ class Game:
         
         elif self.state is GameState.IN_LEVEL:
             self.screen.fill(colour.PLACEHOLDER)
-            self.map.draw()
-            self.player.draw()
+            self.map.blocks.draw(self.pixel_screen)
+            self.actors.draw(self.pixel_screen)
             scaled_screen = pygame.transform.scale(self.pixel_screen, (self.screen.get_size()))
             self.screen.blit(scaled_screen, self.screen.get_rect())
         

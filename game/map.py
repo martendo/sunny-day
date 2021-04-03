@@ -1,6 +1,7 @@
 import pygame
 from game import block
 from game import enemy
+from game.camera import CameraAwareGroup
 
 class Map:
     WIDTH_POS = 0
@@ -22,8 +23,7 @@ class Map:
         self.game = game
         
         self.current = None
-        # TODO: Make maps scrollable
-        self.scroll = pygame.Vector2(0, 0)
+        self.camera = pygame.Vector2(0, 0)
     
     def load(self, num):
         # Map data
@@ -36,7 +36,7 @@ class Map:
         self.MAP_DATA_END = self.MAP_DATA_POS + (self.width * self.height)
         self.tilemap = self.map_data[self.MAP_DATA_POS : self.MAP_DATA_END]
         
-        self.blocks = pygame.sprite.Group()
+        self.blocks = CameraAwareGroup(self)
         self.create_blocks()
         
         # Enemy data
@@ -48,7 +48,7 @@ class Map:
         self.ENEMY_DATA_END = self.ENEMY_DATA_POS + (self.ENEMY_ENTRY_SIZE * self.num_enemies)
         self.enemy_data = enemy_data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
         
-        self.enemies = pygame.sprite.Group()
+        self.enemies = CameraAwareGroup(self)
         self.create_enemies()
     
     def create_blocks(self):
@@ -87,10 +87,6 @@ class Map:
     def update(self):
         self.blocks.update()
         self.enemies.update()
-    
-    def draw(self):
-        self.blocks.draw(self.game.pixel_screen)
-        self.enemies.draw(self.game.pixel_screen)
     
     def reset(self):
         self.blocks.empty()
