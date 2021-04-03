@@ -22,6 +22,14 @@ class Game:
     HEIGHT = HEIGHT_PX * PX_SIZE
     
     SPRITE_IMAGE_FILES = {
+        "blocks/": (
+            "sky",
+            "flower-1",
+            "flower-2",
+            "flower-3",
+            "grass",
+            "brick",
+        ),
         "player/": (
             "player-1",
             "player-2",
@@ -36,13 +44,10 @@ class Game:
             "player-c-m-1",
             "player-c-m-2",
         ),
-        "blocks/": (
-            "sky",
-            "flower-1",
-            "flower-2",
-            "flower-3",
-            "grass",
-            "brick",
+        "enemies/": (
+            "renky-m-1",
+            "renky-m-2",
+            "renky-m-3",
         ),
     }
     IMAGE_FILES = {
