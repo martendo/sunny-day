@@ -32,6 +32,8 @@ class Player(Actor):
         8, 8,
     )
     
+    START_LIVES = 5
+    
     IDLE_ANIMATION_SETTINGS = {
         "img": (
             "player-1",
@@ -98,19 +100,16 @@ class Player(Actor):
         self.image = self.animation.get_image()
         self.rect = self.image.get_rect()
         
-        self.moving = False
-        self.running = False
-        self.crouching = False
-        self.jumping = False
         
-        self.lives = 5
+        self.reset()
+        self.lives = self.START_LIVES
     
     def update(self):
         on_ground = self.game.on_ground(self)
         
         pressed = pygame.key.get_pressed()
         
-        self.moving = False
+        moving = False
         # Horizontal acceleration
         if pressed[self.game.MOVE_RIGHT_KEY]:
             if not self.crouching:
@@ -120,7 +119,7 @@ class Player(Actor):
                     self.vel.x += self.IN_AIR_ACCEL
             elif self.vel.x < self.CROUCH_SPEED:
                 self.vel.x = self.CROUCH_SPEED
-            self.moving = True
+            moving = True
         if pressed[self.game.MOVE_LEFT_KEY]:
             if not self.crouching:
                 if on_ground:
@@ -132,17 +131,19 @@ class Player(Actor):
                     self.vel.x = 0
                 else:
                     self.vel.x = -self.CROUCH_SPEED
-            self.moving = True
+            moving = True
         
-        if self.crouching and not pressed[self.game.CROUCH_KEY]:
+        if pressed[self.game.CROUCH_KEY] and not self.crouching:
+            self.crouch()
+        elif self.crouching and not pressed[self.game.CROUCH_KEY]:
             self.uncrouch()
         
         # TODO: Player's vel.x is nonzero when moving to the right into
         # a block, causing it to show the moving animation
         
         if (not self.crouching
-                or (self.crouching and self.moving and abs(self.vel.x) > self.CROUCH_SPEED)
-                or (self.crouching and not self.moving)):
+                or (self.crouching and moving and abs(self.vel.x) > self.CROUCH_SPEED)
+                or (self.crouching and not moving)):
             # Friction
             if self.vel.x > 0:
                 if on_ground:
@@ -163,11 +164,12 @@ class Player(Actor):
                     self.vel.x = 0
         
         # Holding down the jump key, jump for longer
-        if self.jumping and not self.crouching:
+        if pressed[self.game.JUMP_KEY] and not self.crouching:
             self.vel.y -= self.HIGH_JUMP
         
         # Cap velocity
-        MAX_VELX = self.MAX_RUN_VELX if self.running else self.MAX_WALK_VELX
+        MAX_VELX = (self.MAX_RUN_VELX if pressed[self.game.RUN_KEY]
+            else self.MAX_WALK_VELX)
         
         if self.vel.x > MAX_VELX:
             self.vel.x = MAX_VELX
@@ -202,7 +204,8 @@ class Player(Actor):
             else:
                 self.animation = self.IDLE_ANIMATION
         else:
-            if self.moving and self.vel.x != 0:
+            # Don't show crouch-moving animation if not trying to move - crouch-slide to a stop
+            if moving and self.vel.x != 0:
                 self.animation = self.CROUCH_MOVING_ANIMATION
             else:
                 self.animation = self.CROUCH_IDLE_ANIMATION
@@ -211,21 +214,13 @@ class Player(Actor):
         # Always set the player image because the animation may change at any time
         self.animation.update(always_set=True)
     
-    def start_running(self):
-        self.running = True
-    def stop_running(self):
-        self.running = False
-    
     def jump(self):
         if not self.game.on_ground(self):
             return
-        self.jumping = True
         if not self.crouching:
             self.vel.y = -self.JUMP_VEL
         else:
             self.vel.y = -self.CROUCH_JUMP_VEL
-    def release_jump(self):
-        self.jumping = False
     
     def crouch(self):
         self.crouching = True
@@ -254,3 +249,5 @@ class Player(Actor):
     def reset(self):
         self.pos.update(0, 0)
         self.vel.update(0, 0)
+        
+        self.crouching = False

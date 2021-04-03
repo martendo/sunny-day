@@ -138,9 +138,6 @@ class Game:
                         self.player.pos.x -= 1
                         self.player.direction = self.DIR_LEFT
                     
-                    elif event.key == self.RUN_KEY:
-                        self.player.start_running()
-                    
                     elif event.key == self.JUMP_KEY:
                         self.player.jump()
                     
@@ -148,13 +145,7 @@ class Game:
                         self.player.crouch()
                 
                 elif event.type == pygame.KEYUP:
-                    if event.key == self.RUN_KEY:
-                        self.player.stop_running()
-                    
-                    elif event.key == self.JUMP_KEY:
-                        self.player.release_jump()
-                    
-                    elif event.key == self.CROUCH_KEY:
+                    if event.key == self.CROUCH_KEY:
                         self.player.uncrouch()
     
     def update(self):
