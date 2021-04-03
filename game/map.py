@@ -24,6 +24,8 @@ class Map:
         
         self.current = None
         self.camera = pygame.Vector2(0, 0)
+        self.blocks = CameraAwareGroup(self)
+        self.enemies = CameraAwareGroup(self)
     
     def load(self, num):
         # Map data
@@ -36,9 +38,6 @@ class Map:
         self.MAP_DATA_END = self.MAP_DATA_POS + (self.width * self.height)
         self.tilemap = self.map_data[self.MAP_DATA_POS : self.MAP_DATA_END]
         
-        self.blocks = CameraAwareGroup(self)
-        self.create_blocks()
-        
         # Enemy data
         with open(f"maps/{num}.sed", "rb") as file:
             enemy_data = file.read()
@@ -48,8 +47,7 @@ class Map:
         self.ENEMY_DATA_END = self.ENEMY_DATA_POS + (self.ENEMY_ENTRY_SIZE * self.num_enemies)
         self.enemy_data = enemy_data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
         
-        self.enemies = CameraAwareGroup(self)
-        self.create_enemies()
+        self.reset()
     
     def create_blocks(self):
         for y in range(self.height):
