@@ -21,8 +21,8 @@ class Renky(Enemy):
         "lengths": 3,
     }
     
-    def __init__(self, *args):
-        super().__init__(*args, self.HITBOX)
+    def __init__(self, game, pos):
+        super().__init__(game, self.HITBOX, pos)
         
         self.animation = Animation(self, self.game, self.MOVING_ANIMATION_SETTINGS)
         self.image = self.animation.get_image()

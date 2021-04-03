@@ -2,12 +2,12 @@ import pygame
 from game import block
 
 class Actor(pygame.sprite.Sprite):
-    def __init__(self, game, pos, hitbox):
+    def __init__(self, game, hitbox, pos=None):
         super().__init__()
         
         self.game = game
         
-        self.pos = pygame.Vector2(pos)
+        self.pos = pygame.Vector2(pos or (0, 0))
         self.vel = pygame.Vector2(0, 0)
         self.direction = self.game.DIR_LEFT
         

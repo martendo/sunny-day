@@ -86,8 +86,8 @@ class Player(Actor):
     
     layer = 1
     
-    def __init__(self, *args):
-        super().__init__(*args, self.HITBOX)
+    def __init__(self, game):
+        super().__init__(game, self.HITBOX)
         
         self.IDLE_ANIMATION = Animation(self, self.game, self.IDLE_ANIMATION_SETTINGS)
         self.MOVING_ANIMATION = Animation(self, self.game, self.MOVING_ANIMATION_SETTINGS)

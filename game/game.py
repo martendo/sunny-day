@@ -100,7 +100,7 @@ class Game:
         
         self.map = Map(self)
         self.actors = CameraAwareLayeredGroup(self.map)
-        self.player = Player(self, (7 * self.TILE_SIZE, 5 * self.TILE_SIZE))
+        self.player = Player(self)
         # TODO: Make level selectable (level select screen)
         self.map.load(0)
     
