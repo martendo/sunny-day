@@ -211,9 +211,6 @@ class Player(Actor):
         # Always set the player image because the animation may change at any time
         self.animation.update(always_set=True)
     
-    def draw(self):
-        self.game.pixel_screen.blit(self.image, self.rect)
-    
     def start_running(self):
         self.running = True
     def stop_running(self):
