@@ -28,6 +28,9 @@ class Renky(Enemy):
         self.image = self.animation.get_image()
         self.rect = self.image.get_rect()
         
+        self.set_speed()
+    
+    def set_speed(self):
         self.vel.x = self.SPEED * self.direction
     
     def update(self):
@@ -35,6 +38,6 @@ class Renky(Enemy):
         
         if self.blockcollided[0]:
             self.direction = -self.direction
-            self.vel.x = self.SPEED * self.direction
+            self.set_speed()
         
         self.animation.update()
