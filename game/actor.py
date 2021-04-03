@@ -12,17 +12,17 @@ class Actor(pygame.sprite.Sprite):
         self.direction = self.game.DIR_LEFT
         
         self.hitbox = hitbox
+        self.blockcollided = [False, False]
         
         self.game.actors.add(self)
     
     def update(self):
-        # Update position
-        
         self.pos += self.vel
         
-        self.rect.x = int(self.pos.x)
+        self.blockcollided = [False, False]
         
-        # X-axis collision
+        self.rect.x = int(self.pos.x)
+        # x-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk is not None:
             if self.vel.x > 0:
@@ -30,12 +30,12 @@ class Actor(pygame.sprite.Sprite):
             elif self.vel.x < 0:
                 self.pos.x = blk.rect.right - self.hitbox.left
             
+            self.blockcollided[0] = True
             self.rect.x = int(self.pos.x)
             self.vel.x = 0
         
         self.rect.y = int(self.pos.y)
-        
-        # Y-axis collision
+        # y-axis collision
         blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if blk is not None:
             if self.vel.y > 0:
@@ -43,6 +43,7 @@ class Actor(pygame.sprite.Sprite):
             elif self.vel.y < 0:
                 self.pos.y = blk.rect.bottom - self.hitbox.top
             
+            self.blockcollided[1] = True
             self.rect.y = int(self.pos.y)
             self.vel.y = 0
     
