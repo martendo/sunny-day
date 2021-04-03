@@ -1,8 +1,8 @@
 import pygame
 
-class CameraAwareGroup(pygame.sprite.Group):
-    def __init__(self, map, *sprites):
-        super().__init__(*sprites)
+class CameraAwareLayeredGroup(pygame.sprite.LayeredUpdates):
+    def __init__(self, map, *sprites, **kwargs):
+        super().__init__(*sprites, **kwargs)
         self.map = map
     
     def draw(self, surface):

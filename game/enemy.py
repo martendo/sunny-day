@@ -10,6 +10,8 @@ class Enemy(Actor):
         8, 8,
     )
     
+    layer = 0
+    
     def __init__(self, *args):
         super().__init__(*args, self.HITBOX)
         

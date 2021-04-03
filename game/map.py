@@ -1,7 +1,7 @@
 import pygame
 from game import block
 from game import enemy
-from game.camera import CameraAwareGroup
+from game.camera import CameraAwareLayeredGroup
 
 class Map:
     WIDTH_POS = 0
@@ -24,8 +24,8 @@ class Map:
         
         self.current = None
         self.camera = pygame.Vector2(0, 0)
-        self.blocks = CameraAwareGroup(self)
-        self.enemies = CameraAwareGroup(self)
+        self.blocks = CameraAwareLayeredGroup(self)
+        self.enemies = CameraAwareLayeredGroup(self)
     
     def load(self, num):
         # Map data

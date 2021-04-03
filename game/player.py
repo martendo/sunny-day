@@ -78,6 +78,8 @@ class Player(Actor):
         ),
     }
     
+    layer = 1
+    
     def __init__(self, *args):
         super().__init__(*args, self.HITBOX)
         

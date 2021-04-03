@@ -3,7 +3,7 @@ from game.game_state import GameState
 from game.map import Map
 from game import block
 from game.player import Player
-from game.camera import CameraAwareGroup
+from game.camera import CameraAwareLayeredGroup
 from game.title_screen import TitleScreen
 from game import colour
 
@@ -94,7 +94,7 @@ class Game:
         self.TITLE_SCREEN = TitleScreen(self)
         
         self.map = Map(self)
-        self.actors = CameraAwareGroup(self.map)
+        self.actors = CameraAwareLayeredGroup(self.map)
         self.player = Player(self, (7 * self.TILE_SIZE, 5 * self.TILE_SIZE))
         # TODO: Make level selectable (level select screen)
         self.map.load(0)
