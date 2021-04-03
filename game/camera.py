@@ -13,10 +13,10 @@ class CameraAwareLayeredGroup(pygame.sprite.LayeredUpdates):
             self.spritedict.update(
                 zip(
                     sprites,
-                    surface.blits((spr.image, spr.rect.move(camera)) for spr in sprites)
+                    surface.blits((spr.image, spr.rect.move(-camera)) for spr in sprites)
                 )
             )
         else:
             for spr in sprites:
-                self.spritedict[spr] = surface.blit(spr.image, spr.rect.move(camera))
+                self.spritedict[spr] = surface.blit(spr.image, spr.rect.move(-camera))
         self.lostsprites = []
