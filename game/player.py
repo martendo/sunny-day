@@ -81,6 +81,7 @@ class Player(Actor):
         ),
     }
     
+    MOVING_ANIM_DIVISOR = 2
     BASE_MOVING_ANIM_DELAY = 1.5
     
     layer = 1
@@ -98,7 +99,6 @@ class Player(Actor):
         self.rect = self.image.get_rect()
         
         self.direction = self.game.DIR_LEFT
-        
         self.moving = False
         self.running = False
         self.crouching = False
@@ -192,8 +192,11 @@ class Player(Actor):
         # Animate!
         if not self.crouching:
             if self.vel.x != 0:
-                # Set animation delay based on velocity (1-3 frames delay)
-                delay = int((self.MAX_RUN_VELX - abs(self.vel.x)) / 2 + self.BASE_MOVING_ANIM_DELAY)
+                # Set animation delay based on velocity
+                delay = int(
+                    (self.MAX_RUN_VELX - abs(self.vel.x)) / self.MOVING_ANIM_DIVISOR
+                    + self.BASE_MOVING_ANIM_DELAY
+                )
                 if self.MOVING_ANIMATION.delay > delay:
                     self.MOVING_ANIMATION.set_frame_length(delay)
                 self.animation = self.MOVING_ANIMATION
