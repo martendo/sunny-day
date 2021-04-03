@@ -88,6 +88,7 @@ class Map:
     
     def reset(self):
         self.blocks.empty()
+        self.game.actors.remove(self.enemies)
         self.enemies.empty()
         self.create_blocks()
         self.create_enemies()
