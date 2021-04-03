@@ -5,18 +5,21 @@ from game import block
 
 class Player(Actor):
     ACCEL = 0.5
-    CROUCH_SPEED = 0.5
+    IN_AIR_ACCEL = 1/3
     FRICTION = 1/3
-    MAX_WALK_VELX = 2
-    MAX_RUN_VELX = 4
+    IN_AIR_FRICTION = 1/8
+    
+    MAX_WALK_VELX = 1.25
+    MAX_RUN_VELX = 2.5
+    CROUCH_SPEED = 0.75
     MAX_VELY = 10
     
     # Small jump: 2 blocks high
-    JUMP_VEL = -4
+    JUMP_VEL = 4
     # High jump: 3 blocks high
     HIGH_JUMP = 0.2
     # Crouch-jump: 1 block high
-    CROUCH_JUMP_VEL = -3.1
+    CROUCH_JUMP_VEL = 3.25
     
     # Normal hitbox
     HITBOX = pygame.Rect(
@@ -78,6 +81,8 @@ class Player(Actor):
         ),
     }
     
+    BASE_MOVING_ANIM_DELAY = 1.5
+    
     layer = 1
     
     def __init__(self, *args):
@@ -113,7 +118,7 @@ class Player(Actor):
                 if on_ground:
                     self.vel.x += self.ACCEL
                 else:
-                    self.vel.x += self.ACCEL / 2
+                    self.vel.x += self.IN_AIR_ACCEL
             elif self.vel.x < self.CROUCH_SPEED:
                 self.vel.x = self.CROUCH_SPEED
             self.moving = True
@@ -122,7 +127,7 @@ class Player(Actor):
                 if on_ground:
                     self.vel.x -= self.ACCEL
                 else:
-                    self.vel.x -= self.ACCEL / 2
+                    self.vel.x -= self.IN_AIR_ACCEL
             elif self.vel.x > -self.CROUCH_SPEED:
                 if self.vel.x == self.CROUCH_SPEED:
                     self.vel.x = 0
@@ -144,7 +149,7 @@ class Player(Actor):
                 if on_ground:
                     self.vel.x -= self.FRICTION
                 else:
-                    self.vel.x -= self.FRICTION / 2
+                    self.vel.x -= self.IN_AIR_FRICTION
                 
                 # Friction should not make you start moving the other way
                 if self.vel.x < 0:
@@ -153,7 +158,7 @@ class Player(Actor):
                 if on_ground:
                     self.vel.x += self.FRICTION
                 else:
-                    self.vel.x += self.FRICTION / 2
+                    self.vel.x += self.IN_AIR_FRICTION
                 
                 if self.vel.x > 0:
                     self.vel.x = 0
@@ -188,7 +193,7 @@ class Player(Actor):
         if not self.crouching:
             if self.vel.x != 0:
                 # Set animation delay based on velocity (1-3 frames delay)
-                delay = int((self.MAX_RUN_VELX - abs(self.vel.x)) / 2 + 1)
+                delay = int((self.MAX_RUN_VELX - abs(self.vel.x)) / 2 + self.BASE_MOVING_ANIM_DELAY)
                 if self.MOVING_ANIMATION.delay > delay:
                     self.MOVING_ANIMATION.set_frame_length(delay)
                 self.animation = self.MOVING_ANIMATION
@@ -221,9 +226,9 @@ class Player(Actor):
             return
         self.jumping = True
         if not self.crouching:
-            self.vel.y = self.JUMP_VEL
+            self.vel.y = -self.JUMP_VEL
         else:
-            self.vel.y = self.CROUCH_JUMP_VEL
+            self.vel.y = -self.CROUCH_JUMP_VEL
     def release_jump(self):
         self.jumping = False
     
