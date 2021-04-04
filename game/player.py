@@ -12,7 +12,7 @@ class Player(Actor):
     MAX_WALK_VELX = 1.25
     MAX_RUN_VELX = 2.5
     CROUCH_SPEED = 0.75
-    MAX_VELY = 10
+    MAX_VELY = 8
     
     # Small jump: 2 blocks high
     JUMP_VEL = 4
