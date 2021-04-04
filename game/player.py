@@ -41,7 +41,7 @@ class Player(Actor):
             "player-3",
             "player-2",
         ),
-        "lengths": (
+        "duration": (
             12,
             3,
             12,
@@ -57,7 +57,7 @@ class Player(Actor):
             "player-m-4",
             "player-m-5",
         ),
-        "lengths": 2,
+        "duration": 2,
     }
     
     CROUCH_IDLE_ANIMATION_SETTINGS = {
@@ -65,7 +65,7 @@ class Player(Actor):
             "player-c-1",
             "player-c-2",
         ),
-        "lengths": 16,
+        "duration": 16,
     }
     
     CROUCH_MOVING_ANIMATION_SETTINGS = {
@@ -75,7 +75,7 @@ class Player(Actor):
             "player-c-m-2",
             "player-c-2",
         ),
-        "lengths": (
+        "duration": (
             6,
             3,
             6,
@@ -195,7 +195,7 @@ class Player(Actor):
                     + self.BASE_MOVING_ANIM_DELAY
                 )
                 if self.MOVING_ANIMATION.delay > delay:
-                    self.MOVING_ANIMATION.set_frame_length(delay)
+                    self.MOVING_ANIMATION.set_frame_duration(delay)
                 self.animation = self.MOVING_ANIMATION
             else:
                 self.animation = self.IDLE_ANIMATION

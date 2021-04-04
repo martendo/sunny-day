@@ -14,10 +14,10 @@ class Animation:
         self.seq = []
         for image in self.settings["img"]:
             self.seq.append(image_source[image])
-        self.lengths = self.settings["lengths"]
+        self.duration = self.settings["duration"]
         
         self.frame = 0
-        self._update_frame_length()
+        self._update_frame_duration()
     
     def get_image(self, frame=None):
         return self.seq[frame or self.frame]
@@ -28,18 +28,20 @@ class Animation:
             # All images are left-facing
             self.sprite.image = pygame.transform.flip(self.sprite.image, True, False)
     
-    def set_frame_length(self, length):
-        self.delay = length
+    def set_frame_duration(self, duration):
+        self.delay = duration
         self.countdown = self.delay
     
-    def _update_frame_length(self):
-        self.set_frame_length(self.lengths if isinstance(self.lengths, int) else self.lengths[self.frame])
+    def _update_frame_duration(self):
+        self.set_frame_duration(
+            self.duration if isinstance(self.duration, int)
+            else self.duration[self.frame])
     
     def update(self, always_set=False):
         self.countdown -= 1
         if self.countdown == 0:
             self.frame = (self.frame + 1) % len(self.seq)
-            self._update_frame_length()
+            self._update_frame_duration()
             self.set_image()
             return True
         if always_set:
