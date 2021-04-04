@@ -18,7 +18,7 @@ class Renky(Enemy):
             "renky-m-1",
             "renky-m-3",
         ),
-        "duration": 3,
+        "duration": 100,
     }
     
     def __init__(self, game, pos):

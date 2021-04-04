@@ -1,4 +1,5 @@
 import pygame
+from time import time
 from game.actor import Actor
 from game.block import Block
 
@@ -17,7 +18,7 @@ class Animation:
         self.duration = self.settings["duration"]
         
         self.frame = 0
-        self._update_frame_duration()
+        self._update_frame_end()
     
     def get_image(self, frame=None):
         return self.seq[frame or self.frame]
@@ -28,20 +29,18 @@ class Animation:
             # All images are left-facing
             self.sprite.image = pygame.transform.flip(self.sprite.image, True, False)
     
-    def set_frame_duration(self, duration):
-        self.delay = duration
-        self.countdown = self.delay
+    def set_frame_end(self, duration):
+        self.frame_end = time() + (duration / 1000)
     
-    def _update_frame_duration(self):
-        self.set_frame_duration(
+    def _update_frame_end(self):
+        self.set_frame_end(
             self.duration if isinstance(self.duration, int)
             else self.duration[self.frame])
     
     def update(self, always_set=False):
-        self.countdown -= 1
-        if self.countdown == 0:
+        if time() >= self.frame_end:
             self.frame = (self.frame + 1) % len(self.seq)
-            self._update_frame_duration()
+            self._update_frame_end()
             self.set_image()
             return True
         if always_set:

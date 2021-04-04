@@ -42,10 +42,10 @@ class Player(Actor):
             "player-2",
         ),
         "duration": (
-            12,
-            3,
-            12,
-            3,
+            400,
+            100,
+            400,
+            100,
         ),
     }
     
@@ -57,7 +57,7 @@ class Player(Actor):
             "player-m-4",
             "player-m-5",
         ),
-        "duration": 2,
+        "duration": 50,
     }
     
     CROUCH_IDLE_ANIMATION_SETTINGS = {
@@ -65,7 +65,7 @@ class Player(Actor):
             "player-c-1",
             "player-c-2",
         ),
-        "duration": 16,
+        "duration": 500,
     }
     
     CROUCH_MOVING_ANIMATION_SETTINGS = {
@@ -76,15 +76,15 @@ class Player(Actor):
             "player-c-2",
         ),
         "duration": (
-            6,
-            3,
-            6,
-            3,
+            200,
+            100,
+            200,
+            100,
         ),
     }
     
-    MOVING_ANIM_DIVISOR = 2
-    BASE_MOVING_ANIM_DELAY = 1.5
+    MOVING_ANIM_DURATION_RANGE = 75
+    BASE_MOVING_ANIM_DURATION = 25
     
     layer = 1
     
@@ -189,13 +189,12 @@ class Player(Actor):
         # Animate!
         if not self.crouching:
             if self.vel.x != 0:
-                # Set animation delay based on velocity
-                delay = int(
-                    (self.MAX_RUN_VELX - abs(self.vel.x)) / self.MOVING_ANIM_DIVISOR
-                    + self.BASE_MOVING_ANIM_DELAY
+                # Set animation frame duration based on velocity
+                duration = int(
+                    (self.MAX_RUN_VELX - abs(self.vel.x)) / (self.MAX_RUN_VELX / self.MOVING_ANIM_DURATION_RANGE)
+                    + self.BASE_MOVING_ANIM_DURATION
                 )
-                if self.MOVING_ANIMATION.delay > delay:
-                    self.MOVING_ANIMATION.set_frame_duration(delay)
+                self.MOVING_ANIMATION.duration = duration
                 self.animation = self.MOVING_ANIMATION
             else:
                 self.animation = self.IDLE_ANIMATION
