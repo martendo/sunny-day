@@ -7,10 +7,21 @@ class Camera:
     
     def update(self, follow_rect):
         x = follow_rect.centerx - (self.game.WIDTH_PX / 2)
-        if x >= 0 and x + self.game.WIDTH_PX < self.game.map.width * self.game.TILE_SIZE:
+        map_width_px = self.game.map.width * self.game.TILE_SIZE
+        if x < 0:
+            self.pos.x = 0
+        elif x + self.game.WIDTH_PX >= map_width_px:
+            self.pos.x = map_width_px - self.game.WIDTH_PX
+        else:
             self.pos.x = x
+        
         y = follow_rect.centery - (self.game.HEIGHT_PX / 2)
-        if y >= 0 and y + self.game.HEIGHT_PX < self.game.map.height * self.game.TILE_SIZE:
+        map_height_px = self.game.map.height * self.game.TILE_SIZE
+        if y < 0:
+            self.pos.y = 0
+        elif y + self.game.HEIGHT_PX >= map_height_px:
+            self.pos.y = map_height_px - self.game.HEIGHT_PX
+        else:
             self.pos.y = y
 
 class CameraAwareLayeredGroup(pygame.sprite.LayeredUpdates):
