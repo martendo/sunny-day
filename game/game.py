@@ -21,6 +21,8 @@ class Game:
     WIDTH = WIDTH_PX * PX_SIZE
     HEIGHT = HEIGHT_PX * PX_SIZE
     
+    COLLISION_OFFSET = 4
+    
     TILESET_FILE = "tiles"
     TILE_NAMES = (
         "sky", "flower-1", "flower-2", "flower-3",
@@ -205,7 +207,7 @@ class Game:
     def on_ground(self, actor):
         LEFT_TILE = (actor.rect.x + actor.hitbox.left) // self.TILE_SIZE
         RIGHT_TILE = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
-        UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + 4) // self.TILE_SIZE
+        UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
         # No solid tile under the actor
         return (self.map.is_solid_tile(LEFT_TILE, UNDER_TILE)
                 or self.map.is_solid_tile(RIGHT_TILE, UNDER_TILE))
