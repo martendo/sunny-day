@@ -1,6 +1,8 @@
 # Compiled files
 __pycache__/
 
-# Game Boy graphics files
-*.gbr
-*.gbm
+# Tiled files
+*.tiled-project
+*.tiled-session
+*.tmx
+*.tsx
