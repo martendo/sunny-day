@@ -27,12 +27,12 @@ class Actor(pygame.sprite.Sprite):
         
         self.rect.x = int(self.pos.x)
         # x-axis collision
-        blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
-        if blk is not None:
+        block = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
+        if block is not None:
             if self.vel.x > 0:
-                self.pos.x = blk.rect.left - self.hitbox.right
+                self.pos.x = block.rect.left - self.hitbox.right
             elif self.vel.x < 0:
-                self.pos.x = blk.rect.right - self.hitbox.left
+                self.pos.x = block.rect.right - self.hitbox.left
             self.collided_x()
         
         # End of map
@@ -46,12 +46,12 @@ class Actor(pygame.sprite.Sprite):
         
         self.rect.y = int(self.pos.y)
         # y-axis collision
-        blk = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
-        if blk is not None:
+        block = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
+        if block is not None:
             if self.vel.y > 0:
-                self.pos.y = blk.rect.top - self.hitbox.bottom
+                self.pos.y = block.rect.top - self.hitbox.bottom
             elif self.vel.y < 0:
-                self.pos.y = blk.rect.bottom - self.hitbox.top
+                self.pos.y = block.rect.bottom - self.hitbox.top
             self.collided_y()
         
         if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
@@ -69,12 +69,12 @@ class Actor(pygame.sprite.Sprite):
     def die(self):
         self.kill()
     
-    def hitboxblockcollide(self, actor, blk):
-        if blk.is_one_way:
+    def hitboxblockcollide(self, actor, block):
+        if block.is_one_way:
             if (actor.vel.y < 0 or (actor.rect.y + actor.hitbox.bottom
-                    > blk.rect.top + self.game.COLLISION_OFFSET)):
+                    > block.rect.top + self.game.COLLISION_OFFSET)):
                 return False
-        elif not blk.is_solid:
+        elif not block.is_solid:
             return False
         hitbox = pygame.Rect((actor.rect.x + actor.hitbox.x, actor.rect.y + actor.hitbox.y), actor.hitbox.size)
-        return hitbox.colliderect(blk.rect)
+        return hitbox.colliderect(block.rect)
