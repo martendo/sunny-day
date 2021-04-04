@@ -26,7 +26,7 @@ class Renky(Enemy):
         
         self.animation = Animation(self, self.game, self.MOVING_ANIMATION_SETTINGS)
         self.image = self.animation.get_image()
-        self.rect = self.image.get_rect()
+        self.set_rect(self.image.get_rect())
         
         self.set_speed()
     

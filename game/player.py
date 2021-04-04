@@ -98,8 +98,7 @@ class Player(Actor):
         
         self.animation = self.IDLE_ANIMATION
         self.image = self.animation.get_image()
-        self.rect = self.image.get_rect()
-        
+        self.set_rect(self.image.get_rect())
         
         self.reset()
         self.lives = self.START_LIVES

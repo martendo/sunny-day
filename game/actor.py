@@ -16,6 +16,11 @@ class Actor(pygame.sprite.Sprite):
         
         self.game.actors.add(self)
     
+    def set_rect(self, rect):
+        self.rect = rect
+        self.rect.x = int(self.pos.x)
+        self.rect.y = int(self.pos.y)
+    
     def update(self):
         self.pos += self.vel
         
