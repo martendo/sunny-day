@@ -70,6 +70,8 @@ class Map:
     
     def is_solid_tile(self, x, y):
         return self.get_tile(x, y) >= block.SOLIDS_START
+    def is_one_way_tile(self, x, y):
+        return self.get_tile(x, y) == block.ONE_WAY
     
     def get_enemy(self, num):
         enemy_pos = num * self.ENEMY_ENTRY_SIZE

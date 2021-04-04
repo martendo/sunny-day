@@ -48,7 +48,11 @@ class Actor(pygame.sprite.Sprite):
             self.vel.y = 0
     
     def hitboxblockcollide(self, actor, blk):
-        if type(blk) not in block.TYPES[block.SOLIDS_START:]:
+        if isinstance(blk, block.TYPES[block.ONE_WAY]):
+            if (actor.vel.y < 0 or (actor.rect.y + actor.hitbox.bottom
+                    > blk.rect.top + self.game.COLLISION_OFFSET)):
+                return False
+        elif type(blk) not in block.TYPES[block.SOLIDS_START:]:
             return False
         hitbox = pygame.Rect((actor.rect.x + actor.hitbox.x, actor.rect.y + actor.hitbox.y), actor.hitbox.size)
         return hitbox.colliderect(blk.rect)

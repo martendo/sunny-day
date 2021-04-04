@@ -26,7 +26,7 @@ class Game:
     TILESET_FILE = "tiles"
     TILE_NAMES = (
         "sky", "flower-1", "flower-2", "flower-3",
-        "brick", "grass",
+        "brick", "grass", "one-way",
     )
     ACTOR_IMAGE_FILES = {
         "player/": (
@@ -209,5 +209,8 @@ class Game:
         RIGHT_TILE = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
         UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
         # No solid tile under the actor
-        return (self.map.is_solid_tile(LEFT_TILE, UNDER_TILE)
-                or self.map.is_solid_tile(RIGHT_TILE, UNDER_TILE))
+        solid_on_left = (self.map.is_solid_tile(LEFT_TILE, UNDER_TILE)
+            or self.map.is_one_way_tile(LEFT_TILE, UNDER_TILE))
+        solid_on_right = (self.map.is_solid_tile(RIGHT_TILE, UNDER_TILE)
+            or self.map.is_one_way_tile(RIGHT_TILE, UNDER_TILE))
+        return (solid_on_left or solid_on_right)

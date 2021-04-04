@@ -42,6 +42,13 @@ class Flower(Block):
     def update(self):
         self.animation.update()
 
+class OneWay(Block):
+    IMAGE = "one-way"
+    
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.image = self.game.TILESET[self.IMAGE]
+
 class Grass(Block):
     IMAGE = "grass"
     
@@ -61,8 +68,12 @@ TYPES = (
     Sky,
     Flower,
     
+    # One-way
+    OneWay,
+    
     # Solid
     Grass,
     Brick,
 )
-SOLIDS_START = 2
+ONE_WAY = 2
+SOLIDS_START = 3
