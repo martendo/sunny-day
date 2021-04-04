@@ -28,33 +28,37 @@ class Map:
         self.enemies = CameraAwareLayeredGroup(self)
     
     def load(self, num):
-        # Map data
         with open(f"maps/{num}.smd", "rb") as file:
-            self.map_data = file.read()
+            self.data = file.read()
         
-        self.width = int.from_bytes(self.map_data[self.WIDTH_POS : self.WIDTH_END], byteorder="little")
-        self.height = int.from_bytes(self.map_data[self.HEIGHT_POS : self.HEIGHT_END], byteorder="little")
+        # Map data
+        self.width = int.from_bytes(self.data[self.WIDTH_POS : self.WIDTH_END], byteorder="little")
+        self.height = int.from_bytes(self.data[self.HEIGHT_POS : self.HEIGHT_END], byteorder="little")
         
         self.MAP_DATA_END = self.MAP_DATA_POS + (self.width * self.height)
-        self.tilemap = self.map_data[self.MAP_DATA_POS : self.MAP_DATA_END]
+        self.tilemap = self.data[self.MAP_DATA_POS : self.MAP_DATA_END]
         
         # Enemy data
-        with open(f"maps/{num}.sed", "rb") as file:
-            enemy_data = file.read()
+        self.NUM_ENEMIES_POS += self.MAP_DATA_END
+        self.NUM_ENEMIES_END += self.MAP_DATA_END
+        self.ENEMY_DATA_POS += self.MAP_DATA_END
         
-        self.num_enemies = int.from_bytes(enemy_data[self.NUM_ENEMIES_POS : self.NUM_ENEMIES_END], byteorder="little")
+        self.num_enemies = int.from_bytes(self.data[self.NUM_ENEMIES_POS : self.NUM_ENEMIES_END], byteorder="little")
         
         self.ENEMY_DATA_END = self.ENEMY_DATA_POS + (self.ENEMY_ENTRY_SIZE * self.num_enemies)
-        self.enemy_data = enemy_data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
+        self.enemy_data = self.data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
         
         self.reset()
     
     def create_blocks(self):
+        self.blocks.empty()
         for y in range(self.height):
             for x in range(self.width):
                 self.blocks.add(block.TYPES[self.get_tile(x, y)](self.game, x, y))
     
     def create_enemies(self):
+        self.game.actors.remove(self.enemies)
+        self.enemies.empty()
         for i in range(self.num_enemies):
             cur_enemy = self.get_enemy(i)
             self.enemies.add(enemy.TYPES[cur_enemy["type"]](
@@ -90,9 +94,6 @@ class Map:
         self.camera.update(self.game.player.rect)
     
     def reset(self):
-        self.blocks.empty()
-        self.game.actors.remove(self.enemies)
-        self.enemies.empty()
         self.create_blocks()
         self.create_enemies()
         self.game.player.reset()
