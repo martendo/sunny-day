@@ -21,15 +21,12 @@ class Game:
     WIDTH = WIDTH_PX * PX_SIZE
     HEIGHT = HEIGHT_PX * PX_SIZE
     
-    SPRITE_IMAGE_FILES = {
-        "blocks/": (
-            "sky",
-            "flower-1",
-            "flower-2",
-            "flower-3",
-            "grass",
-            "brick",
-        ),
+    TILESET_FILE = "tiles"
+    TILE_NAMES = (
+        "sky", "flower-1", "flower-2", "flower-3",
+        "brick", "grass",
+    )
+    ACTOR_IMAGE_FILES = {
         "player/": (
             "player-1",
             "player-2",
@@ -75,14 +72,16 @@ class Game:
         self.state = GameState.NOT_RUNNING
         
         # Load images
-        self.SPRITE_IMAGES = {}
-        for directory, images in self.SPRITE_IMAGE_FILES.items():
+        self.ACTOR_IMAGES = {}
+        for directory, images in self.ACTOR_IMAGE_FILES.items():
             for name in images:
-                self.SPRITE_IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
+                self.ACTOR_IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
         self.IMAGES = {}
         for directory, images in self.IMAGE_FILES.items():
             for name in images:
                 self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
+        self.TILESET = {}
+        self.load_tileset(self.TILESET_FILE)
         
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)
@@ -103,6 +102,21 @@ class Game:
         self.player = Player(self)
         # TODO: Make level selectable (level select screen)
         self.map.load(0)
+    
+    def load_tileset(self, file):
+        image = pygame.image.load(f"img/{file}.png")
+        width, height = image.get_size()
+        tile_width = width // self.TILE_SIZE
+        tile_height = height // self.TILE_SIZE
+        
+        for y in range(tile_height):
+            for x in range(tile_width):
+                pos = y * tile_height + x
+                if pos >= len(self.TILE_NAMES):
+                    return
+                rect = (x * self.TILE_SIZE, y * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE)
+                tile = image.subsurface(rect)
+                self.TILESET[self.TILE_NAMES[pos]] = tile
     
     def run(self):
         self.running = True

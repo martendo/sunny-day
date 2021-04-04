@@ -1,5 +1,4 @@
 import pygame
-from game.animation import Animation
 from game import colour
 
 class Block(pygame.sprite.Sprite):
@@ -14,13 +13,15 @@ class Block(pygame.sprite.Sprite):
         self.rect.x = x * self.game.TILE_SIZE
         self.rect.y = y * self.game.TILE_SIZE
 
+
+from game.animation import Animation
+
 class Sky(Block):
     IMAGE = "sky"
     
     def __init__(self, *args):
         super().__init__(*args)
-        
-        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
+        self.image = self.game.TILESET[self.IMAGE]
 
 class Flower(Block):
     ANIMATION_SETTINGS = {
@@ -35,7 +36,6 @@ class Flower(Block):
     
     def __init__(self, *args):
         super().__init__(*args)
-        
         self.animation = Animation(self, self.game, self.ANIMATION_SETTINGS)
         self.image = self.animation.get_image()
     
@@ -47,16 +47,14 @@ class Grass(Block):
     
     def __init__(self, *args):
         super().__init__(*args)
-        
-        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
+        self.image = self.game.TILESET[self.IMAGE]
 
 class Brick(Block):
     IMAGE = "brick"
     
     def __init__(self, *args):
         super().__init__(*args)
-        
-        self.image = self.game.SPRITE_IMAGES[self.IMAGE]
+        self.image = self.game.TILESET[self.IMAGE]
 
 TYPES = (
     # Non-solid

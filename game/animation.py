@@ -1,5 +1,6 @@
 import pygame
 from game.actor import Actor
+from game.block import Block
 
 class Animation:
     def __init__(self, sprite, game, settings):
@@ -8,9 +9,11 @@ class Animation:
         
         self.settings = settings
         
+        image_source = (self.game.TILESET if isinstance(sprite, Block)
+            else self.game.ACTOR_IMAGES)
         self.seq = []
         for image in self.settings["img"]:
-            self.seq.append(self.game.SPRITE_IMAGES[image])
+            self.seq.append(image_source[image])
         self.lengths = self.settings["lengths"]
         
         self.frame = 0
