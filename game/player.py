@@ -181,9 +181,6 @@ class Player(Actor):
         
         super().update()
         
-        if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
-            self.die()
-        
         # Direction does not change if vel.x == 0
         if self.vel.x > 0:
             self.direction = self.game.DIR_RIGHT

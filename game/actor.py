@@ -49,6 +49,9 @@ class Actor(pygame.sprite.Sprite):
             elif self.vel.y < 0:
                 self.pos.y = blk.rect.bottom - self.hitbox.top
             self.collided_y()
+        
+        if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
+            self.die()
     
     def collided_x(self):
         self.blockcollided[0] = True
@@ -58,6 +61,9 @@ class Actor(pygame.sprite.Sprite):
         self.blockcollided[1] = True
         self.rect.y = int(self.pos.y)
         self.vel.y = 0
+    
+    def die(self):
+        self.kill()
     
     def hitboxblockcollide(self, actor, blk):
         if isinstance(blk, block.TYPES[block.ONE_WAY]):
