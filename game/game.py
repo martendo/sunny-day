@@ -24,10 +24,6 @@ class Game:
     COLLISION_OFFSET = 4
     
     TILESET_FILE = "tiles"
-    TILE_NAMES = (
-        "sky", "flower-1", "flower-2", "flower-3",
-        "brick", "grass", "one-way",
-    )
     ACTOR_IMAGE_FILES = {
         "player/": (
             "player-1",
@@ -82,7 +78,7 @@ class Game:
         for directory, images in self.IMAGE_FILES.items():
             for name in images:
                 self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
-        self.TILESET = {}
+        self.TILESET = []
         self.load_tileset(self.TILESET_FILE)
         
         pygame.display.set_icon(pygame.image.load(self.ICON))
@@ -114,11 +110,9 @@ class Game:
         for y in range(tile_height):
             for x in range(tile_width):
                 pos = y * tile_height + x
-                if pos >= len(self.TILE_NAMES):
-                    return
                 rect = (x * self.TILE_SIZE, y * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE)
                 tile = image.subsurface(rect)
-                self.TILESET[self.TILE_NAMES[pos]] = tile
+                self.TILESET.append(tile)
     
     def run(self):
         self.running = True
@@ -182,7 +176,7 @@ class Game:
         
         elif self.state is GameState.IN_LEVEL:
             self.screen.fill(colour.PLACEHOLDER)
-            self.map.blocks.draw(self.pixel_screen)
+            self.map.draw(self.pixel_screen)
             self.actors.draw(self.pixel_screen)
             scaled_screen = pygame.transform.scale(self.pixel_screen, (self.screen.get_size()))
             self.screen.blit(scaled_screen, self.screen.get_rect())
@@ -205,12 +199,14 @@ class Game:
     
     # Determine if an actor is standing on solid ground
     def on_ground(self, actor):
-        LEFT_TILE = (actor.rect.x + actor.hitbox.left) // self.TILE_SIZE
-        RIGHT_TILE = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
-        UNDER_TILE = (actor.rect.y + actor.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
+        left_pos = (actor.rect.x + actor.hitbox.left) // self.TILE_SIZE
+        right_pos = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
+        under_pos = (actor.rect.y + actor.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
+        
+        left_tile = self.map.get_block(left_pos, under_pos)
+        right_tile = self.map.get_block(right_pos, under_pos)
+        
+        solid_on_left = (left_tile.is_solid or left_tile.is_one_way)
+        solid_on_right = (right_tile.is_solid or right_tile.is_one_way)
         # No solid tile under the actor
-        solid_on_left = (self.map.is_solid_tile(LEFT_TILE, UNDER_TILE)
-            or self.map.is_one_way_tile(LEFT_TILE, UNDER_TILE))
-        solid_on_right = (self.map.is_solid_tile(RIGHT_TILE, UNDER_TILE)
-            or self.map.is_one_way_tile(RIGHT_TILE, UNDER_TILE))
         return (solid_on_left or solid_on_right)

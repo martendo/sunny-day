@@ -1,5 +1,4 @@
 import pygame
-from game import block
 
 class Actor(pygame.sprite.Sprite):
     def __init__(self, game, hitbox, pos=None):
@@ -71,11 +70,11 @@ class Actor(pygame.sprite.Sprite):
         self.kill()
     
     def hitboxblockcollide(self, actor, blk):
-        if isinstance(blk, block.TYPES[block.ONE_WAY]):
+        if blk.is_one_way:
             if (actor.vel.y < 0 or (actor.rect.y + actor.hitbox.bottom
                     > blk.rect.top + self.game.COLLISION_OFFSET)):
                 return False
-        elif type(blk) not in block.TYPES[block.SOLIDS_START:]:
+        elif not blk.is_solid:
             return False
         hitbox = pygame.Rect((actor.rect.x + actor.hitbox.x, actor.rect.y + actor.hitbox.y), actor.hitbox.size)
         return hitbox.colliderect(blk.rect)

@@ -6,6 +6,6 @@ class Enemy(Actor):
 
 from game.enemies.renky import Renky
 
-TYPES = (
-    Renky,
-)
+TYPES = {
+    "Renky": Renky,
+}

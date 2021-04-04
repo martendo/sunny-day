@@ -1,97 +1,123 @@
 import pygame
-from game import block
-from game import enemy
+import json
+from game.block import Block
+from game.enemy import TYPES as ENEMY_TYPES
 from game.camera import Camera, CameraAwareLayeredGroup
+from game import colour
+
+class MissingMapDataError(Exception):
+    pass
 
 class Map:
-    WIDTH_POS = 0
-    WIDTH_END = WIDTH_POS + 2
+    EMPTY_TILE = 0
     
-    HEIGHT_POS = WIDTH_END
-    HEIGHT_END = HEIGHT_POS + 2
-    
-    MAP_DATA_POS = HEIGHT_END
-    
-    NUM_ENEMIES_POS = 0
-    NUM_ENEMIES_END = NUM_ENEMIES_POS + 2
-    
-    ENEMY_DATA_POS = NUM_ENEMIES_END
-    
-    ENEMY_ENTRY_SIZE = 1 + (2 * 2)
+    TILE_FLIP_H = 0x80000000
+    TILE_FLIP_V = 0x40000000
+    TILE_FLIP_D = 0x20000000
     
     def __init__(self, game):
         self.game = game
         
+        self.EMPTY_BLOCK = Block(self.game, 0, 0, 0, {
+            "h": False,
+            "v": False,
+            "d": False,
+        })
+        
+        with open("maps/tiles.json", "r") as file:
+            self.tileset = json.loads(file.read())
+        
         self.current = None
+        self.backgroundColour = colour.PLACEHOLDER
+        
         self.camera = Camera(self.game)
         self.blocks = CameraAwareLayeredGroup(self)
         self.enemies = CameraAwareLayeredGroup(self)
+        self._block_map = []
     
     def load(self, num):
-        with open(f"maps/{num}.smd", "rb") as file:
-            self.data = file.read()
+        self.current = num
         
-        # Map data
-        self.width = int.from_bytes(self.data[self.WIDTH_POS : self.WIDTH_END], byteorder="little")
-        self.height = int.from_bytes(self.data[self.HEIGHT_POS : self.HEIGHT_END], byteorder="little")
+        with open(f"maps/{num}.json", "r") as file:
+            self.data = json.loads(file.read())
         
-        self.MAP_DATA_END = self.MAP_DATA_POS + (self.width * self.height)
-        self.tilemap = self.data[self.MAP_DATA_POS : self.MAP_DATA_END]
+        # Background colour
+        self.backgroundColour = pygame.Color(self.data["backgroundcolor"])
+        
+        # Tilemap
+        for layer in self.data["layers"]:
+            if layer["type"] == "tilelayer":
+                break
+        else:
+            raise MissingMapDataError(f"No tile layer found in game/maps/{num}.json")
+        self.tilemap = layer["data"]
+        self.width = self.data["width"]
+        self.height = self.data["height"]
         
         # Enemy data
-        self.NUM_ENEMIES_POS += self.MAP_DATA_END
-        self.NUM_ENEMIES_END += self.MAP_DATA_END
-        self.ENEMY_DATA_POS += self.MAP_DATA_END
-        
-        self.num_enemies = int.from_bytes(self.data[self.NUM_ENEMIES_POS : self.NUM_ENEMIES_END], byteorder="little")
-        
-        self.ENEMY_DATA_END = self.ENEMY_DATA_POS + (self.ENEMY_ENTRY_SIZE * self.num_enemies)
-        self.enemy_data = self.data[self.ENEMY_DATA_POS : self.ENEMY_DATA_END]
+        for layer in self.data["layers"]:
+            if layer["type"] == "objectgroup":
+                break
+        else:
+            raise MissingMapDataError(f"No object layer found in game/maps/{num}.json")
+        self.enemy_data = layer["objects"]
+        self.num_enemies = len(self.enemy_data)
         
         self.reset()
     
     def create_blocks(self):
         self.blocks.empty()
+        self._block_map = []
         for y in range(self.height):
             for x in range(self.width):
-                self.blocks.add(block.TYPES[self.get_tile(x, y)](self.game, x, y))
+                tile_id, tileset, flip = self._get_tile(x, y)
+                if tile_id == self.EMPTY_TILE:
+                    self._block_map.append(self.EMPTY_BLOCK)
+                    continue
+                
+                block = Block(self.game, x, y, tile_id - tileset["firstgid"], flip)
+                self.blocks.add(block)
+                self._block_map.append(block)
     
     def create_enemies(self):
         self.game.actors.remove(self.enemies)
         self.enemies.empty()
-        for i in range(self.num_enemies):
-            cur_enemy = self.get_enemy(i)
-            self.enemies.add(enemy.TYPES[cur_enemy["type"]](
+        for enemy in self.enemy_data:
+            self.enemies.add(ENEMY_TYPES[enemy["type"]](
                 self.game,
-                pygame.Vector2(*map(lambda x: x * self.game.TILE_SIZE, cur_enemy["pos"]))
+                pygame.Vector2(enemy["x"], enemy["y"])
             ))
     
-    def get_tile(self, x, y):
-        try:
-            return self.tilemap[y * self.width + x]
-        except:
-            return 0
-    
-    def is_solid_tile(self, x, y):
-        return self.get_tile(x, y) >= block.SOLIDS_START
-    def is_one_way_tile(self, x, y):
-        return self.get_tile(x, y) == block.ONE_WAY
-    
-    def get_enemy(self, num):
-        enemy_pos = num * self.ENEMY_ENTRY_SIZE
-        enemy_data = self.enemy_data[enemy_pos : enemy_pos + self.ENEMY_ENTRY_SIZE]
-        return {
-            "type": int(enemy_data[0]),
-            "pos": pygame.Vector2( # Positions are by tile (1 tile = Game.TILE_SIZE screen pixels)
-                int.from_bytes(enemy_data[1:3], byteorder="little"),
-                int.from_bytes(enemy_data[3:5], byteorder="little"),
-            ),
+    def _get_tile(self, x, y):
+        gid = self.tilemap[y * self.width + x]
+        flip = {
+            "h": bool(gid & self.TILE_FLIP_H),
+            "v": bool(gid & self.TILE_FLIP_V),
+            "d": bool(gid & self.TILE_FLIP_D),
         }
+        # Clear flipping flags
+        gid &= ~(self.TILE_FLIP_H | self.TILE_FLIP_V | self.TILE_FLIP_D)
+        
+        for tileset in reversed(self.data["tilesets"]):
+            if tileset["firstgid"] <= gid:
+                return gid, tileset, flip
+        
+        return self.EMPTY_TILE, None, flip
+    
+    def get_block(self, x, y):
+        try:
+            return self._block_map[y * self.width + x]
+        except IndexError:
+            return self.EMPTY_BLOCK
     
     def update(self):
         self.blocks.update()
         self.enemies.update()
         self.camera.update(self.game.player.rect)
+    
+    def draw(self, surface):
+        surface.fill(self.backgroundColour)
+        self.blocks.draw(surface)
     
     def reset(self):
         self.create_blocks()
