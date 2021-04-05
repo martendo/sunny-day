@@ -18,14 +18,14 @@ class Map:
     def __init__(self, game):
         self.game = game
         
-        self.EMPTY_BLOCK = Block(self.game, 0, 0, 0, {
+        with open("maps/tiles.json", "r") as file:
+            self.tileset = json.loads(file.read())
+        
+        self.EMPTY_BLOCK = Block(self.game, self, 0, 0, 0, {
             "h": False,
             "v": False,
             "d": False,
         })
-        
-        with open("maps/tiles.json", "r") as file:
-            self.tileset = json.loads(file.read())
         
         self.current = None
         self.backgroundColour = colour.PLACEHOLDER
@@ -75,7 +75,7 @@ class Map:
                     self._block_map.append(self.EMPTY_BLOCK)
                     continue
                 
-                block = Block(self.game, x, y, tile_id - tileset["firstgid"], flip)
+                block = Block(self.game, self, x, y, tile_id - tileset["firstgid"], flip)
                 self.blocks.add(block)
                 self._block_map.append(block)
     

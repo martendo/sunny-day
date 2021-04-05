@@ -1,7 +1,6 @@
 import pygame
 from time import time
-from game.actor import Actor
-from game.block import Block
+from game import block, actor
 
 class Animation:
     def __init__(self, sprite, game, settings):
@@ -10,7 +9,7 @@ class Animation:
         
         self.settings = settings
         
-        image_source = (self.game.TILESET if isinstance(sprite, Block)
+        image_source = (self.game.TILESET if isinstance(sprite, block.Block)
             else self.game.ACTOR_IMAGES)
         self.seq = []
         for image in self.settings["img"]:
@@ -25,7 +24,7 @@ class Animation:
     
     def set_image(self, frame=None, image=None):
         self.sprite.image = image or self.get_image(frame)
-        if isinstance(self.sprite, Actor) and self.sprite.direction == self.game.DIR_RIGHT:
+        if isinstance(self.sprite, actor.Actor) and self.sprite.direction == self.game.DIR_RIGHT:
             # All images are left-facing
             self.sprite.image = pygame.transform.flip(self.sprite.image, True, False)
     
