@@ -109,10 +109,8 @@ class Game:
         
         for y in range(tile_height):
             for x in range(tile_width):
-                pos = y * tile_height + x
                 rect = (x * self.TILE_SIZE, y * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE)
-                tile = image.subsurface(rect)
-                self.TILESET.append(tile)
+                self.TILESET.append(image.subsurface(rect))
     
     def run(self):
         self.running = True
