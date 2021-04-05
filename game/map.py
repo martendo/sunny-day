@@ -18,8 +18,9 @@ class Map:
     def __init__(self, game):
         self.game = game
         
+        self.tilesets = {}
         with open("maps/tiles.json", "r") as file:
-            self.tileset = json.loads(file.read())
+            self.tilesets["tiles"] = json.loads(file.read())
         
         self.EMPTY_BLOCK = Block(self.game, self, 0, 0, 0, {
             "h": False,
@@ -70,7 +71,7 @@ class Map:
         self._block_map = []
         for y in range(self.height):
             for x in range(self.width):
-                tile_id, tileset, flip = self._get_tile(x, y)
+                tile_id, tileset, flip = self._resolve_gid(self.tilemap[y * self.width + x])
                 if tile_id == self.EMPTY_TILE:
                     self._block_map.append(self.EMPTY_BLOCK)
                     continue
@@ -83,13 +84,17 @@ class Map:
         self.game.actors.remove(self.enemies)
         self.enemies.empty()
         for enemy in self.enemy_data:
-            self.enemies.add(ENEMY_TYPES[enemy["type"]](
+            tile_id, tileset, flip = self._resolve_gid(enemy["gid"])
+            name = self.get_tile(
+                tile_id - tileset["firstgid"],
+                "maps/{}".format(tileset["source"])
+            )["type"]
+            self.enemies.add(ENEMY_TYPES[name](
                 self.game,
                 pygame.Vector2(enemy["x"], enemy["y"])
             ))
     
-    def _get_tile(self, x, y):
-        gid = self.tilemap[y * self.width + x]
+    def _resolve_gid(self, gid):
         flip = {
             "h": bool(gid & self.TILE_FLIP_H),
             "v": bool(gid & self.TILE_FLIP_V),
@@ -103,6 +108,21 @@ class Map:
                 return gid, tileset, flip
         
         return self.EMPTY_TILE, None, flip
+    
+    def get_tileset(self, tileset):
+        try:
+            return self.tilesets[tileset]
+        except KeyError:
+            with open(tileset, "r") as file:
+                data = json.loads(file.read())
+            self.tilesets[tileset] = data
+            return data
+    
+    def get_tile(self, tile_id, tileset="tiles"):
+        for tile in self.get_tileset(tileset)["tiles"]:
+            if tile["id"] == tile_id:
+                return tile
+        return None
     
     def get_block(self, x, y):
         try:

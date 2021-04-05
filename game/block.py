@@ -16,17 +16,13 @@ class Block(pygame.sprite.Sprite):
         self.is_one_way = self.tile_id == self.ONE_WAY
         
         self.animation = None
-        for tile in self.map.tileset["tiles"]:
-            if tile["id"] != self.tile_id:
-                continue
-            
+        tile = self.map.get_tile(self.tile_id)
+        if tile is not None and "animation" in tile:
             # Tile has an animation
-            if "animation" in tile:
-                self.animation = Animation(self, self.game, {
-                    "img": tuple(map(lambda frame: frame["tileid"], tile["animation"])),
-                    "duration": tuple(map(lambda frame: frame["duration"], tile["animation"])),
-                })
-            break
+            self.animation = Animation(self, self.game, {
+                "img": tuple(map(lambda frame: frame["tileid"], tile["animation"])),
+                "duration": tuple(map(lambda frame: frame["duration"], tile["animation"])),
+            })
         self.image = self.game.TILESET[self.tile_id]
         self.flip_image(flip)
         
