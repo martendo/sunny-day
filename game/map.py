@@ -20,7 +20,7 @@ class Map:
         
         self.tilesets = {}
         with open("maps/tiles.json", "r") as file:
-            self.tilesets["tiles"] = json.loads(file.read())
+            self.tilesets["tiles"] = json.load(file)
         
         self.EMPTY_BLOCK = Block(self.game, self, 0, 0, 0, {
             "h": False,
@@ -40,7 +40,7 @@ class Map:
         self.current = num
         
         with open(f"maps/{num}.json", "r") as file:
-            self.data = json.loads(file.read())
+            self.data = json.load(file)
         
         # Background colour
         self.backgroundColour = pygame.Color(self.data["backgroundcolor"])
@@ -114,7 +114,7 @@ class Map:
             return self.tilesets[tileset]
         except KeyError:
             with open(tileset, "r") as file:
-                data = json.loads(file.read())
+                data = json.load(file)
             self.tilesets[tileset] = data
             return data
     
