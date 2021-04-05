@@ -1,5 +1,4 @@
 import pygame
-from random import randint, choice
 from game.animation import Animation
 from game.enemy import Enemy
 
