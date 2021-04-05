@@ -5,6 +5,7 @@ from game import block
 from game.player import Player
 from game import enemy
 from game.camera import CameraAwareLayeredGroup
+from game.status_bar import StatusBar
 from game.title_screen import TitleScreen
 from game import colour
 
@@ -20,7 +21,9 @@ class Game:
     WIDTH_PX = 32 * TILE_SIZE
     HEIGHT_PX = 20 * TILE_SIZE
     WIDTH = WIDTH_PX * PX_SIZE
+    # Height updated in __init__() for status bar
     HEIGHT = HEIGHT_PX * PX_SIZE
+    GAME_WINDOW_RECT = pygame.Rect(0, 0, WIDTH, HEIGHT)
     
     COLLISION_OFFSET = 4
     
@@ -35,6 +38,9 @@ class Game:
     
     FONT_FILE = "IBM_VGA_8x16"
     FONT_SIZE = 75
+    MENU_FONT_FILE = "IBM_CGA"
+    MENU_FONT_SIZE = (8 * PX_SIZE) // 2
+    
     GRAVITY = 0.5
     
     DIR_LEFT = -1
@@ -60,6 +66,10 @@ class Game:
         self.load_tileset(self.TILESET_FILE)
         self.load_spritesheets()
         
+        self.status_bar = StatusBar(self)
+        self.HEIGHT += self.status_bar.rect.height
+        self.GAME_WINDOW_RECT.top += self.status_bar.rect.height
+        
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -68,6 +78,7 @@ class Game:
         self.frame = 0
         
         self.FONT = pygame.font.Font(f"fonts/{self.FONT_FILE}.ttf", self.FONT_SIZE)
+        self.MENU_FONT = pygame.font.Font(f"fonts/{self.MENU_FONT_FILE}.ttf", self.MENU_FONT_SIZE)
         
         self.buttons = set()
         
@@ -179,8 +190,10 @@ class Game:
             self.screen.fill(colour.PLACEHOLDER)
             self.map.draw(self.pixel_screen)
             self.actors.draw(self.pixel_screen)
-            scaled_screen = pygame.transform.scale(self.pixel_screen, (self.screen.get_size()))
-            self.screen.blit(scaled_screen, self.screen.get_rect())
+            scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
+            self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
+            
+            self.status_bar.draw(self.screen)
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
