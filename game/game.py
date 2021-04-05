@@ -201,10 +201,11 @@ class Game:
         right_pos = (actor.rect.x + actor.hitbox.right - 1) // self.TILE_SIZE
         under_pos = (actor.rect.y + actor.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
         
-        left_tile = self.map.get_block(left_pos, under_pos)
-        right_tile = self.map.get_block(right_pos, under_pos)
-        
-        solid_on_left = (left_tile.is_solid or left_tile.is_one_way)
-        solid_on_right = (right_tile.is_solid or right_tile.is_one_way)
-        # No solid tile under the actor
-        return (solid_on_left or solid_on_right)
+        # Check every block underneath the actor, from its left to right sides
+        for x in range(left_pos, right_pos + 1):
+            block = self.map.get_block(x, under_pos)
+            # If any block is solid, the actor is on ground
+            if block.is_solid or block.is_one_way:
+                return True
+        # No solid block under the actor
+        return False
