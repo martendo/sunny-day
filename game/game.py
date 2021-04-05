@@ -33,6 +33,8 @@ class Game:
         ),
     }
     
+    FONT_FILE = "IBM_VGA_8x16"
+    FONT_SIZE = 75
     GRAVITY = 0.5
     
     DIR_LEFT = -1
@@ -65,8 +67,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.frame = 0
         
-        # TODO: Choose/Make a more fitting font
-        self.FONT = pygame.font.Font(None, 100)
+        self.FONT = pygame.font.Font(f"fonts/{self.FONT_FILE}.ttf", self.FONT_SIZE)
         
         self.buttons = set()
         
