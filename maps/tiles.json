@@ -32,20 +32,16 @@
         {
          "animation":[
                 {
-                 "duration":400,
+                 "duration":750,
                  "tileid":3
                 }, 
                 {
-                 "duration":200,
+                 "duration":250,
                  "tileid":4
                 }, 
                 {
-                 "duration":400,
+                 "duration":250,
                  "tileid":5
-                }, 
-                {
-                 "duration":200,
-                 "tileid":4
                 }],
          "id":3
         }],
