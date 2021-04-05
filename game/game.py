@@ -3,6 +3,7 @@ from game.game_state import GameState
 from game.map import Map
 from game import block
 from game.player import Player
+from game import enemy
 from game.camera import CameraAwareLayeredGroup
 from game.title_screen import TitleScreen
 from game import colour
@@ -24,27 +25,7 @@ class Game:
     COLLISION_OFFSET = 4
     
     TILESET_FILE = "tiles"
-    ACTOR_IMAGE_FILES = {
-        "player/": (
-            "player-1",
-            "player-2",
-            "player-3",
-            "player-m-1",
-            "player-m-2",
-            "player-m-3",
-            "player-m-4",
-            "player-m-5",
-            "player-c-1",
-            "player-c-2",
-            "player-c-m-1",
-            "player-c-m-2",
-        ),
-        "enemies/": (
-            "renky-m-1",
-            "renky-m-2",
-            "renky-m-3",
-        ),
-    }
+    
     IMAGE_FILES = {
         "title/": (
             "title",
@@ -70,16 +51,12 @@ class Game:
         self.state = GameState.NOT_RUNNING
         
         # Load images
-        self.ACTOR_IMAGES = {}
-        for directory, images in self.ACTOR_IMAGE_FILES.items():
-            for name in images:
-                self.ACTOR_IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
         self.IMAGES = {}
         for directory, images in self.IMAGE_FILES.items():
             for name in images:
                 self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
-        self.TILESET = []
         self.load_tileset(self.TILESET_FILE)
+        self.load_spritesheets()
         
         pygame.display.set_icon(pygame.image.load(self.ICON))
         pygame.display.set_caption(self.NAME)
@@ -102,6 +79,7 @@ class Game:
         self.map.load(0)
     
     def load_tileset(self, file):
+        self.TILESET = []
         image = pygame.image.load(f"img/{file}.png")
         width, height = image.get_size()
         tile_width = width // self.TILE_SIZE
@@ -111,6 +89,28 @@ class Game:
             for x in range(tile_width):
                 rect = (x * self.TILE_SIZE, y * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE)
                 self.TILESET.append(image.subsurface(rect))
+    
+    def load_spritesheets(self):
+        self.SPRITESHEETS = {}
+        
+        self.load_spritesheet("player", Player.IMG_WIDTH, Player.IMG_HEIGHT)
+        self.load_spritesheet("enemies/renky", enemy.Renky.IMG_WIDTH, enemy.Renky.IMG_HEIGHT)
+    
+    def load_spritesheet(self, file, spr_width, spr_height, none_colour=None):
+        if none_colour is None:
+            none_colour = colour.PLACEHOLDER
+        
+        sheet = pygame.image.load(f"img/{file}.png")
+        
+        frames = []
+        for y in range(sheet.get_height() // spr_height):
+            for x in range(sheet.get_width() // spr_width):
+                rect = (x * spr_width, y * spr_height, spr_width, spr_height)
+                frame = sheet.subsurface(rect)
+                if frame.get_at((0, 0)) == none_colour:
+                    continue
+                frames.append(frame)
+        self.SPRITESHEETS[file] = frames
     
     def run(self):
         self.running = True

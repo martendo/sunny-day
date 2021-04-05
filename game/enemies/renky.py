@@ -11,12 +11,16 @@ class Renky(Enemy):
         8, 8,
     )
     
+    IMG_WIDTH = 16
+    IMG_HEIGHT = 16
+    SPRITESHEET = "enemies/renky"
+    
     MOVING_ANIMATION_SETTINGS = {
         "img": (
-            "renky-m-1",
-            "renky-m-2",
-            "renky-m-1",
-            "renky-m-3",
+            0,
+            1,
+            0,
+            2,
         ),
         "duration": 100,
     }

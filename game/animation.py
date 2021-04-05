@@ -10,7 +10,7 @@ class Animation:
         self.settings = settings
         
         image_source = (self.game.TILESET if isinstance(sprite, block.Block)
-            else self.game.ACTOR_IMAGES)
+            else self.game.SPRITESHEETS[sprite.SPRITESHEET])
         self.seq = []
         for image in self.settings["img"]:
             self.seq.append(image_source[image])

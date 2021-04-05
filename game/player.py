@@ -34,12 +34,16 @@ class Player(Actor):
     
     START_LIVES = 5
     
+    IMG_WIDTH = 16
+    IMG_HEIGHT = 16
+    SPRITESHEET = "player"
+    
     IDLE_ANIMATION_SETTINGS = {
         "img": (
-            "player-1",
-            "player-2",
-            "player-3",
-            "player-2",
+            0,
+            1,
+            2,
+            1,
         ),
         "duration": (
             400,
@@ -51,29 +55,29 @@ class Player(Actor):
     
     MOVING_ANIMATION_SETTINGS = {
         "img": (
-            "player-m-1",
-            "player-m-2",
-            "player-m-3",
-            "player-m-4",
-            "player-m-5",
+            3,
+            4,
+            5,
+            6,
+            7,
         ),
         "duration": 50,
     }
     
     CROUCH_IDLE_ANIMATION_SETTINGS = {
         "img": (
-            "player-c-1",
-            "player-c-2",
+            8,
+            9,
         ),
         "duration": 500,
     }
     
     CROUCH_MOVING_ANIMATION_SETTINGS = {
         "img": (
-            "player-c-m-1",
-            "player-c-1",
-            "player-c-m-2",
-            "player-c-2",
+            10,
+            8,
+            11,
+            9,
         ),
         "duration": (
             200,
