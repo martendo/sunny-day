@@ -116,6 +116,8 @@ class Game:
         self.running = True
         self.TITLE_SCREEN.init()
         
+        self.coins = 0
+        
         while self.running:
             self.handle_events()
             self.update()

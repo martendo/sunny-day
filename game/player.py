@@ -193,6 +193,9 @@ class Player(Actor):
         
         super().update()
         
+        # Collect coins
+        self.block_colliding(None, self.collect_coin)
+        
         if self.invincible and time() >= self.invincible_end:
             self.invincible = False
         
@@ -282,6 +285,13 @@ class Player(Actor):
             self.game.game_over()
         else:
             self.game.map.reset()
+    
+    def collect_coin(self, block, axis):
+        if block.is_coin:
+            block.kill()
+            del self.game.map.block_map[block.y * self.game.map.width + block.x]
+            self.game.coins += 1
+        return False
     
     def reset(self):
         self.pos.update(0, 0)

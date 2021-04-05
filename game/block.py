@@ -2,8 +2,9 @@ import pygame
 from game.animation import Animation
 
 class Block(pygame.sprite.Sprite):
-    ONE_WAY = 3
-    SOLIDS_START = 4
+    COIN = 3
+    ONE_WAY = 6
+    SOLIDS_START = 7
     
     def __init__(self, game, gamemap, x, y, tile_id, flip):
         super().__init__()
@@ -12,6 +13,7 @@ class Block(pygame.sprite.Sprite):
         self.map = gamemap
         
         self.tile_id = tile_id
+        self.is_coin = self.tile_id == self.COIN
         self.is_solid = self.tile_id >= self.SOLIDS_START
         self.is_one_way = self.tile_id == self.ONE_WAY
         
@@ -26,9 +28,11 @@ class Block(pygame.sprite.Sprite):
         self.image = self.game.TILESET[self.tile_id]
         self.flip_image(flip)
         
+        self.x = x
+        self.y = y
         self.rect = self.image.get_rect()
-        self.rect.x = x * self.game.TILE_SIZE
-        self.rect.y = y * self.game.TILE_SIZE
+        self.rect.x = self.x * self.game.TILE_SIZE
+        self.rect.y = self.y * self.game.TILE_SIZE
     
     def flip_image(self, flip=None):
         if flip is not None:

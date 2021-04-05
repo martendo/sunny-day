@@ -34,7 +34,7 @@ class Map:
         self.camera = Camera(self.game)
         self.blocks = CameraAwareLayeredGroup(self)
         self.enemies = CameraAwareLayeredGroup(self)
-        self._block_map = []
+        self.block_map = {}
     
     def load(self, num):
         self.current = num
@@ -68,17 +68,18 @@ class Map:
     
     def create_blocks(self):
         self.blocks.empty()
-        self._block_map = []
+        self.block_map = {}
         for y in range(self.height):
             for x in range(self.width):
-                tile_id, tileset, flip = self._resolve_gid(self.tilemap[y * self.width + x])
+                pos = y * self.width + x
+                
+                tile_id, tileset, flip = self._resolve_gid(self.tilemap[pos])
                 if tile_id == self.EMPTY_TILE:
-                    self._block_map.append(self.EMPTY_BLOCK)
                     continue
                 
                 block = Block(self.game, self, x, y, tile_id - tileset["firstgid"], flip)
                 self.blocks.add(block)
-                self._block_map.append(block)
+                self.block_map[pos] = block
     
     def create_enemies(self):
         self.game.actors.remove(self.enemies)
@@ -128,8 +129,8 @@ class Map:
         if x < 0 or y < 0:
             return self.EMPTY_BLOCK
         try:
-            return self._block_map[y * self.width + x]
-        except IndexError:
+            return self.block_map[y * self.width + x]
+        except KeyError:
             return self.EMPTY_BLOCK
     
     def update(self):

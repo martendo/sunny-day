@@ -66,21 +66,28 @@ class Actor(pygame.sprite.Sprite):
         if self.rect.top // self.game.TILE_SIZE > self.game.map.height:
             self.die()
     
-    def block_colliding(self, axis):
+    def block_colliding(self, axis, func=None):
+        if func is None:
+            func = self.is_solid_block
+        
         hitbox = pygame.Rect((self.rect.x + self.hitbox.x, self.rect.y + self.hitbox.y), self.hitbox.size)
         for y in range(hitbox.top, hitbox.bottom):
             for x in range(hitbox.left, hitbox.right):
                 tile_x = x // self.game.TILE_SIZE
                 tile_y = y // self.game.TILE_SIZE
                 block = self.game.map.get_block(tile_x, tile_y)
-                if block.is_solid:
-                    return block
-                elif (block.is_one_way and axis == "y"
-                        and self.vel.y > 0
-                        and (self.rect.y + self.hitbox.bottom
-                            <= block.rect.top + self.game.COLLISION_OFFSET)):
+                if func(block, axis):
                     return block
         return None
+    def is_solid_block(self, block, axis):
+        if block.is_solid:
+            return True
+        elif (block.is_one_way and axis == "y"
+                and self.vel.y > 0
+                and (self.rect.y + self.hitbox.bottom
+                    <= block.rect.top + self.game.COLLISION_OFFSET)):
+            return True
+        return False
     
     def collided_x(self):
         self.blockcollided.x = True
