@@ -125,6 +125,8 @@ class Map:
         return None
     
     def get_block(self, x, y):
+        if x < 0 or y < 0:
+            return self.EMPTY_BLOCK
         try:
             return self._block_map[y * self.width + x]
         except IndexError:
