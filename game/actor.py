@@ -1,5 +1,10 @@
 import pygame
 
+class CollisionAxes:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
 class Actor(pygame.sprite.Sprite):
     def __init__(self, game, hitbox, pos=None):
         super().__init__()
@@ -11,7 +16,7 @@ class Actor(pygame.sprite.Sprite):
         self.direction = self.game.DIR_LEFT
         
         self.hitbox = hitbox
-        self.blockcollided = [False, False]
+        self.blockcollided = CollisionAxes(False, False)
         
         self.game.actors.add(self)
     
@@ -23,7 +28,7 @@ class Actor(pygame.sprite.Sprite):
     def update(self):
         self.pos += self.vel
         
-        self.blockcollided = [False, False]
+        self.blockcollided = CollisionAxes(False, False)
         
         self.rect.left = int(self.pos.x)
         # x-axis collision
@@ -74,11 +79,11 @@ class Actor(pygame.sprite.Sprite):
         return None
     
     def collided_x(self):
-        self.blockcollided[0] = True
+        self.blockcollided.x = True
         self.rect.left = int(self.pos.x)
         self.vel.x = 0
     def collided_y(self):
-        self.blockcollided[1] = True
+        self.blockcollided.y = True
         self.rect.bottom = int(self.pos.y)
         self.vel.y = 0
     

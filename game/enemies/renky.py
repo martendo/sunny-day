@@ -40,7 +40,7 @@ class Renky(Enemy):
     def update(self):
         super().update()
         
-        if self.blockcollided[0]:
+        if self.blockcollided.x:
             self.direction = -self.direction
             self.set_speed()
         
