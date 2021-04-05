@@ -17,15 +17,15 @@ class Actor(pygame.sprite.Sprite):
     
     def set_rect(self, rect):
         self.rect = rect
-        self.rect.x = int(self.pos.x)
-        self.rect.y = int(self.pos.y)
+        self.rect.left = int(self.pos.x)
+        self.rect.bottom = int(self.pos.y)
     
     def update(self):
         self.pos += self.vel
         
         self.blockcollided = [False, False]
         
-        self.rect.x = int(self.pos.x)
+        self.rect.left = int(self.pos.x)
         # x-axis collision
         block = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if block is not None:
@@ -44,26 +44,26 @@ class Actor(pygame.sprite.Sprite):
             self.pos.x = map_width_px - self.hitbox.right
             self.collided_x()
         
-        self.rect.y = int(self.pos.y)
+        self.rect.bottom = int(self.pos.y)
         # y-axis collision
         block = pygame.sprite.spritecollideany(self, self.game.map.blocks, self.hitboxblockcollide)
         if block is not None:
             if self.vel.y > 0:
-                self.pos.y = block.rect.top - self.hitbox.bottom
+                self.pos.y = block.rect.top + (self.rect.height - self.hitbox.bottom)
             elif self.vel.y < 0:
-                self.pos.y = block.rect.bottom - self.hitbox.top
+                self.pos.y = block.rect.bottom + (self.rect.height - self.hitbox.top)
             self.collided_y()
         
-        if self.pos.y // self.game.TILE_SIZE > self.game.map.height:
+        if self.rect.top // self.game.TILE_SIZE > self.game.map.height:
             self.die()
     
     def collided_x(self):
         self.blockcollided[0] = True
-        self.rect.x = int(self.pos.x)
+        self.rect.left = int(self.pos.x)
         self.vel.x = 0
     def collided_y(self):
         self.blockcollided[1] = True
-        self.rect.y = int(self.pos.y)
+        self.rect.bottom = int(self.pos.y)
         self.vel.y = 0
     
     def die(self):
