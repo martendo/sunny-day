@@ -34,6 +34,10 @@ class Game:
             "title",
             "title-sun",
         ),
+        "": (
+            "heart",
+            "empty_heart",
+        ),
     }
     
     FONT_FILE = "IBM_VGA_8x16"

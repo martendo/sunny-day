@@ -35,7 +35,7 @@ class Player(Actor):
         8, 8,
     )
     
-    START_HEALTH = 2
+    START_HEALTH = 3
     START_LIVES = 5
     # Seconds of invincibility after getting hurt
     HURT_INV_LENGTH = 3
