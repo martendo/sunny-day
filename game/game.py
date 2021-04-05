@@ -184,7 +184,7 @@ class Game:
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
-            text, rect = self.render_text("GAME OVER!", colour.WHITE, colour.BLACK)
+            text, rect = self.render_text("GAME OVER!", self.FONT, colour.WHITE, colour.BLACK)
             rect.center = (self.WIDTH / 2, self.HEIGHT / 2)
             self.screen.blit(text, rect)
             # TODO: Do something here
@@ -194,8 +194,8 @@ class Game:
     def game_over(self):
         self.state = GameState.GAME_OVER
     
-    def render_text(self, text, color, background=None):
-        surface = self.FONT.render(text, False, color, background)
+    def render_text(self, text, font, color, background=None):
+        surface = font.render(text, False, color, background)
         return surface, surface.get_rect()
     
     # Determine if an actor is standing on solid ground

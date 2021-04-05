@@ -10,7 +10,7 @@ class Button:
         self.hover_colour = hover_colour
         self.text_colour = text_colour
         
-        self.text, self.text_rect = self.game.render_text(text, text_colour)
+        self.text, self.text_rect = self.game.render_text(text, self.game.FONT, text_colour)
         self.text_rect.center = self.rect.center
         
         self.func = func
