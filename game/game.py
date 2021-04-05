@@ -32,7 +32,7 @@ class Game:
     IMAGE_FILES = {
         "title/": (
             "title",
-            "title-sun",
+            "title_sun",
         ),
         "": (
             "heart",

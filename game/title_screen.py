@@ -16,7 +16,7 @@ class TitleScreen:
         self.BG = self.game.IMAGES["title"]
         self.BG_RECT = self.BG.get_rect()
         
-        self.SUN = self.game.IMAGES["title-sun"]
+        self.SUN = self.game.IMAGES["title_sun"]
         # Sun changes - handle that in draw()
         
         self.START_BUTTON = Button(
