@@ -66,6 +66,9 @@ class Game:
         self.load_tileset(self.TILESET_FILE)
         self.load_spritesheets()
         
+        self.FONT = pygame.font.Font(f"fonts/{self.FONT_FILE}.ttf", self.FONT_SIZE)
+        self.MENU_FONT = pygame.font.Font(f"fonts/{self.MENU_FONT_FILE}.ttf", self.MENU_FONT_SIZE)
+        
         self.status_bar = StatusBar(self)
         self.HEIGHT += self.status_bar.rect.height
         self.GAME_WINDOW_RECT.top += self.status_bar.rect.height
@@ -76,9 +79,6 @@ class Game:
         self.pixel_screen = pygame.Surface((self.WIDTH_PX, self.HEIGHT_PX))
         self.clock = pygame.time.Clock()
         self.frame = 0
-        
-        self.FONT = pygame.font.Font(f"fonts/{self.FONT_FILE}.ttf", self.FONT_SIZE)
-        self.MENU_FONT = pygame.font.Font(f"fonts/{self.MENU_FONT_FILE}.ttf", self.MENU_FONT_SIZE)
         
         self.buttons = set()
         
