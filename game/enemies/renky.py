@@ -1,6 +1,7 @@
 import pygame
 from game.animation import Animation
 from game.enemy import Enemy
+from game.player import Player
 
 class Renky(Enemy):
     SPEED = 0.5
@@ -44,3 +45,11 @@ class Renky(Enemy):
             self.set_speed()
         
         self.animation.update()
+    
+    def hit_actor(self, actor):
+        if isinstance(actor, Player):
+            if actor.is_stomping(self):
+                self.kill()
+                actor.bounce()
+            else:
+                actor.hurt()

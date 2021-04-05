@@ -1,7 +1,7 @@
 import pygame
+from time import time
 from game.actor import Actor
 from game.animation import Animation
-from game import block
 
 class Player(Actor):
     ACCEL = 0.5
@@ -21,6 +21,9 @@ class Player(Actor):
     # Crouch-jump: 1 block high
     CROUCH_JUMP_VEL = 3.25
     
+    # Bounce after jumping on an enemy
+    BOUNCE_VEL = 3
+    
     # Normal hitbox
     HITBOX = pygame.Rect(
         4, 1,
@@ -32,7 +35,13 @@ class Player(Actor):
         8, 8,
     )
     
+    START_HEALTH = 2
     START_LIVES = 5
+    # Seconds of invincibility after getting hurt
+    HURT_INV_LENGTH = 3
+    # Length of invincibility flash in seconds
+    HURT_INV_FLASH_TIME = 1/8
+    HURT_INV_FLASH_ON_TIME = HURT_INV_FLASH_TIME * 2/3
     
     IMG_WIDTH = 16
     IMG_HEIGHT = 16
@@ -184,6 +193,9 @@ class Player(Actor):
         
         super().update()
         
+        if self.invincible and time() >= self.invincible_end:
+            self.invincible = False
+        
         # Direction does not change if vel.x == 0
         if self.vel.x > 0:
             self.direction = self.game.DIR_RIGHT
@@ -212,6 +224,13 @@ class Player(Actor):
         
         # Always set the player image because the animation may change at any time
         self.animation.update(always_set=True)
+        
+        # Flash when invincible (hide image)
+        if (self.invincible and time() % self.HURT_INV_FLASH_TIME
+                >= self.HURT_INV_FLASH_ON_TIME):
+            self.image.set_alpha(0)
+        else:
+            self.image.set_alpha(255)
     
     def jump(self):
         if not self.game.on_ground(self):
@@ -220,6 +239,13 @@ class Player(Actor):
             self.vel.y = -self.JUMP_VEL
         else:
             self.vel.y = -self.CROUCH_JUMP_VEL
+    
+    # Bounce after jumping on an enemy
+    def bounce(self):
+        self.vel.y = -self.BOUNCE_VEL
+    
+    def is_stomping(self, actor):
+        return self.vel.y > 0 and self.rect.bottom < actor.rect.bottom
     
     def crouch(self):
         self.crouching = True
@@ -238,6 +264,18 @@ class Player(Actor):
         return (not self.game.map.get_block(left_pos, above_pos).is_solid
                 and not self.game.map.get_block(right_pos, above_pos).is_solid)
     
+    def hurt(self, damage=1):
+        if self.invincible:
+            return
+        
+        self.health -= damage
+        if self.health < 1:
+            self.die()
+        else:
+            # Brief invincibility
+            self.invincible = True
+            self.invincible_end = time() + self.HURT_INV_LENGTH
+    
     def die(self):
         self.lives -= 1
         if self.lives < 1:
@@ -250,3 +288,6 @@ class Player(Actor):
         self.vel.update(0, 0)
         
         self.crouching = False
+        
+        self.health = self.START_HEALTH
+        self.invincible = False
