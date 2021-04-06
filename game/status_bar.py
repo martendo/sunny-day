@@ -38,7 +38,7 @@ class StatusBar:
             has_heart = heart < self.game.player.health
             images.append((heart_image if has_heart else empty_heart_image, rect))
         
-        text, rect = self.game.render_text(f"Coins: {self.game.coins}", *self.TEXT_SETTINGS)
+        text, rect = self.game.render_text(f"Coins: {self.game.player.coins}", *self.TEXT_SETTINGS)
         rect.midright = self.text_rect.midright
         images.append((text, rect))
         

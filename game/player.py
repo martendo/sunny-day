@@ -113,8 +113,9 @@ class Player(Actor):
         self.image = self.animation.get_image()
         self.set_rect(self.image.get_rect())
         
-        self.reset()
         self.lives = self.START_LIVES
+        self.coins = 0
+        self.reset()
     
     def update(self):
         on_ground = self.game.on_ground(self)
@@ -290,9 +291,16 @@ class Player(Actor):
     
     def collect_coin(self, block, axis):
         if block.is_coin:
+            # Remove coin
             block.kill()
             del self.game.map.block_map[block.y * self.game.map.width + block.x]
-            self.game.collect_coin()
+            
+            self.coins += 1
+            
+            # Got 100 coins, get an extra life
+            if self.coins >= 100:
+                self.lives += 1
+            self.coins %= 100
         return False
     
     def reset(self, pos=(0, 0)):
