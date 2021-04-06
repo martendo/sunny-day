@@ -59,18 +59,6 @@
                 {
                  "gid":43,
                  "height":16,
-                 "id":4,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":968,
-                 "y":152
-                }, 
-                {
-                 "gid":43,
-                 "height":16,
                  "id":5,
                  "name":"",
                  "rotation":0,
@@ -107,18 +95,6 @@
                 {
                  "gid":43,
                  "height":16,
-                 "id":11,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":1872,
-                 "y":56
-                }, 
-                {
-                 "gid":43,
-                 "height":16,
                  "id":12,
                  "name":"",
                  "rotation":0,
@@ -127,6 +103,30 @@
                  "width":16,
                  "x":1568,
                  "y":24
+                }, 
+                {
+                 "gid":46,
+                 "height":8,
+                 "id":13,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":968,
+                 "y":152
+                }, 
+                {
+                 "gid":46,
+                 "height":8,
+                 "id":14,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":1872,
+                 "y":56
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -135,7 +135,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":13,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2021.03.23",
@@ -148,6 +148,10 @@
         {
          "firstgid":43,
          "source":"object_tilesets\/renky.json"
+        }, 
+        {
+         "firstgid":46,
+         "source":"object_tilesets\/ponko.json"
         }],
  "tilewidth":8,
  "type":"map",
