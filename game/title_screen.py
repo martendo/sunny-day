@@ -40,7 +40,7 @@ class TitleScreen:
             "mid_func": self.start_game,
         })
     def start_game(self):
-        self.game.state = GameState.LEVEL_SELECT
+        self.game.state = GameState.FILE_SELECT
     
     def update(self):
         self.sun_angle += self.SUN_ROTATION

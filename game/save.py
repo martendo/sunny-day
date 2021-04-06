@@ -12,7 +12,9 @@ class SaveReader:
         self.game.player.lives = data["lives"]
         self.game.player.coins = data["coins"]
     
-    def save(self):
+    def save(self, filename=None):
+        if filename is not None:
+            self.game.savefile = filename
         data = {
             "level_completion": self.game.level_completion,
             "lives": self.game.player.lives,

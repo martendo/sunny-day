@@ -8,6 +8,7 @@ from game import enemy
 from game.camera import CameraAwareLayeredGroup
 from game.status_bar import StatusBar
 from game.title_screen import TitleScreen
+from game.file_select import FileSelect
 from game.level_select import LevelSelect
 from game.screen_fader import ScreenFader
 from game import colour
@@ -99,6 +100,7 @@ class Game:
         self.buttons = set()
         
         self.TITLE_SCREEN = TitleScreen(self)
+        self.FILE_SELECT = FileSelect(self)
         self.LEVEL_SELECT = LevelSelect(self)
         
         self.screen_fader = ScreenFader(self)
@@ -207,6 +209,9 @@ class Game:
         if self.state is GameState.TITLE_SCREEN:
             self.TITLE_SCREEN.draw(self.screen)
         
+        elif self.state is GameState.FILE_SELECT:
+            self.FILE_SELECT.draw(self.screen)
+        
         elif self.state is GameState.LEVEL_SELECT:
             self.LEVEL_SELECT.draw(self.screen)
         
@@ -226,7 +231,8 @@ class Game:
         
         if self.screen_fader.fading:
             self.screen_fader.update(self.screen)
-        if self.state is not GameState.TITLE_SCREEN:
+        if (self.state is not GameState.TITLE_SCREEN
+                and self.state is not GameState.FILE_SELECT):
             self.status_bar.draw(self.screen)
         
         pygame.display.update()
@@ -237,6 +243,11 @@ class Game:
     def render_text(self, text, font, color, background=None):
         surface = font.render(text, False, color, background)
         return surface, surface.get_rect()
+    
+    def load(self, filename):
+        self.savereader.load(filename)
+    def save(self, filename=None):
+        self.savereader.save(filename)
     
     # Determine if an actor is standing on solid ground
     def on_ground(self, actor):

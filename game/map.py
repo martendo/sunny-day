@@ -173,6 +173,7 @@ class Map:
     def end_level(self):
         self.game.state = GameState.LEVEL_SELECT
         self.game.player.reset()
+        self.game.save()
     
     def reset(self):
         self.create_blocks()
