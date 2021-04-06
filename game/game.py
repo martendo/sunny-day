@@ -1,5 +1,6 @@
 import pygame
 from game.game_state import GameState
+from game.save import SaveReader
 from game.map import Map
 from game import block
 from game.player import Player
@@ -92,6 +93,8 @@ class Game:
         
         self.clock = pygame.time.Clock()
         self.frame = 0
+        
+        self.savereader = SaveReader(self)
         
         self.buttons = set()
         
