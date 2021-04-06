@@ -222,6 +222,13 @@ class Game:
         surface = font.render(text, False, color, background)
         return surface, surface.get_rect()
     
+    def collect_coin(self):
+        self.coins += 1
+        # Got 100 coins, get an extra life
+        if self.coins >= 100:
+            self.player.lives += 1
+        self.coins %= 100
+    
     # Determine if an actor is standing on solid ground
     def on_ground(self, actor):
         left_pos = (actor.rect.x + actor.hitbox.left) // self.TILE_SIZE

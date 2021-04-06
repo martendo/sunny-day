@@ -290,7 +290,7 @@ class Player(Actor):
         if block.is_coin:
             block.kill()
             del self.game.map.block_map[block.y * self.game.map.width + block.x]
-            self.game.coins += 1
+            self.game.collect_coin()
         return False
     
     def reset(self):
