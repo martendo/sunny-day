@@ -87,7 +87,7 @@ class Actor(pygame.sprite.Sprite):
             return True
         elif (block.is_one_way and axis == "y"
                 and self.vel.y > 0
-                and (self.rect.y + self.hitbox.bottom
+                and (self.rect.y + self.hitbox.bottom - self.vel.y
                     <= block.rect.top + self.game.COLLISION_OFFSET)):
             return True
         return False

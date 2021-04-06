@@ -248,7 +248,9 @@ class Player(Actor):
         self.vel.y = -self.BOUNCE_VEL
     
     def is_stomping(self, actor):
-        return self.vel.y > 0 and self.rect.bottom < actor.rect.bottom
+        return (self.vel.y > 0
+            and int(self.pos.y - self.vel.y) + (self.rect.height - self.hitbox.bottom)
+                < (actor.rect.y + actor.hitbox.bottom) - self.game.COLLISION_OFFSET)
     
     def crouch(self):
         self.crouching = True
