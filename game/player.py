@@ -291,9 +291,14 @@ class Player(Actor):
     def die(self):
         self.lives -= 1
         if self.lives < 1:
-            self.game.game_over()
+            func = self.game.game_over
         else:
-            self.game.map.reset()
+            func = self.game.map.reset
+        
+        self.game.screen_fader.start(**{
+            "mid_func": func
+        })
+        self.enabled = False
     
     def collect_coin(self, block, axis):
         if block.is_coin:
