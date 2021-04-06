@@ -293,8 +293,8 @@ class Player(Actor):
             self.game.collect_coin()
         return False
     
-    def reset(self):
-        self.pos.update(0, 0)
+    def reset(self, pos=(0, 0)):
+        self.pos.update(pos)
         self.update_rect()
         self.vel.update(0, 0)
         if self.game.map.current is not None:

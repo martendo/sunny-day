@@ -35,6 +35,7 @@ class Map:
         self.blocks = CameraAwareLayeredGroup(self)
         self.enemies = CameraAwareLayeredGroup(self)
         self.block_map = {}
+        self.spawn_point = (0, 0)
     
     def load(self, num):
         self.current = num
@@ -61,8 +62,14 @@ class Map:
                 break
         else:
             raise MissingMapDataError(f"No object layer found in game/maps/{num}.json")
-        self.enemy_data = layer["objects"]
-        self.num_enemies = len(self.enemy_data)
+        self.objects = layer["objects"]
+        self.enemy_data = []
+        for obj in self.objects:
+            # Object is a tile object -> Enemy
+            if "gid" in obj:
+                self.enemy_data.append(obj)
+            elif obj["type"] == "SpawnPoint":
+                self.spawn_point = (obj["x"], obj["y"])
         
         self.reset()
     
@@ -147,4 +154,4 @@ class Map:
     def reset(self):
         self.create_blocks()
         self.create_enemies()
-        self.game.player.reset()
+        self.game.player.reset(self.spawn_point)
