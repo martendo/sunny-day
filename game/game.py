@@ -37,6 +37,8 @@ class Game:
             "title_sun",
         ),
         "": (
+            "level_select_bg",
+            
             "heart",
             "empty_heart",
         ),
@@ -201,13 +203,7 @@ class Game:
             self.LEVEL_SELECT.draw(self.screen)
         
         elif self.state is GameState.IN_LEVEL:
-            self.screen.fill(colour.PLACEHOLDER)
-            self.map.draw(self.pixel_screen)
-            self.actors.draw(self.pixel_screen)
-            scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
-            self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
-            
-            self.status_bar.draw(self.screen)
+            self.draw_level()
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
@@ -217,6 +213,15 @@ class Game:
             # TODO: Do something here
         
         pygame.display.update()
+    
+    def draw_level(self):
+        self.screen.fill(colour.PLACEHOLDER)
+        self.map.draw(self.pixel_screen)
+        self.actors.draw(self.pixel_screen)
+        scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
+        self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
+        
+        self.status_bar.draw(self.screen)
     
     def game_over(self):
         self.state = GameState.GAME_OVER

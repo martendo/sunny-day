@@ -315,3 +315,5 @@ class Player(Actor):
         
         self.health = self.START_HEALTH
         self.invincible = False
+        
+        self.animation.update()
