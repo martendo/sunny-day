@@ -31,7 +31,7 @@ class TitleScreen:
             Button.HOVER_COLOUR,
             "Play!",
             colour.BLACK,
-            self.start_game,
+            self.click_start,
         )
         
         self.init()
@@ -40,18 +40,28 @@ class TitleScreen:
         self.game.state = GameState.TITLE_SCREEN
         self.sun_angle = 0
     
+    def click_start(self):
+        self.game.screen_fader.start(**{
+            "end_func": self.start_game,
+        })
     def start_game(self):
         self.game.state = GameState.LEVEL_SELECT
     
     def update(self):
         self.sun_angle += self.SUN_ROTATION
     
-    def draw(self, surface):
-        # Rotate sun
-        image = pygame.transform.rotate(self.SUN, self.sun_angle)
-        rect = image.get_rect()
-        rect.center = (self.game.WIDTH - self.SPACING, self.SPACING)
+    def draw(self, surface, allow_fade=True):
+        if not self.game.screen_fader.midway or not allow_fade:
+            # Rotate sun
+            image = pygame.transform.rotate(self.SUN, self.sun_angle)
+            rect = image.get_rect()
+            rect.center = (self.game.WIDTH - self.SPACING, self.SPACING)
+            
+            surface.blits(((self.BG, self.BG_RECT), (image, rect)), False)
+            
+            self.START_BUTTON.draw()
+        else:
+            self.game.LEVEL_SELECT.draw(surface, allow_fade=False)
         
-        surface.blits(((self.BG, self.BG_RECT), (image, rect)), False)
-        
-        self.START_BUTTON.draw()
+        if self.game.screen_fader.fading:
+            self.game.screen_fader.update(surface)

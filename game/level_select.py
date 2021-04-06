@@ -48,8 +48,8 @@ class LevelSelect:
     def start_level(self):
         self.game.state = GameState.IN_LEVEL
     
-    def draw(self, surface):
-        if not self.game.screen_fader.midway:
+    def draw(self, surface, allow_fade=True):
+        if not self.game.screen_fader.midway or not allow_fade:
             surface.blit(self.BG_IMAGE, self.BG_IMAGE_RECT)
             
             self.game.status_bar.draw(surface)

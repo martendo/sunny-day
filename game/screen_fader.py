@@ -4,7 +4,7 @@ from game import colour
 
 class ScreenFader:
     DEFAULT_COLOUR = colour.BLACK
-    DEFAULT_DURATION = 2
+    DEFAULT_DURATION = 0.75
     
     def __init__(self, game):
         self.game = game
@@ -29,6 +29,7 @@ class ScreenFader:
     def update(self, surface):
         if time() >= self.start_time + self.duration:
             self.fading = False
+            self.midway = False
             if self.end_func is not None:
                 self.end_func(*self.end_func_args)
             return
