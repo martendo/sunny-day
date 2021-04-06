@@ -4,3 +4,6 @@ __pycache__/
 # Tiled files
 *.tiled-project
 *.tiled-session
+
+# Save files
+*.sds
