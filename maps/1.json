@@ -127,6 +127,17 @@
                  "width":16,
                  "x":1872,
                  "y":56
+                }, 
+                {
+                 "height":32,
+                 "id":15,
+                 "name":"",
+                 "rotation":0,
+                 "type":"EndPoint",
+                 "visible":true,
+                 "width":32,
+                 "x":1984,
+                 "y":40
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -135,7 +146,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":15,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2021.03.23",

@@ -1,5 +1,6 @@
 import pygame
 import json
+from game.game_state import GameState
 from game.block import Block
 from game.enemy import TYPES as ENEMY_TYPES
 from game.camera import Camera, CameraAwareLayeredGroup
@@ -7,6 +8,16 @@ from game import colour
 
 class MissingMapDataError(Exception):
     pass
+
+class EndPoint(pygame.sprite.Sprite):
+    def __init__(self, game, pos):
+        self.game = game
+        self.image = self.game.IMAGES["endpoint"]
+        self.rect = self.image.get_rect()
+        self.rect.topleft = pos
+    
+    def draw(self, surface):
+        surface.blit(self.image, self.rect.move(-self.game.map.camera.pos))
 
 class Map:
     MAIN_TILESET = "maps/tiles.json"
@@ -36,6 +47,7 @@ class Map:
         self.enemies = CameraAwareLayeredGroup(self)
         self.block_map = {}
         self.spawn_point = (0, 0)
+        self.endpoint = None
     
     def load(self, num):
         self.current = num
@@ -65,11 +77,12 @@ class Map:
         self.objects = layer["objects"]
         self.enemy_data = []
         for obj in self.objects:
-            # Object is a tile object -> Enemy
-            if "gid" in obj:
-                self.enemy_data.append(obj)
-            elif obj["type"] == "SpawnPoint":
+            if obj["type"] == "SpawnPoint":
                 self.spawn_point = (obj["x"], obj["y"])
+            elif obj["type"] == "EndPoint":
+                self.endpoint = EndPoint(self.game, (obj["x"], obj["y"]))
+            elif "gid" in obj:
+                self.enemy_data.append(obj)
         
         self.reset()
     
@@ -149,7 +162,17 @@ class Map:
     
     def draw(self, surface):
         surface.fill(self.backgroundColour)
+        self.endpoint.draw(surface)
         self.blocks.draw(surface)
+    
+    def finish(self):
+        self.game.level_completion[self.current - 1] = True
+        self.game.screen_fader.start(**{
+            "mid_func": self.end_level,
+        })
+    def end_level(self):
+        self.game.state = GameState.LEVEL_SELECT
+        self.game.player.reset()
     
     def reset(self):
         self.create_blocks()

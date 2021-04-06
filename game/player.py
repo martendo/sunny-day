@@ -196,6 +196,8 @@ class Player(Actor):
         
         # Collect coins
         self.block_colliding(None, self.collect_coin)
+        if self.get_positioned_hitbox(self).colliderect(self.game.map.endpoint.rect):
+            self.game.map.finish()
         
         if self.invincible and time() >= self.invincible_end:
             self.invincible = False

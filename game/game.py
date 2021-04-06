@@ -41,6 +41,8 @@ class Game:
             
             "heart",
             "empty_heart",
+            
+            "endpoint",
         ),
     }
     
@@ -98,6 +100,7 @@ class Game:
         
         self.screen_fader = ScreenFader(self)
         
+        self.level_completion = [False] * self.LEVEL_COUNT
         self.map = Map(self)
         self.actors = CameraAwareLayeredGroup(self.map)
         self.player = Player(self)
