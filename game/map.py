@@ -9,6 +9,8 @@ class MissingMapDataError(Exception):
     pass
 
 class Map:
+    MAIN_TILESET = "maps/tiles.json"
+    
     EMPTY_TILE = 0
     
     TILE_FLIP_H = 0x80000000
@@ -19,8 +21,6 @@ class Map:
         self.game = game
         
         self.tilesets = {}
-        with open("maps/tiles.json", "r") as file:
-            self.tilesets["tiles"] = json.load(file)
         
         self.EMPTY_BLOCK = Block(self.game, self, 0, 0, 0, {
             "h": False,
@@ -92,7 +92,7 @@ class Map:
             )["type"]
             self.enemies.add(ENEMY_TYPES[name](
                 self.game,
-                pygame.Vector2(enemy["x"], enemy["y"])
+                (enemy["x"], enemy["y"])
             ))
     
     def _resolve_gid(self, gid):
@@ -119,7 +119,9 @@ class Map:
             self.tilesets[tileset] = data
             return data
     
-    def get_tile(self, tile_id, tileset="tiles"):
+    def get_tile(self, tile_id, tileset=None):
+        if tileset is None:
+            tileset = self.MAIN_TILESET
         for tile in self.get_tileset(tileset)["tiles"]:
             if tile["id"] == tile_id:
                 return tile
