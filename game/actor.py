@@ -108,6 +108,8 @@ class Actor(pygame.sprite.Sprite):
         pass
     
     def actorcollide(self, actor1, actor2):
+        if actor1 is actor2:
+            return False
         hitbox1 = pygame.Rect((actor1.rect.x + actor1.hitbox.x, actor1.rect.y + actor1.hitbox.y), actor1.hitbox.size)
         hitbox2 = pygame.Rect((actor2.rect.x + actor2.hitbox.x, actor2.rect.y + actor2.hitbox.y), actor2.hitbox.size)
         return hitbox1.colliderect(hitbox2)

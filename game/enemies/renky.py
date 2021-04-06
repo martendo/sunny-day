@@ -34,6 +34,9 @@ class Renky(Enemy):
         
         self.set_speed()
     
+    def turn_around(self):
+        self.direction = -self.direction
+        self.set_speed()
     def set_speed(self):
         self.vel.x = self.SPEED * self.direction
     
@@ -44,8 +47,7 @@ class Renky(Enemy):
             return
         
         if self.blockcollided.x:
-            self.direction = -self.direction
-            self.set_speed()
+            self.turn_around()
         
         self.animation.update()
     
@@ -56,3 +58,5 @@ class Renky(Enemy):
                 actor.bounce()
             else:
                 actor.hurt()
+        else:
+            self.turn_around()
