@@ -118,6 +118,9 @@ class Player(Actor):
         self.reset()
     
     def update(self):
+        if not self.enabled:
+            return
+        
         on_ground = self.game.on_ground(self)
         
         pressed = pygame.key.get_pressed()
@@ -197,6 +200,7 @@ class Player(Actor):
         # Collect coins
         self.block_colliding(None, self.collect_coin)
         if self.get_positioned_hitbox(self).colliderect(self.game.map.endpoint.rect):
+            self.enabled = False
             self.game.map.finish()
         
         if self.invincible and time() >= self.invincible_end:
@@ -306,6 +310,8 @@ class Player(Actor):
         return False
     
     def reset(self, pos=(0, 0)):
+        self.enabled = True
+        
         self.pos.update(pos)
         self.update_rect()
         self.vel.update(0, 0)
