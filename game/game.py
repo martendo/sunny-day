@@ -147,6 +147,8 @@ class Game:
             self.draw()
             self.clock.tick(self.FPS)
             self.frame += 1
+        
+        self.state = GameState.NOT_RUNNING
     
     def handle_events(self):
         for event in pygame.event.get():
