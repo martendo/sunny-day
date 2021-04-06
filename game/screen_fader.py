@@ -9,6 +9,7 @@ class ScreenFader:
     def __init__(self, game):
         self.game = game
         self.surface = pygame.Surface(self.game.screen.get_size())
+        self.rect = self.surface.get_rect()
         self.fading = False
         self.midway = False
     
@@ -43,4 +44,4 @@ class ScreenFader:
                     self.mid_func(*self.mid_func_args)
         
         self.surface.set_alpha(alpha)
-        surface.blit(self.surface, self.surface.get_rect())
+        surface.blit(self.surface, self.rect)
