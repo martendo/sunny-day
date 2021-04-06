@@ -298,6 +298,7 @@ class Player(Actor):
         self.vel.update(0, 0)
         
         self.crouching = False
+        self.direction = self.game.DIR_RIGHT
         
         self.health = self.START_HEALTH
         self.invincible = False
