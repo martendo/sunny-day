@@ -46,12 +46,12 @@ class TitleScreen:
     def update(self):
         self.sun_angle += self.SUN_ROTATION
     
-    def draw(self):
+    def draw(self, surface):
         # Rotate sun
         image = pygame.transform.rotate(self.SUN, self.sun_angle)
         rect = image.get_rect()
         rect.center = (self.game.WIDTH - self.SPACING, self.SPACING)
         
-        self.game.screen.blits(((self.BG, self.BG_RECT), (image, rect)), False)
+        surface.blits(((self.BG, self.BG_RECT), (image, rect)), False)
         
         self.START_BUTTON.draw()

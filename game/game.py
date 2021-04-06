@@ -188,7 +188,7 @@ class Game:
     
     def draw(self):
         if self.state is GameState.TITLE_SCREEN:
-            self.TITLE_SCREEN.draw()
+            self.TITLE_SCREEN.draw(self.screen)
         
         elif self.state is GameState.IN_LEVEL:
             self.screen.fill(colour.PLACEHOLDER)
