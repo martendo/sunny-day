@@ -203,7 +203,13 @@ class Game:
             self.LEVEL_SELECT.draw(self.screen)
         
         elif self.state is GameState.IN_LEVEL:
-            self.draw_level()
+            self.screen.fill(colour.PLACEHOLDER)
+            self.map.draw(self.pixel_screen)
+            self.actors.draw(self.pixel_screen)
+            scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
+            self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
+            
+            self.status_bar.draw(self.screen)
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
@@ -216,15 +222,6 @@ class Game:
             self.screen_fader.update(self.screen)
         
         pygame.display.update()
-    
-    def draw_level(self):
-        self.screen.fill(colour.PLACEHOLDER)
-        self.map.draw(self.pixel_screen)
-        self.actors.draw(self.pixel_screen)
-        scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
-        self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
-        
-        self.status_bar.draw(self.screen)
     
     def game_over(self):
         self.state = GameState.GAME_OVER
