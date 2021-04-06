@@ -8,6 +8,7 @@ from game.camera import CameraAwareLayeredGroup
 from game.status_bar import StatusBar
 from game.title_screen import TitleScreen
 from game.level_select import LevelSelect
+from game.screen_fader import ScreenFader
 from game import colour
 
 class Game:
@@ -92,6 +93,8 @@ class Game:
         
         self.TITLE_SCREEN = TitleScreen(self)
         self.LEVEL_SELECT = LevelSelect(self)
+        
+        self.screen_fader = ScreenFader(self)
         
         self.map = Map(self)
         self.actors = CameraAwareLayeredGroup(self.map)
