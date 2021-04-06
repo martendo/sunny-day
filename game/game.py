@@ -65,14 +65,6 @@ class Game:
         self.running = False
         self.state = GameState.NOT_RUNNING
         
-        # Load images
-        self.IMAGES = {}
-        for directory, images in self.IMAGE_FILES.items():
-            for name in images:
-                self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png")
-        self.load_tileset(self.TILESET_FILE)
-        self.load_spritesheets()
-        
         self.FONT = pygame.font.Font(f"fonts/{self.FONT_FILE}.ttf", self.FONT_SIZE)
         self.MENU_FONT = pygame.font.Font(f"fonts/{self.MENU_FONT_FILE}.ttf", self.MENU_FONT_SIZE)
         
@@ -80,10 +72,19 @@ class Game:
         self.HEIGHT += self.status_bar.rect.height
         self.GAME_WINDOW_RECT.top += self.status_bar.rect.height
         
-        pygame.display.set_icon(pygame.image.load(self.ICON))
-        pygame.display.set_caption(self.NAME)
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_icon(pygame.image.load(self.ICON).convert_alpha())
+        pygame.display.set_caption(self.NAME)
         self.pixel_screen = pygame.Surface((self.WIDTH_PX, self.HEIGHT_PX))
+        
+        # Load images
+        self.IMAGES = {}
+        for directory, images in self.IMAGE_FILES.items():
+            for name in images:
+                self.IMAGES[name] = pygame.image.load(f"img/{directory}{name}.png").convert_alpha()
+        self.load_tileset(self.TILESET_FILE)
+        self.load_spritesheets()
+        
         self.clock = pygame.time.Clock()
         self.frame = 0
         
@@ -98,7 +99,7 @@ class Game:
     
     def load_tileset(self, file):
         self.TILESET = []
-        image = pygame.image.load(f"img/{file}.png")
+        image = pygame.image.load(f"img/{file}.png").convert_alpha()
         width, height = image.get_size()
         tile_width = width // self.TILE_SIZE
         tile_height = height // self.TILE_SIZE
@@ -119,7 +120,7 @@ class Game:
         if none_colour is None:
             none_colour = colour.PLACEHOLDER
         
-        sheet = pygame.image.load(f"img/{file}.png")
+        sheet = pygame.image.load(f"img/{file}.png").convert_alpha()
         
         frames = []
         for y in range(sheet.get_height() // spr_height):
