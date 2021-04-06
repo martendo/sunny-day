@@ -23,6 +23,8 @@ class Actor(pygame.sprite.Sprite):
     
     def set_rect(self, rect):
         self.rect = rect
+        self.update_rect()
+    def update_rect(self):
         self.rect.left = int(self.pos.x)
         self.rect.bottom = int(self.pos.y)
     

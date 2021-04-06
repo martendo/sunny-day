@@ -295,7 +295,10 @@ class Player(Actor):
     
     def reset(self):
         self.pos.update(0, 0)
+        self.update_rect()
         self.vel.update(0, 0)
+        if self.game.map.current is not None:
+            self.game.map.camera.update(self.rect)
         
         self.crouching = False
         self.direction = self.game.DIR_RIGHT
