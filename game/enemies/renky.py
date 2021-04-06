@@ -22,7 +22,7 @@ class Renky(Enemy):
             0,
             2,
         ),
-        "duration": 100,
+        "duration": 65,
     }
     
     def __init__(self, game, pos):
