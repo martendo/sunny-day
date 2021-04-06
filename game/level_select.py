@@ -34,9 +34,6 @@ class LevelSelect:
                 num,
             ))
     
-    def init(self):
-        self.game.state = GameState.LEVEL_SELECT
-    
     def click_level(self, num):
         self.game.screen_fader.start(**{
             "mid_func": self.start_level,

@@ -145,7 +145,7 @@ class Game:
     
     def run(self):
         self.running = True
-        self.TITLE_SCREEN.init()
+        self.state = GameState.TITLE_SCREEN
         
         while self.running:
             self.handle_events()

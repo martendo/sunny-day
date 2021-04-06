@@ -17,6 +17,7 @@ class TitleScreen:
         self.BG_RECT = self.BG.get_rect()
         
         self.SUN = self.game.IMAGES["title_sun"]
+        self.sun_angle = 0
         # Sun changes - handle that in draw()
         
         self.START_BUTTON = Button(
@@ -33,12 +34,6 @@ class TitleScreen:
             colour.BLACK,
             self.click_start,
         )
-        
-        self.init()
-    
-    def init(self):
-        self.game.state = GameState.TITLE_SCREEN
-        self.sun_angle = 0
     
     def click_start(self):
         self.game.screen_fader.start(**{
