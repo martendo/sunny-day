@@ -41,7 +41,7 @@ class TitleScreen:
         self.sun_angle = 0
     
     def start_game(self):
-        self.game.state = GameState.IN_LEVEL
+        self.game.state = GameState.LEVEL_SELECT
     
     def update(self):
         self.sun_angle += self.SUN_ROTATION

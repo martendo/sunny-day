@@ -7,6 +7,7 @@ from game import enemy
 from game.camera import CameraAwareLayeredGroup
 from game.status_bar import StatusBar
 from game.title_screen import TitleScreen
+from game.level_select import LevelSelect
 from game import colour
 
 class Game:
@@ -44,6 +45,8 @@ class Game:
     FONT_SIZE = 75
     MENU_FONT_FILE = "IBM_CGA"
     MENU_FONT_SIZE = (8 * PX_SIZE) // 2
+    
+    LEVEL_COUNT = 1
     
     GRAVITY = 0.5
     
@@ -87,12 +90,11 @@ class Game:
         self.buttons = set()
         
         self.TITLE_SCREEN = TitleScreen(self)
+        self.LEVEL_SELECT = LevelSelect(self)
         
         self.map = Map(self)
         self.actors = CameraAwareLayeredGroup(self.map)
         self.player = Player(self)
-        # TODO: Make level selectable (level select screen)
-        self.map.load(0)
     
     def load_tileset(self, file):
         self.TILESET = []
@@ -189,6 +191,9 @@ class Game:
     def draw(self):
         if self.state is GameState.TITLE_SCREEN:
             self.TITLE_SCREEN.draw(self.screen)
+        
+        elif self.state is GameState.LEVEL_SELECT:
+            self.LEVEL_SELECT.draw(self.screen)
         
         elif self.state is GameState.IN_LEVEL:
             self.screen.fill(colour.PLACEHOLDER)
