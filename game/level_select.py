@@ -39,13 +39,11 @@ class LevelSelect:
     
     def click_level(self, num):
         self.game.screen_fader.start(**{
-            "mid_func": self.load_level,
+            "mid_func": self.start_level,
             "mid_func_args": (num,),
-            "end_func": self.start_level,
         })
-    def load_level(self, num):
+    def start_level(self, num):
         self.game.map.load(num)
-    def start_level(self):
         self.game.state = GameState.IN_LEVEL
     
     def draw(self, surface, allow_fade=True):
