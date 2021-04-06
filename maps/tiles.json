@@ -1,11 +1,11 @@
-{ "columns":8,
+{ "columns":7,
  "image":"..\/img\/tiles.png",
- "imageheight":16,
- "imagewidth":64,
+ "imageheight":48,
+ "imagewidth":56,
  "margin":0,
  "name":"tiles",
  "spacing":0,
- "tilecount":16,
+ "tilecount":42,
  "tiledversion":"2021.03.23",
  "tileheight":8,
  "tiles":[
@@ -33,17 +33,17 @@
          "animation":[
                 {
                  "duration":750,
-                 "tileid":3
+                 "tileid":21
                 }, 
                 {
                  "duration":250,
-                 "tileid":4
+                 "tileid":22
                 }, 
                 {
                  "duration":250,
-                 "tileid":5
+                 "tileid":23
                 }],
-         "id":3
+         "id":21
         }],
  "tilewidth":8,
  "transparentcolor":"#ff00ff",

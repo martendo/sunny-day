@@ -2,9 +2,9 @@ import pygame
 from game.animation import Animation
 
 class Block(pygame.sprite.Sprite):
-    COIN = 3
-    ONE_WAY = 6
-    SOLIDS_START = 7
+    COIN = 21
+    ONE_WAY = 35
+    SOLIDS_START = 36
     
     def __init__(self, game, gamemap, x, y, tile_id, flip):
         super().__init__()
