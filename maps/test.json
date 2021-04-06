@@ -79,6 +79,30 @@
                  "width":16,
                  "x":472,
                  "y":136
+                }, 
+                {
+                 "gid":46,
+                 "height":8,
+                 "id":18,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":376,
+                 "y":96
+                }, 
+                {
+                 "height":0,
+                 "id":19,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"SpawnPoint",
+                 "visible":true,
+                 "width":0,
+                 "x":336,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -87,7 +111,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":17,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2021.03.23",
@@ -100,6 +124,10 @@
         {
          "firstgid":43,
          "source":"object_tilesets\/renky.json"
+        }, 
+        {
+         "firstgid":46,
+         "source":"object_tilesets\/ponko.json"
         }],
  "tilewidth":8,
  "type":"map",
