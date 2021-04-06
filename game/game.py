@@ -212,6 +212,9 @@ class Game:
             self.screen.blit(text, rect)
             # TODO: Do something here
         
+        if self.screen_fader.fading:
+            self.screen_fader.update(self.screen)
+        
         pygame.display.update()
     
     def draw_level(self):

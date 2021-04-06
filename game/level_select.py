@@ -58,6 +58,3 @@ class LevelSelect:
                 button.draw()
         else:
             self.game.draw_level()
-        
-        if self.game.screen_fader.fading:
-            self.game.screen_fader.update(surface)

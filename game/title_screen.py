@@ -62,6 +62,3 @@ class TitleScreen:
             self.START_BUTTON.draw()
         else:
             self.game.LEVEL_SELECT.draw(surface, allow_fade=False)
-        
-        if self.game.screen_fader.fading:
-            self.game.screen_fader.update(surface)
