@@ -1,7 +1,9 @@
 import pygame
-from game import colour
 
 class Button:
+    COLOUR = pygame.Color(0, 0, 0, 16)
+    HOVER_COLOUR = pygame.Color(0, 0, 0, 32)
+    
     def __init__(self, game, rect, button_colour, hover_colour, text, text_colour, func, *func_args):
         self.game = game
         
@@ -29,7 +31,7 @@ class Button:
         hovered = self.is_hovered(pygame.mouse.get_pos())
         
         surface = pygame.Surface(self.rect.size)
-        surface.set_alpha(colour.BUTTON_HOVER.a if hovered else colour.BUTTON_COLOUR.a)
+        surface.set_alpha(self.HOVER_COLOUR.a if hovered else self.COLOUR.a)
         surface.fill(self.hover_colour if hovered else self.colour)
         self.game.screen.blit(surface, self.rect)
         self.game.screen.blit(self.text, self.text_rect)

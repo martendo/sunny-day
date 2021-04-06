@@ -2,6 +2,8 @@ import pygame
 from game import colour
 
 class StatusBar:
+    COLOUR = (203, 192, 255)
+    
     def __init__(self, game):
         self.game = game
         
@@ -17,7 +19,7 @@ class StatusBar:
         self.TEXT_SETTINGS = (self.game.MENU_FONT, colour.BLACK)
     
     def draw(self, surface):
-        pygame.draw.rect(surface, colour.STATUS_BAR_COLOUR, self.rect)
+        pygame.draw.rect(surface, self.COLOUR, self.rect)
         
         images = []
         

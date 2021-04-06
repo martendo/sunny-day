@@ -27,8 +27,8 @@ class TitleScreen:
                 self.NAME_RECT.width,
                 self.BUTTON_HEIGHT
             ),
-            colour.BUTTON_COLOUR,
-            colour.BUTTON_HOVER,
+            Button.COLOUR,
+            Button.HOVER_COLOUR,
             "Play!",
             colour.BLACK,
             self.start_game,
