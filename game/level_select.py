@@ -49,7 +49,5 @@ class LevelSelect:
     def draw(self, surface):
         surface.blit(self.BG_IMAGE, self.BG_IMAGE_RECT)
         
-        self.game.status_bar.draw(surface)
-        
         for button in self.buttons:
             button.draw()

@@ -208,8 +208,6 @@ class Game:
             self.actors.draw(self.pixel_screen)
             scaled_screen = pygame.transform.scale(self.pixel_screen, self.GAME_WINDOW_RECT.size)
             self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
-            
-            self.status_bar.draw(self.screen)
         
         elif self.state is GameState.GAME_OVER:
             self.screen.fill(colour.BLACK)
@@ -220,6 +218,8 @@ class Game:
         
         if self.screen_fader.fading:
             self.screen_fader.update(self.screen)
+        if self.state is not GameState.TITLE_SCREEN:
+            self.status_bar.draw(self.screen)
         
         pygame.display.update()
     
