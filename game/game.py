@@ -73,7 +73,7 @@ class Game:
         
         self.status_bar = StatusBar(self)
         self.HEIGHT += self.status_bar.rect.height
-        self.GAME_WINDOW_RECT.top += self.status_bar.rect.height
+        self.GAME_WINDOW_RECT.top = self.status_bar.rect.bottom
         
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_icon(pygame.image.load(self.ICON).convert_alpha())
