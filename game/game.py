@@ -234,3 +234,18 @@ class Game:
                 return True
         # No solid block under the actor
         return False
+    
+    # Determine if an enemy is standing at the edge of a platform
+    def at_edge(self, enemy):
+        left_pos = (enemy.rect.x + enemy.hitbox.left + 1) // self.TILE_SIZE
+        right_pos = (enemy.rect.x + enemy.hitbox.right) // self.TILE_SIZE
+        under_pos = (enemy.rect.y + enemy.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
+        
+        # Check left and right sides of enemy
+        for side in (left_pos, right_pos):
+            block = self.map.get_block(side, under_pos)
+            # Block is not solid, at the edge
+            if not block.is_solid and not block.is_one_way:
+                return True
+        # Enemy is not at the edge of a platform
+        return False
