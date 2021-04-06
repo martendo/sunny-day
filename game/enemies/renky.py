@@ -1,7 +1,6 @@
 import pygame
 from game.animation import Animation
 from game.enemy import Enemy
-from game.player import Player
 
 class Renky(Enemy):
     SPEED = 0.5
@@ -41,22 +40,16 @@ class Renky(Enemy):
         self.vel.x = self.SPEED * self.direction
     
     def update(self):
-        super().update()
-        
+        self.update_enablement()
         if not self.enabled:
             return
+        
+        super().update()
         
         if self.blockcollided.x:
             self.turn_around()
         
         self.animation.update()
     
-    def hit_actor(self, actor):
-        if isinstance(actor, Player):
-            if actor.is_stomping(self):
-                self.kill()
-                actor.bounce()
-            else:
-                actor.hurt()
-        else:
-            self.turn_around()
+    def hit_enemy(self):
+        self.turn_around()
