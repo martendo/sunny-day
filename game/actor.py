@@ -11,6 +11,7 @@ class Actor(pygame.sprite.Sprite):
         
         self.game = game
         
+        self.enabled = True
         self.pos = pygame.Vector2(pos or (0, 0))
         self.vel = pygame.Vector2(0, 0)
         self.direction = self.game.DIR_LEFT

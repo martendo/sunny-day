@@ -183,6 +183,8 @@ class Game:
         elif self.state is GameState.IN_LEVEL:
             # Apply gravity to all actors
             for actor in self.actors:
+                if not actor.enabled:
+                    continue
                 actor.vel.y += self.GRAVITY
             
             self.map.update()
