@@ -75,9 +75,7 @@ class FileSelect:
         self.got_file()
     
     def got_file(self):
-        self.game.screen_fader.start(**{
-            "mid_func": self.done,
-        })
+        self.game.screen_fader.start(mid_func=self.done)
     
     def done(self):
         self.game.state = GameState.LEVEL_SELECT

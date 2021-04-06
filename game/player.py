@@ -295,9 +295,7 @@ class Player(Actor):
         else:
             func = self.game.map.reset
         
-        self.game.screen_fader.start(**{
-            "mid_func": func
-        })
+        self.game.screen_fader.start(mid_func=func)
         self.enabled = False
     
     def collect_coin(self, block, axis):

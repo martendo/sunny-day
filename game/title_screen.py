@@ -36,9 +36,7 @@ class TitleScreen:
         )
     
     def click_start(self):
-        self.game.screen_fader.start(**{
-            "mid_func": self.start_game,
-        })
+        self.game.screen_fader.start(mid_func=self.start_game)
     def start_game(self):
         self.game.state = GameState.FILE_SELECT
     

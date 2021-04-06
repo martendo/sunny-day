@@ -167,9 +167,7 @@ class Map:
     
     def finish(self):
         self.game.level_completion[self.current - 1] = True
-        self.game.screen_fader.start(**{
-            "mid_func": self.end_level,
-        })
+        self.game.screen_fader.start(mid_func=self.end_level)
     def end_level(self):
         self.game.state = GameState.LEVEL_SELECT
         self.game.player.reset()
