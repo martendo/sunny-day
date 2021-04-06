@@ -17,7 +17,7 @@ class Player(Actor):
     # Small jump: 2 blocks high
     JUMP_VEL = 4
     # High jump: 3 blocks high
-    HIGH_JUMP = 0.2
+    HIGH_JUMP = 0.215
     # Crouch-jump: 1 block high
     CROUCH_JUMP_VEL = 3.25
     
