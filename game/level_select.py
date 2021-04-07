@@ -79,4 +79,4 @@ class LevelSelect:
         surface.blit(self.BG_IMAGE, self.BG_IMAGE_RECT)
         
         for button in self.buttons:
-            button.draw()
+            button.draw(surface)

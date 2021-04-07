@@ -16,6 +16,7 @@ class Button:
         
         self.text, self.text_rect = self.game.render_text(text, self.game.FONT, text_colour)
         self.text_rect.center = self.rect.center
+        self.surface = pygame.Surface(self.rect.size)
         
         self.func = func
         self.func_args = func_args
@@ -29,11 +30,10 @@ class Button:
     def click(self):
         self.func(*self.func_args)
     
-    def draw(self):
+    def draw(self, surface):
         hovered = self.is_hovered(pygame.mouse.get_pos())
         
-        surface = pygame.Surface(self.rect.size)
-        surface.set_alpha(self.hover_colour.a if hovered else self.colour.a)
-        surface.fill(self.hover_colour if hovered else self.colour)
-        self.game.screen.blit(surface, self.rect)
-        self.game.screen.blit(self.text, self.text_rect)
+        self.surface.set_alpha(self.hover_colour.a if hovered else self.colour.a)
+        self.surface.fill(self.hover_colour if hovered else self.colour)
+        surface.blit(self.surface, self.rect)
+        surface.blit(self.text, self.text_rect)

@@ -88,5 +88,5 @@ class FileSelect:
     def draw(self, surface):
         surface.fill(self.BG_COLOUR)
         
-        self.OPEN_BUTTON.draw()
-        self.NEW_BUTTON.draw()
+        self.OPEN_BUTTON.draw(surface)
+        self.NEW_BUTTON.draw(surface)

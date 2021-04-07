@@ -55,4 +55,4 @@ class TitleScreen:
         
         surface.blits(((self.BG, self.BG_RECT), (image, rect)), False)
         
-        self.START_BUTTON.draw()
+        self.START_BUTTON.draw(surface)
