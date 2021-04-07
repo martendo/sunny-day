@@ -10,11 +10,14 @@ class MissingMapDataError(Exception):
     pass
 
 class EndPoint(pygame.sprite.Sprite):
+    HITBOX_INFLATE = -(5 * 2)
+    
     def __init__(self, game, pos):
         self.game = game
         self.image = self.game.IMAGES["endpoint"]
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
+        self.hitbox = self.rect.inflate(self.HITBOX_INFLATE, self.HITBOX_INFLATE)
     
     def draw(self, surface):
         surface.blit(self.image, self.rect.move(-self.game.map.camera.pos))

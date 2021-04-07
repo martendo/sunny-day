@@ -199,7 +199,7 @@ class Player(Actor):
         
         # Collect coins
         self.block_colliding(None, self.collect_coin)
-        if self.get_positioned_hitbox(self).colliderect(self.game.map.endpoint.rect):
+        if self.get_positioned_hitbox(self).colliderect(self.game.map.endpoint.hitbox):
             self.enabled = False
             self.game.map.finish()
         
