@@ -328,3 +328,11 @@ class Player(Actor):
         self.invincible = False
         
         self.animation.update()
+    
+    def save_state(self):
+        self._saved_lives = self.lives
+        self._saved_coins = self.coins
+    def restore_state(self):
+        if self._saved_lives < self.lives:
+            self.lives = self._saved_lives
+        self.coins = self._saved_coins

@@ -65,6 +65,7 @@ class Game:
     MOVE_RIGHT_KEY = pygame.K_d
     RUN_KEY = pygame.K_LSHIFT
     JUMP_KEY = pygame.K_SPACE
+    EXIT_LEVEL_KEY = pygame.K_ESCAPE
     
     def __init__(self):
         pygame.init()
@@ -173,8 +174,11 @@ class Game:
             
             else:
                 if event.type == pygame.KEYDOWN:
+                    if event.key == self.EXIT_LEVEL_KEY:
+                        self.map.exit_level(restore_state=True)
+                    
                     # Move a pixel right away if stopped so a quick press will nudge the player
-                    if event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
+                    elif event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
                         self.player.pos.x += 1
                         self.player.direction = self.DIR_RIGHT
                     elif event.key == self.MOVE_LEFT_KEY and self.player.vel.x == 0:

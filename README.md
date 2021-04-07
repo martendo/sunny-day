@@ -36,6 +36,10 @@ python -m sunny-day
       <td><kbd>S</kbd></td>
       <td>Crouch</td>
     </tr>
+    <tr>
+      <td></kbd>Escape</kbd></td>
+      <td>Exit level</td>
+    </tr>
   </tbody>
 </table>
 

@@ -88,6 +88,7 @@ class Map:
                 self.enemy_data.append(obj)
         
         self.reset()
+        self.game.player.save_state()
     
     def create_blocks(self):
         self.blocks.empty()
@@ -171,6 +172,10 @@ class Map:
     def finish(self):
         if self.current > self.game.last_completed_level:
             self.game.last_completed_level = self.current
+        self.exit_level()
+    def exit_level(self, restore_state=False):
+        if restore_state:
+            self.game.player.restore_state()
         self.game.screen_fader.start(mid_func=self.end_level)
     def end_level(self):
         self.game.LEVEL_SELECT.show()
