@@ -79,6 +79,7 @@ class FileSelect:
     
     def done(self):
         self.game.state = GameState.LEVEL_SELECT
+        self.game.LEVEL_SELECT.make_buttons()
     
     def draw(self, surface):
         surface.fill(self.BG_COLOUR)

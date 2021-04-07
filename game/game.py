@@ -95,20 +95,17 @@ class Game:
         self.clock = pygame.time.Clock()
         self.frame = 0
         
-        self.savereader = SaveReader(self)
-        
-        self.buttons = set()
-        
-        self.TITLE_SCREEN = TitleScreen(self)
-        self.FILE_SELECT = FileSelect(self)
-        self.LEVEL_SELECT = LevelSelect(self)
-        
-        self.screen_fader = ScreenFader(self)
-        
-        self.level_completion = [False] * self.LEVEL_COUNT
+        self.last_completed_level = 0
         self.map = Map(self)
         self.actors = CameraAwareLayeredGroup(self.map)
         self.player = Player(self)
+        
+        self.buttons = set()
+        self.TITLE_SCREEN = TitleScreen(self)
+        self.FILE_SELECT = FileSelect(self)
+        self.LEVEL_SELECT = LevelSelect(self)
+        self.savereader = SaveReader(self)
+        self.screen_fader = ScreenFader(self)
     
     def load_tileset(self, file):
         self.TILESET = []

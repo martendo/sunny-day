@@ -31,7 +31,7 @@ class Button:
         hovered = self.is_hovered(pygame.mouse.get_pos())
         
         surface = pygame.Surface(self.rect.size)
-        surface.set_alpha(self.HOVER_COLOUR.a if hovered else self.COLOUR.a)
+        surface.set_alpha(self.hover_colour.a if hovered else self.colour.a)
         surface.fill(self.hover_colour if hovered else self.colour)
         self.game.screen.blit(surface, self.rect)
         self.game.screen.blit(self.text, self.text_rect)

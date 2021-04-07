@@ -5,10 +5,14 @@ from game.game_state import GameState
 
 class LevelSelect:
     BUTTON_SIZE = 75
-    
     BUTTON_SPOTS = (
         (180, 180),
     )
+    
+    LOCKED_COLOUR = pygame.Color(152, 152, 152, 96)
+    COMPLETED_COLOUR = pygame.Color(126, 255, 74, 96)
+    NEW_COLOUR = pygame.Color(255, 90, 90, 96)
+    HOVER_ALPHA = 128
     
     def __init__(self, game):
         self.game = game
@@ -18,16 +22,27 @@ class LevelSelect:
         self.BG_IMAGE_RECT.top = self.game.status_bar.rect.bottom
         
         self.buttons = set()
+        self.make_buttons()
+    
+    def make_buttons(self):
+        self.game.buttons -= self.buttons
+        self.buttons.clear()
         for i, spot in enumerate(self.BUTTON_SPOTS):
             num = i + 1
             rect = pygame.Rect((0, 0), (self.BUTTON_SIZE, self.BUTTON_SIZE))
             rect.center = spot
             rect.y += self.game.status_bar.rect.height
+            if self.game.last_completed_level > i:
+                cur_colour = self.COMPLETED_COLOUR
+            elif i > self.game.last_completed_level:
+                cur_colour = self.LOCKED_COLOUR
+            else:
+                cur_colour = self.NEW_COLOUR
             self.buttons.add(Button(
                 self.game,
                 rect,
-                Button.COLOUR,
-                Button.HOVER_COLOUR,
+                cur_colour,
+                pygame.Color(*cur_colour[0:3], self.HOVER_ALPHA),
                 str(num),
                 colour.BLACK,
                 self.click_level,
@@ -35,6 +50,9 @@ class LevelSelect:
             ))
     
     def click_level(self, num):
+        if num > self.game.last_completed_level + 1:
+            # Locked
+            return
         self.game.screen_fader.start(
             mid_func=self.start_level,
             mid_func_args=(num,),

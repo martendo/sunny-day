@@ -8,7 +8,7 @@ class SaveReader:
         self.game.savefile = filename
         with open(self.game.savefile, "rb") as file:
             data = pickle.load(file)
-        self.game.level_completion = data["level_completion"]
+        self.game.last_completed_level = data["last_completed_level"]
         self.game.player.lives = data["lives"]
         self.game.player.coins = data["coins"]
     
@@ -16,7 +16,7 @@ class SaveReader:
         if filename is not None:
             self.game.savefile = filename
         data = {
-            "level_completion": self.game.level_completion,
+            "last_completed_level": self.game.last_completed_level,
             "lives": self.game.player.lives,
             "coins": self.game.player.coins,
         }
