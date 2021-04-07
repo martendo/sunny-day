@@ -7,6 +7,8 @@ class Button:
     def __init__(self, game, rect, button_colour, hover_colour, text, text_colour, func, *func_args):
         self.game = game
         
+        self.enabled = False
+        
         self.rect = pygame.Rect(rect)
         self.colour = button_colour
         self.hover_colour = hover_colour

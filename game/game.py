@@ -144,7 +144,7 @@ class Game:
     
     def run(self):
         self.running = True
-        self.state = GameState.TITLE_SCREEN
+        self.TITLE_SCREEN.show()
         
         while self.running:
             self.handle_events()
@@ -165,6 +165,8 @@ class Game:
             if self.state is not GameState.IN_LEVEL:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for button in self.buttons:
+                        if not button.enabled:
+                            continue
                         if button.is_hovered(event.pos):
                             button.click()
             

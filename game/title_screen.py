@@ -37,8 +37,12 @@ class TitleScreen:
     
     def click_start(self):
         self.game.screen_fader.start(mid_func=self.start_game)
+    def show(self):
+        self.game.state = GameState.TITLE_SCREEN
+        self.START_BUTTON.enabled = True
     def start_game(self):
-        self.game.state = GameState.FILE_SELECT
+        self.game.FILE_SELECT.show()
+        self.START_BUTTON.enabled = False
     
     def update(self):
         self.sun_angle += self.SUN_ROTATION

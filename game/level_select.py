@@ -22,7 +22,6 @@ class LevelSelect:
         self.BG_IMAGE_RECT.top = self.game.status_bar.rect.bottom
         
         self.buttons = set()
-        self.make_buttons()
     
     def make_buttons(self):
         self.game.buttons -= self.buttons
@@ -57,9 +56,15 @@ class LevelSelect:
             mid_func=self.start_level,
             mid_func_args=(num,),
         )
+    def show(self):
+        self.game.state = GameState.LEVEL_SELECT
+        self.make_buttons()
+        for button in self.buttons:
+            button.enabled = True
     def start_level(self, num):
         self.game.map.load(num)
         self.game.state = GameState.IN_LEVEL
+        self.game.buttons -= self.buttons
     
     def draw(self, surface):
         surface.blit(self.BG_IMAGE, self.BG_IMAGE_RECT)

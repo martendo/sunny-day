@@ -76,10 +76,14 @@ class FileSelect:
     
     def got_file(self):
         self.game.screen_fader.start(mid_func=self.done)
-    
+    def show(self):
+        self.game.state = GameState.FILE_SELECT
+        self.OPEN_BUTTON.enabled = True
+        self.NEW_BUTTON.enabled = True
     def done(self):
-        self.game.state = GameState.LEVEL_SELECT
-        self.game.LEVEL_SELECT.make_buttons()
+        self.game.LEVEL_SELECT.show()
+        self.OPEN_BUTTON.enabled = False
+        self.NEW_BUTTON.enabled = False
     
     def draw(self, surface):
         surface.fill(self.BG_COLOUR)
