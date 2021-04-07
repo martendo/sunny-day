@@ -125,6 +125,7 @@ class Game:
         self.load_spritesheet("player", Player.IMG_WIDTH, Player.IMG_HEIGHT)
         self.load_spritesheet("enemies/renky", enemy.Renky.IMG_WIDTH, enemy.Renky.IMG_HEIGHT)
         self.load_spritesheet("enemies/ponko", enemy.Ponko.IMG_WIDTH, enemy.Ponko.IMG_HEIGHT)
+        self.load_spritesheet("enemies/booto", enemy.Booto.IMG_WIDTH, enemy.Booto.IMG_HEIGHT)
     
     def load_spritesheet(self, file, spr_width, spr_height, none_colour=None):
         if none_colour is None:

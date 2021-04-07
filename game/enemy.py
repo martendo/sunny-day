@@ -30,8 +30,10 @@ class Enemy(Actor):
 
 from game.enemies.renky import Renky
 from game.enemies.ponko import Ponko
+from game.enemies.booto import Booto
 
 TYPES = {
     "Renky": Renky,
-    "Ponko": Ponko
+    "Ponko": Ponko,
+    "Booto": Booto,
 }

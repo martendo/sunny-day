@@ -1,0 +1,20 @@
+{ "columns":3,
+ "image":"..\/..\/img\/enemies\/booto.png",
+ "imageheight":16,
+ "imagewidth":48,
+ "margin":0,
+ "name":"enemies\/booto",
+ "spacing":0,
+ "tilecount":3,
+ "tiledversion":"2021.03.23",
+ "tileheight":16,
+ "tiles":[
+        {
+         "id":0,
+         "type":"Booto"
+        }],
+ "tilewidth":16,
+ "transparentcolor":"#ff00ff",
+ "type":"tileset",
+ "version":1.5
+}
