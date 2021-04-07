@@ -35,3 +35,37 @@ class Button:
         self.surface.fill(self.HOVER_COLOUR if hovered else self.COLOUR)
         surface.blit(self.surface, self.rect)
         surface.blit(self.text, self.text_rect)
+
+class LevelButton(Button):
+    LOCKED = 0
+    COMPLETED = 1
+    NEW = 2
+    
+    COLOURS = {
+        LOCKED: {
+            "normal": (152, 152, 152),
+        },
+        COMPLETED: {
+            "normal": (126, 255, 74),
+            "hover": (106, 217, 61),
+        },
+        NEW: {
+            "normal": (255, 90, 90),
+            "hover": (205, 76, 76),
+        },
+    }
+    BORDER_COLOUR = colour.BLACK
+    BORDER_WIDTH = 5
+    
+    def __init__(self, status, *args):
+        super().__init__(*args)
+        
+        self.status = status
+        
+    def draw(self, surface):
+        hovered = self.is_hovered(pygame.mouse.get_pos())
+        colour = self.COLOURS[self.status]["hover" if (hovered
+            and self.status != self.LOCKED) else "normal"]
+        pygame.draw.rect(surface, colour, self.rect)
+        pygame.draw.rect(surface, self.BORDER_COLOUR, self.rect, self.BORDER_WIDTH)
+        surface.blit(self.text, self.text_rect)

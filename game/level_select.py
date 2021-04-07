@@ -1,5 +1,5 @@
 import pygame
-from game.button import Button
+from game.button import LevelButton
 from game.game_state import GameState
 
 class LevelSelect:
@@ -7,11 +7,6 @@ class LevelSelect:
     BUTTON_SPOTS = (
         (180, 180),
     )
-    
-    LOCKED_COLOUR = pygame.Color(152, 152, 152, 64)
-    COMPLETED_COLOUR = pygame.Color(126, 255, 74, 64)
-    NEW_COLOUR = pygame.Color(255, 90, 90, 64)
-    HOVER_ALPHA = 128
     
     def __init__(self, game):
         self.game = game
@@ -33,19 +28,14 @@ class LevelSelect:
             rect.y += self.game.status_bar.rect.height
             
             if self.game.last_completed_level + 1 > num:
-                cur_colour = self.COMPLETED_COLOUR
+                state = LevelButton.COMPLETED
             elif self.game.last_completed_level + 1 < num:
-                cur_colour = self.LOCKED_COLOUR
+                state = LevelButton.LOCKED
             else:
-                cur_colour = self.NEW_COLOUR
+                state = LevelButton.NEW
             
-            if self.game.last_completed_level + 1 >= num:
-                hover_colour = pygame.Color(cur_colour)
-                hover_colour.a = self.HOVER_ALPHA
-            else:
-                hover_colour = cur_colour
-            
-            self.buttons.add(Button(
+            self.buttons.add(LevelButton(
+                state,
                 self.game,
                 rect,
                 str(num),
