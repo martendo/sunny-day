@@ -1,20 +1,18 @@
 import pygame
+from game import colour
 
 class Button:
     COLOUR = pygame.Color(0, 0, 0, 16)
     HOVER_COLOUR = pygame.Color(0, 0, 0, 32)
+    TEXT_COLOUR = colour.BLACK
     
-    def __init__(self, game, rect, button_colour, hover_colour, text, text_colour, func, *func_args):
+    def __init__(self, game, rect, text, func, *func_args):
         self.game = game
         
         self.enabled = False
         
         self.rect = pygame.Rect(rect)
-        self.colour = button_colour
-        self.hover_colour = hover_colour
-        self.text_colour = text_colour
-        
-        self.text, self.text_rect = self.game.render_text(text, self.game.FONT, text_colour)
+        self.text, self.text_rect = self.game.render_text(text, self.game.FONT, self.TEXT_COLOUR)
         self.text_rect.center = self.rect.center
         self.surface = pygame.Surface(self.rect.size)
         
@@ -33,7 +31,7 @@ class Button:
     def draw(self, surface):
         hovered = self.is_hovered(pygame.mouse.get_pos())
         
-        self.surface.set_alpha(self.hover_colour.a if hovered else self.colour.a)
-        self.surface.fill(self.hover_colour if hovered else self.colour)
+        self.surface.set_alpha(self.HOVER_COLOUR.a if hovered else self.COLOUR.a)
+        self.surface.fill(self.HOVER_COLOUR if hovered else self.COLOUR)
         surface.blit(self.surface, self.rect)
         surface.blit(self.text, self.text_rect)

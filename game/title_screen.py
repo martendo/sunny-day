@@ -1,6 +1,5 @@
 import pygame
 from game.button import Button
-from game import colour
 from game.game_state import GameState
 
 class TitleScreen:
@@ -28,10 +27,7 @@ class TitleScreen:
                 self.NAME_RECT.width,
                 self.BUTTON_HEIGHT
             ),
-            Button.COLOUR,
-            Button.HOVER_COLOUR,
             "Play!",
-            colour.BLACK,
             self.click_start,
         )
     

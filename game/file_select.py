@@ -1,8 +1,6 @@
-import pygame
 import tkinter as tk
 from tkinter import filedialog
 from game.button import Button
-from game import colour
 from game.game_state import GameState
 
 class FileSelect:
@@ -23,10 +21,7 @@ class FileSelect:
                 self.BUTTON_WIDTH,
                 self.BUTTON_HEIGHT,
             ),
-            Button.COLOUR,
-            Button.HOVER_COLOUR,
             "Open File",
-            colour.BLACK,
             self.open_file,
         )
         self.NEW_BUTTON = Button(
@@ -37,10 +32,7 @@ class FileSelect:
                 self.BUTTON_WIDTH,
                 self.BUTTON_HEIGHT,
             ),
-            Button.COLOUR,
-            Button.HOVER_COLOUR,
             "New File",
-            colour.BLACK,
             self.new_file,
         )
     

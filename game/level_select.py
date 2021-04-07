@@ -1,6 +1,5 @@
 import pygame
 from game.button import Button
-from game import colour
 from game.game_state import GameState
 
 class LevelSelect:
@@ -49,10 +48,7 @@ class LevelSelect:
             self.buttons.add(Button(
                 self.game,
                 rect,
-                cur_colour,
-                hover_colour,
                 str(num),
-                colour.BLACK,
                 self.click_level,
                 num,
             ))
