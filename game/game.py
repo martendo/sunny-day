@@ -162,6 +162,7 @@ class Game:
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.save()
                 self.running = False
                 self.state = GameState.NOT_RUNNING
                 return
