@@ -9,9 +9,9 @@ class LevelSelect:
         (180, 180),
     )
     
-    LOCKED_COLOUR = pygame.Color(152, 152, 152, 96)
-    COMPLETED_COLOUR = pygame.Color(126, 255, 74, 96)
-    NEW_COLOUR = pygame.Color(255, 90, 90, 96)
+    LOCKED_COLOUR = pygame.Color(152, 152, 152, 64)
+    COMPLETED_COLOUR = pygame.Color(126, 255, 74, 64)
+    NEW_COLOUR = pygame.Color(255, 90, 90, 64)
     HOVER_ALPHA = 128
     
     def __init__(self, game):
@@ -28,20 +28,29 @@ class LevelSelect:
         self.buttons.clear()
         for i, spot in enumerate(self.BUTTON_SPOTS):
             num = i + 1
+            
             rect = pygame.Rect((0, 0), (self.BUTTON_SIZE, self.BUTTON_SIZE))
             rect.center = spot
             rect.y += self.game.status_bar.rect.height
-            if self.game.last_completed_level > i:
+            
+            if self.game.last_completed_level + 1 > num:
                 cur_colour = self.COMPLETED_COLOUR
-            elif i > self.game.last_completed_level:
+            elif self.game.last_completed_level + 1 < num:
                 cur_colour = self.LOCKED_COLOUR
             else:
                 cur_colour = self.NEW_COLOUR
+            
+            if self.game.last_completed_level + 1 >= num:
+                hover_colour = pygame.Color(cur_colour)
+                hover_colour.a = self.HOVER_ALPHA
+            else:
+                hover_colour = cur_colour
+            
             self.buttons.add(Button(
                 self.game,
                 rect,
                 cur_colour,
-                pygame.Color(*cur_colour[0:3], self.HOVER_ALPHA),
+                hover_colour,
                 str(num),
                 colour.BLACK,
                 self.click_level,
