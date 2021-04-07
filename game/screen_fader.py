@@ -4,7 +4,7 @@ from game import colour
 
 class ScreenFader:
     DEFAULT_COLOUR = colour.BLACK
-    DEFAULT_DURATION = 0.75
+    DEFAULT_DURATION = 0.5
     
     def __init__(self, game):
         self.game = game
