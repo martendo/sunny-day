@@ -148,7 +148,7 @@ class Map:
         return None
     
     def get_block(self, x, y):
-        if x < 0 or y < 0:
+        if x < 0 or y < 0 or x >= self.width or y >= self.height:
             return self.EMPTY_BLOCK
         try:
             return self.block_map[y * self.width + x]
