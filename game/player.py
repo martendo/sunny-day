@@ -289,6 +289,9 @@ class Player(Actor):
             self.invincible_end = time() + self.HURT_INV_LENGTH
     
     def die(self):
+        if not self.enabled:
+            return
+        
         self.lives -= 1
         if self.lives < 1:
             func = self.game.game_over
