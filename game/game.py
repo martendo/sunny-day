@@ -10,6 +10,7 @@ from game.status_bar import StatusBar
 from game.title_screen import TitleScreen
 from game.file_select import FileSelect
 from game.level_select import LevelSelect
+from game.game_over import GameOver
 from game.screen_fader import ScreenFader
 from game import colour
 
@@ -105,6 +106,7 @@ class Game:
         self.TITLE_SCREEN = TitleScreen(self)
         self.FILE_SELECT = FileSelect(self)
         self.LEVEL_SELECT = LevelSelect(self)
+        self.GAME_OVER = GameOver(self)
         self.savereader = SaveReader(self)
         self.screen_fader = ScreenFader(self)
     
@@ -164,13 +166,20 @@ class Game:
                 self.state = GameState.NOT_RUNNING
                 return
             
-            if self.state is not GameState.IN_LEVEL:
+            if (self.state is GameState.TITLE_SCREEN
+                    or self.state is GameState.FILE_SELECT
+                    or self.state is GameState.LEVEL_SELECT):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for button in self.buttons:
                         if not button.enabled:
                             continue
                         if button.is_hovered(event.pos):
                             button.click()
+            
+            elif self.state is GameState.GAME_OVER:
+                if (event.type == pygame.KEYDOWN
+                        or event.type == pygame.MOUSEBUTTONDOWN):
+                    self.screen_fader.start(mid_func=self.reset)
             
             else:
                 if event.type == pygame.KEYDOWN:
@@ -227,11 +236,7 @@ class Game:
             self.screen.blit(scaled_screen, self.GAME_WINDOW_RECT)
         
         elif self.state is GameState.GAME_OVER:
-            self.screen.fill(colour.BLACK)
-            text, rect = self.render_text("GAME OVER!", self.FONT, colour.WHITE, colour.BLACK)
-            rect.center = (self.WIDTH / 2, self.HEIGHT / 2)
-            self.screen.blit(text, rect)
-            # TODO: Do something here
+            self.GAME_OVER.draw(self.screen)
         
         if self.screen_fader.fading:
             self.screen_fader.update(self.screen)
@@ -242,7 +247,12 @@ class Game:
         pygame.display.update()
     
     def game_over(self):
-        self.state = GameState.GAME_OVER
+        self.GAME_OVER.show()
+    def reset(self):
+        self.GAME_OVER.hide()
+        self.player.lives = self.player.START_LIVES
+        self.player.coins = 0
+        self.save()
     
     def render_text(self, text, font, color, background=None):
         surface = font.render(text, False, color, background)
