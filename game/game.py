@@ -283,7 +283,7 @@ class Game:
     
     # Determine if an enemy is standing at the edge of a platform
     def at_edge(self, enemy):
-        left_pos = (enemy.rect.x + enemy.hitbox.left + 1) // self.TILE_SIZE
+        left_pos = (enemy.rect.x + enemy.hitbox.left - 1) // self.TILE_SIZE
         right_pos = (enemy.rect.x + enemy.hitbox.right) // self.TILE_SIZE
         under_pos = (enemy.rect.y + enemy.hitbox.bottom + self.COLLISION_OFFSET) // self.TILE_SIZE
         
