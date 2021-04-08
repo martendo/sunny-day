@@ -8,6 +8,7 @@ class Player(Actor):
     IN_AIR_ACCEL = 0.25
     FRICTION = 1/3
     IN_AIR_FRICTION = 0.1
+    NUDGE_ACCEL = ACCEL * 2/3
     
     MAX_WALK_VELX = 1.25
     MAX_RUN_VELX = 2.5

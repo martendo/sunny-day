@@ -189,12 +189,12 @@ class Game:
                     if event.key == self.EXIT_LEVEL_KEY:
                         self.map.exit_level(restore_state=True)
                     
-                    # Move a pixel right away if stopped so a quick press will nudge the player
+                    # Nudge the player with a bit of x-velocity if stopped for quick presses
                     elif event.key == self.MOVE_RIGHT_KEY and self.player.vel.x == 0:
-                        self.player.pos.x += 1
+                        self.player.vel.x += self.player.NUDGE_ACCEL
                         self.player.direction = self.DIR_RIGHT
                     elif event.key == self.MOVE_LEFT_KEY and self.player.vel.x == 0:
-                        self.player.pos.x -= 1
+                        self.player.vel.x -= self.player.NUDGE_ACCEL
                         self.player.direction = self.DIR_LEFT
                     
                     elif event.key == self.JUMP_KEY:
