@@ -7,6 +7,7 @@ class LevelSelect:
     BUTTON_SPOTS = (
         (180, 180),
         (750, 200),
+        (1080, 380),
     )
     
     def __init__(self, game):
