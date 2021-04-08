@@ -19,7 +19,7 @@ class GameOver:
     def show(self):
         self.game.state = GameState.GAME_OVER
     def hide(self):
-        self.game.state = GameState.LEVEL_SELECT
+        self.game.LEVEL_SELECT.show()
     
     def draw(self, surface):
         surface.fill(self.BG_COLOUR)
