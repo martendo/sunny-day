@@ -10,6 +10,8 @@ class SaveReader:
             data = pickle.load(file)
         self.game.last_completed_level = data["last_completed_level"]
         self.game.player.lives = data["lives"]
+        if self.game.player.lives < 1:
+            self.game.player.lives = self.game.player.START_LIVES
         self.game.player.coins = data["coins"]
     
     def save(self, filename=None):
