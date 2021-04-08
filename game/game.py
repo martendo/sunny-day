@@ -108,6 +108,7 @@ class Game:
         self.LEVEL_SELECT = LevelSelect(self)
         self.GAME_OVER = GameOver(self)
         self.savereader = SaveReader(self)
+        self.savefile = None
         self.screen_fader = ScreenFader(self)
     
     def load_tileset(self, file):
@@ -162,7 +163,8 @@ class Game:
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.save()
+                if self.savefile is not None:
+                    self.save()
                 self.running = False
                 self.state = GameState.NOT_RUNNING
                 return
