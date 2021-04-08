@@ -1,4 +1,4 @@
-import pickle
+import json
 
 class SaveReader:
     def __init__(self, game):
@@ -6,8 +6,8 @@ class SaveReader:
     
     def load(self, filename):
         self.game.savefile = filename
-        with open(self.game.savefile, "rb") as file:
-            data = pickle.load(file)
+        with open(self.game.savefile, "r") as file:
+            data = json.load(file)
         self.game.last_completed_level = data["last_completed_level"]
         self.game.player.lives = data["lives"]
         if self.game.player.lives < 1:
@@ -22,5 +22,5 @@ class SaveReader:
             "lives": self.game.player.lives,
             "coins": self.game.player.coins,
         }
-        with open(self.game.savefile, "wb") as file:
-            pickle.dump(data, file)
+        with open(self.game.savefile, "w") as file:
+            json.dump(data, file)

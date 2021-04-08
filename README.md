@@ -44,7 +44,7 @@ python -m sunny-day
 </table>
 
 ## Save File Format
-Save files (.sds files) are just a pickled dict in the following format. Knock yourself out.
+Save files (.sds files) are just a JSON-serialized dict in the following format. Knock yourself out.
 ```python
 {
     "last_completed_level": <int in range(0, Game.LEVEL_COUNT + 1)>,
