@@ -3,6 +3,8 @@ A pygame platformer game!
 
 Made for the 2021 PETCS Game Jam.
 
+See [this release](https://github.com/martendo7/sunny-day/releases/tag/v1.0.0) for the state the game was in at the time of submission.
+
 ## Running the Game
 Requirements:
 - Python 3
