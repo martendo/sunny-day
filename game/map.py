@@ -1,5 +1,6 @@
 import pygame
 import json
+from time import time
 from game.game_state import GameState
 from game.block import Block
 from game.enemy import TYPES as ENEMY_TYPES
@@ -30,6 +31,8 @@ class Map:
     TILE_FLIP_H = 0x80000000
     TILE_FLIP_V = 0x40000000
     TILE_FLIP_D = 0x20000000
+    
+    LEVEL_FINISH_WAIT_TIME = 0.75
     
     def __init__(self, game):
         self.game = game
@@ -169,6 +172,9 @@ class Map:
         self.blocks.update()
         self.enemies.update()
         self.camera.update(self.game.player.rect)
+        
+        if self.finished and time() >= self.finish_time:
+            self.complete_level()
     
     def draw(self, surface):
         surface.fill(self.backgroundColour)
@@ -176,6 +182,11 @@ class Map:
         self.blocks.draw(surface)
     
     def finish(self):
+        self.finished = True
+        self.finish_time = time() + self.LEVEL_FINISH_WAIT_TIME
+    def complete_level(self):
+        self.finished = False
+        self.finish_time = 0
         if self.current > self.game.last_completed_level:
             self.game.last_completed_level = self.current
         self.exit_level()
@@ -192,3 +203,5 @@ class Map:
         self.create_blocks()
         self.create_enemies()
         self.game.player.reset(self.startpoint, self.start_direction)
+        self.finished = False
+        self.finish_time = 0
