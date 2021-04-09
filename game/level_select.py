@@ -3,17 +3,24 @@ from game.button import LevelButton
 from game.game_state import GameState
 
 class LevelSelect:
+    SCALE = 8
+    
     BUTTON_SIZE = 75
     BUTTON_SPOTS = (
-        (180, 180),
-        (750, 200),
-        (1080, 380),
+        (28 * SCALE, 23 * SCALE),
+        (78 * SCALE, 23 * SCALE),
+        (136 * SCALE, 49 * SCALE),
+        (78 * SCALE, 75 * SCALE),
     )
     
     def __init__(self, game):
         self.game = game
         
-        self.BG_IMAGE = self.game.IMAGES["level_select_bg"]
+        self.BG_IMAGE = pygame.transform.scale(
+            self.game.IMAGES["level_select_bg"],
+            (self.game.WIDTH,
+            self.game.HEIGHT - self.game.status_bar.rect.height),
+        )
         self.BG_IMAGE_RECT = self.BG_IMAGE.get_rect()
         self.BG_IMAGE_RECT.top = self.game.status_bar.rect.bottom
         
