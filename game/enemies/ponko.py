@@ -61,10 +61,9 @@ class Ponko(Enemy):
         
         super().update()
         
-        if self.blockcollided.x or self.game.at_edge(self):
-            self.turn_around()
-        
         if self.moving:
+            if self.blockcollided.x or self.game.at_edge(self):
+                self.turn_around()
             self.animation.update()
     
     def hit_enemy(self):
