@@ -54,7 +54,7 @@ class Game:
     MENU_FONT_FILE = "IBM_CGA"
     MENU_FONT_SIZE = (8 * PX_SIZE) // 2
     
-    LEVEL_COUNT = 3
+    LEVEL_COUNT = 4
     
     GRAVITY = 0.5
     
