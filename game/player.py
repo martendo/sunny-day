@@ -316,7 +316,7 @@ class Player(Actor):
             self.coins %= 100
         return False
     
-    def reset(self, pos=(0, 0)):
+    def reset(self, pos=(0, 0), direction=None):
         self.enabled = True
         
         self.pos.update(pos)
@@ -326,7 +326,8 @@ class Player(Actor):
             self.game.map.camera.update(self.rect)
         
         self.crouching = False
-        self.direction = self.game.DIR_RIGHT
+        if direction is not None:
+            self.direction = direction
         
         self.health = self.START_HEALTH
         self.invincible = False

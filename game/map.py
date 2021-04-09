@@ -49,8 +49,9 @@ class Map:
         self.blocks = CameraAwareLayeredGroup(self)
         self.enemies = CameraAwareLayeredGroup(self)
         self.block_map = {}
-        self.startpoint = (0, 0)
+        self.startpoint = None
         self.endpoint = None
+        self.start_direction = None
     
     def load(self, num):
         self.current = num
@@ -82,6 +83,11 @@ class Map:
         for obj in self.objects:
             if obj["type"] == "StartPoint":
                 self.startpoint = (obj["x"], obj["y"])
+                self.start_direction = (
+                    self.game.DIR_LEFT if next(
+                        (prop for prop in obj["properties"] if prop["name"] == "Flip"),
+                    )["value"]
+                    else self.game.DIR_RIGHT)
             elif obj["type"] == "EndPoint":
                 self.endpoint = EndPoint(self.game, (obj["x"], obj["y"]))
             elif "gid" in obj:
@@ -185,4 +191,4 @@ class Map:
     def reset(self):
         self.create_blocks()
         self.create_enemies()
-        self.game.player.reset(self.startpoint)
+        self.game.player.reset(self.startpoint, self.start_direction)

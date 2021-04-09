@@ -25,6 +25,12 @@
                  "id":10,
                  "name":"",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"Flip",
+                         "type":"bool",
+                         "value":false
+                        }],
                  "rotation":0,
                  "type":"StartPoint",
                  "visible":true,
