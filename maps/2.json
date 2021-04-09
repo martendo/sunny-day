@@ -26,7 +26,7 @@
                  "name":"",
                  "point":true,
                  "rotation":0,
-                 "type":"SpawnPoint",
+                 "type":"StartPoint",
                  "visible":true,
                  "width":0,
                  "x":80,

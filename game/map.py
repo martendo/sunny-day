@@ -49,7 +49,7 @@ class Map:
         self.blocks = CameraAwareLayeredGroup(self)
         self.enemies = CameraAwareLayeredGroup(self)
         self.block_map = {}
-        self.spawn_point = (0, 0)
+        self.startpoint = (0, 0)
         self.endpoint = None
     
     def load(self, num):
@@ -80,8 +80,8 @@ class Map:
         self.objects = layer["objects"]
         self.enemy_data = []
         for obj in self.objects:
-            if obj["type"] == "SpawnPoint":
-                self.spawn_point = (obj["x"], obj["y"])
+            if obj["type"] == "StartPoint":
+                self.startpoint = (obj["x"], obj["y"])
             elif obj["type"] == "EndPoint":
                 self.endpoint = EndPoint(self.game, (obj["x"], obj["y"]))
             elif "gid" in obj:
@@ -185,4 +185,4 @@ class Map:
     def reset(self):
         self.create_blocks()
         self.create_enemies()
-        self.game.player.reset(self.spawn_point)
+        self.game.player.reset(self.startpoint)
