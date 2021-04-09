@@ -44,10 +44,10 @@ class Renky(Enemy):
         if not self.enabled:
             return
         
-        super().update()
-        
         if self.blockcollided.x:
             self.turn_around()
+        
+        super().update()
         
         self.animation.update()
     

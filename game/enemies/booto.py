@@ -48,10 +48,10 @@ class Booto(Enemy):
         if not self.enabled:
             return
         
-        super().update()
-        
         if self.blockcollided.x or self.game.at_edge(self):
             self.turn_around()
+        
+        super().update()
         
         self.animation.update()
     
