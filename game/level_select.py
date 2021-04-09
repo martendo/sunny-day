@@ -11,6 +11,7 @@ class LevelSelect:
         (78 * SCALE, 23 * SCALE),
         (136 * SCALE, 49 * SCALE),
         (78 * SCALE, 75 * SCALE),
+        (28 * SCALE, 75 * SCALE),
     )
     
     def __init__(self, game):
