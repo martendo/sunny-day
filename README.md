@@ -1,6 +1,8 @@
 # Sunny Day!
 A pygame platformer game!
 
+Made for the 2021 PETCS Game Jam.
+
 ## Running the Game
 Requirements:
 - Python 3
