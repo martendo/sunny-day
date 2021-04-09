@@ -272,7 +272,7 @@ class Player(Actor):
     def can_uncrouch(self):
         left_pos = (self.rect.x + self.hitbox.left) // self.game.TILE_SIZE
         right_pos = (self.rect.x + self.hitbox.right - 1) // self.game.TILE_SIZE
-        above_pos = (self.rect.y + self.hitbox.top - 1) // self.game.TILE_SIZE
+        above_pos = ((self.rect.y + self.hitbox.top) // self.game.TILE_SIZE) - 1
         # Blocks above the player are not solid
         return (not self.game.map.get_block(left_pos, above_pos).is_solid
                 and not self.game.map.get_block(right_pos, above_pos).is_solid)
