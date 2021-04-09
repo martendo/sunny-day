@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
+from game.save import SaveDataError
 from game.button import Button
 from game.game_state import GameState
 
@@ -47,7 +48,11 @@ class FileSelect:
         root.destroy()
         if filename == "":
             return
-        self.game.load(filename)
+        try:
+            self.game.load(filename)
+        except SaveDataError:
+            # Invalid save file, ignore
+            return
         self.got_file()
     
     def new_file(self):
