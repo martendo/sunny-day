@@ -37,7 +37,7 @@ python -m sunny-day
       <td>Crouch</td>
     </tr>
     <tr>
-      <td></kbd>Escape</kbd></td>
+      <td><kbd>Escape</kbd></td>
       <td>Exit level</td>
     </tr>
   </tbody>
