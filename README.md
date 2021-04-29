@@ -56,3 +56,7 @@ Save files (.sds files) are just a JSON-serialized dict in the following format.
     "coins": <int>,
 }
 ```
+
+## Fonts!
+The fonts used in this game were created by VileR and are licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
+They, along with others, can be found at https://int10h.org/oldschool-pc-fonts/.
